@@ -18,6 +18,35 @@
         @endif
     </head>
     <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
+        @php
+            $mataKuliahCount = \App\Models\MataKuliah::count();
+        @endphp
+
+        <div class="w-full lg:max-w-4xl max-w-[335px] mb-4">
+            <div class="rounded-lg bg-blue-600 p-4 text-white shadow-sm">
+                <a href="{{ route('mata-kuliah.index') }}" class="inline-flex items-center gap-2 text-sm font-semibold hover:underline">
+                    📚 Mata Kuliah: {{ $mataKuliahCount }} data
+                </a>
+
+                <div class="mt-3 space-y-2 text-sm">
+                    @php
+                        $latestMataKuliah = \App\Models\MataKuliah::latest()->take(5)->get();
+                    @endphp
+
+                    @forelse ($latestMataKuliah as $item)
+                        <div class="rounded bg-white/10 px-3 py-2">
+                            <div class="font-semibold">{{ $item->kode }} - {{ $item->nama }}</div>
+                            <div class="text-xs opacity-90">Semester {{ $item->semester }} | SKS {{ $item->sks }}</div>
+                        </div>
+                    @empty
+                        <div class="rounded bg-white/10 px-3 py-2">
+                            Belum ada data mata kuliah.
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+        </div>
+
         <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
             @if (Route::has('login'))
                 <nav class="flex items-center justify-end gap-4">
