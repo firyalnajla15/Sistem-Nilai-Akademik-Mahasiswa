@@ -11,7 +11,7 @@
 
             <!-- Header -->
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3 class="mb-0 text-dark fw-semibold">📚 Data Mata Kuliah</h3>
+                <h3 class="mb-0 text-dark fw-semibold">📚 Data Mata Kuliah </h3>
 
                 <a href="{{ route('mata-kuliah.create', ['semester' => $selectedSemester ?? 'all']) }}"
                    class="btn btn-sm px-3 rounded-pill"

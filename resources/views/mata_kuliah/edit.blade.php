@@ -10,7 +10,7 @@
         <div class="card-body p-4">
 
             <h3 class="mb-4 fw-semibold text-dark">
-                ✏️ Edit Mata Kuliah
+                ✏️ Edit Mata Kuliah 
             </h3>
 
             <form action="{{ route('mata-kuliah.update', $mata_kuliah->id) }}" method="POST">

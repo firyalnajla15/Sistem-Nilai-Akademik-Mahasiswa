@@ -82,7 +82,7 @@
 
                     <a href="{{ route('mata-kuliah.index') }}"
                        class="btn btn-light rounded-pill px-4 shadow-sm">
-                        Kembali
+                        Kembali 
                     </a>
 
                 </div>
