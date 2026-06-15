@@ -259,6 +259,11 @@
                 <i class="fa-solid fa-file-lines"></i>
                 Laporan Nilai
             </a>
+
+            <a href="#">
+                <i class="fa-solid fa-file-lines"></i>
+                Kelola Notifikas
+            </a>
         </div>
 
         <div class="sidebar-section">
