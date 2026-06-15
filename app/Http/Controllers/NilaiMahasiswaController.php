@@ -71,11 +71,22 @@ class NilaiMahasiswaController extends Controller
             ->with('success', 'Nilai berhasil ditambahkan');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = NilaiMahasiswa::with('matkul')->get();
+        $semesters = MataKuliah::distinct()->pluck('semester')->sort()->values();
+        $selectedSemester = $request->input('semester', 'all');
 
-        return view('nilai.index', compact('data'));
+        $query = NilaiMahasiswa::with('matkul');
+
+        if ($selectedSemester !== 'all') {
+            $query->whereHas('matkul', function ($q) use ($selectedSemester) {
+                $q->where('semester', $selectedSemester);
+            });
+        }
+
+        $data = $query->get();
+
+        return view('nilai.index', compact('data', 'semesters', 'selectedSemester'));
     }
 
     public function edit($id)
