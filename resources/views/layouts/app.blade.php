@@ -183,32 +183,30 @@
         <div class="topbar-title">Sistem Nilai Akademik Mahasiswa</div>
     </div>
 
-    <!-- SIDEBAR -->
     <aside id="sidebarMenu" class="sidebar">
 
         @auth
         <div style="
-    background: rgba(255,255,255,0.08);
-    padding: 12px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-">
+            background: rgba(255,255,255,0.08);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        ">
 
-            <!-- icon user -->
             <div style="
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.15);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        color: white;
-    ">
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.15);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                color: white;
+            ">
                 <i class="fa-solid fa-user"></i>
             </div>
 
@@ -224,6 +222,7 @@
 
         </div>
         @endauth
+        
         <a href="/dashboard" class="brand">KELOLA AKADEMIK</a>
 
         <div class="sidebar-section">
@@ -261,8 +260,8 @@
             </a>
 
             <a href="#">
-                <i class="fa-solid fa-file-lines"></i>
-                Kelola Notifikas
+                <i class="fa-solid fa-bell"></i>
+                Kelola Notifikasi
             </a>
         </div>
 
