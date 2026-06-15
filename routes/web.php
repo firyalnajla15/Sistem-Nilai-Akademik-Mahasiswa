@@ -6,14 +6,19 @@ use App\Http\Controllers\NilaiMahasiswaController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\AuthController;
 
-Route::view('/', 'dashboard.index');
+Route::view('/', 'dashboard.index')->name('home');
+Route::view('/dashboard', 'dashboard.index')->name('dashboard');
 
-Route::resource('mata-kuliah', MataKuliahController::class);
-
-Route::get('/nilai-mahasiswa', [NilaiMahasiswaController::class, 'index']);
-
-Route::resource('mahasiswa', MahasiswaController::class);
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
-Route::get('/logout', [AuthController::class, 'logout']);
+Route::middleware('auth')->group(function () {
+    Route::resource('mata-kuliah', MataKuliahController::class);
+    Route::get('/nilai-mahasiswa', [NilaiMahasiswaController::class, 'index']);
+    Route::resource('mahasiswa', MahasiswaController::class);
+    Route::get('/logout', [AuthController::class, 'logout']);
+});
+
+Route::get('/nilai', [NilaiMahasiswaController::class, 'index'])->name('nilai.index');
+Route::get('/nilai/create', [NilaiMahasiswaController::class, 'create'])->name('nilai.create');
+Route::post('/nilai', [NilaiMahasiswaController::class, 'store'])->name('nilai.store');

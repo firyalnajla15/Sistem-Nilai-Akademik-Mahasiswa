@@ -186,6 +186,7 @@
     <!-- SIDEBAR -->
     <aside id="sidebarMenu" class="sidebar">
 
+        @auth
         <div style="
     background: rgba(255,255,255,0.08);
     padding: 12px;
@@ -211,29 +212,29 @@
                 <i class="fa-solid fa-user"></i>
             </div>
 
-            <!-- info admin -->
-            <!-- info admin -->
             <div style="line-height: 1.2;">
                 <div style="font-size: 13px; font-weight: 600; color: #fff;">
-                    {{ Auth::user()->name ?? 'Guest' }}
+                    {{ optional(Auth::user())->name ?? 'Guest' }}
                 </div>
 
                 <div style="font-size: 11px; opacity: 0.7; color: #fff;">
-                    {{ Auth::user()->email ?? '' }}
+                    {{ optional(Auth::user())->email ?? '' }}
                 </div>
             </div>
 
         </div>
-        <a href="/" class="brand">KELOLA AKADEMIK</a>
+        @endauth
+        <a href="/dashboard" class="brand">KELOLA AKADEMIK</a>
 
         <div class="sidebar-section">
             <div class="sidebar-section-title">Menu Utama</div>
-            <a href="/" class="{{ request()->is('/') ? 'active' : '' }}">
+            <a href="/dashboard" class="{{ request()->is('/') || request()->is('dashboard') ? 'active' : '' }}">
                 <i class="fa-solid fa-house"></i>
                 Dashboard
             </a>
         </div>
 
+        @auth
         <div class="sidebar-section">
             <div class="sidebar-section-title">Kelola Data</div>
             <a href="/mahasiswa" class="{{ request()->is('mahasiswa') ? 'active' : '' }}">
@@ -272,6 +273,17 @@
                 Logout
             </a>
         </div>
+        @endauth
+
+        @guest
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Akses</div>
+            <a href="/login">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Login
+            </a>
+        </div>
+        @endguest
 
     </aside>
 
