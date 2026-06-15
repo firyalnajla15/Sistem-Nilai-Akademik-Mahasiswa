@@ -17,8 +17,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/nilai-mahasiswa', [NilaiMahasiswaController::class, 'index']);
     Route::resource('mahasiswa', MahasiswaController::class);
     Route::get('/logout', [AuthController::class, 'logout']);
-});
 
-Route::get('/nilai', [NilaiMahasiswaController::class, 'index'])->name('nilai.index');
-Route::get('/nilai/create', [NilaiMahasiswaController::class, 'create'])->name('nilai.create');
-Route::post('/nilai', [NilaiMahasiswaController::class, 'store'])->name('nilai.store');
+
+    Route::get('/nilai', [NilaiMahasiswaController::class, 'index'])->name('nilai.index');
+    Route::get('/nilai/create', [NilaiMahasiswaController::class, 'create'])->name('nilai.create');
+    Route::post('/nilai', [NilaiMahasiswaController::class, 'store'])->name('nilai.store');
+    Route::get('/nilai/{id}/edit', [NilaiMahasiswaController::class, 'edit'])->name('nilai.edit');
+    Route::put('/nilai/{id}', [NilaiMahasiswaController::class, 'update'])->name('nilai.update');
+    Route::delete('/nilai/{id}', [NilaiMahasiswaController::class, 'destroy'])->name('nilai.destroy');
+});

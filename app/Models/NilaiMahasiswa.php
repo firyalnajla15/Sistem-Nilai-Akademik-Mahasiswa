@@ -8,6 +8,8 @@ class NilaiMahasiswa extends Model
 {
     protected $table = 'nilai_mahasiswa';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'matkul_id',
         'nim',
@@ -18,4 +20,9 @@ class NilaiMahasiswa extends Model
         'uas',
         'grade'
     ];
+
+    public function matkul()
+    {
+        return $this->belongsTo(MataKuliah::class, 'matkul_id');
+    }
 }
