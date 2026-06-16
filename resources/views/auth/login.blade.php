@@ -89,7 +89,7 @@
             </div>
 
             <div class="text-center mt-3">
-                <p class="text-muted" style="font-size: 0.75rem;">&copy; {{ date('Y') }} Tim Teknologi Informasi. All Rights Reserved.</p>
+                <p class="text-muted" style="font-size: 0.75rem;">&copy; {{ date('Y') }} Firyal Najla 2010092007. Manajemen Informatika.</p>
             </div>
 
         </div>
