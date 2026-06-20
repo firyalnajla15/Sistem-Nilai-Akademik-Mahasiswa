@@ -7,12 +7,35 @@ use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
 {
-    public function index()
-    {
-        $data = Mahasiswa::all();
+    public function index(Request $request)
+{
+    $query = Mahasiswa::query();
 
-        return view('mahasiswa.index', compact('data'));
+    if ($request->prodi) {
+        $query->where('prodi', $request->prodi);
     }
+
+    if ($request->angkatan) {
+        $query->where('angkatan', $request->angkatan);
+    }
+
+    $data = $query->get();
+
+    $prodis = Mahasiswa::select('prodi')
+        ->distinct()
+        ->pluck('prodi');
+
+    $angkatans = Mahasiswa::select('angkatan')
+        ->distinct()
+        ->orderBy('angkatan')
+        ->pluck('angkatan');
+
+    return view('mahasiswa.index', compact(
+        'data',
+        'prodis',
+        'angkatans'
+    ));
+}
 
     public function create()
     {

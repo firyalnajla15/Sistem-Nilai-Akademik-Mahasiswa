@@ -25,4 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/nilai/{id}/edit', [NilaiMahasiswaController::class, 'edit'])->name('nilai.edit');
     Route::put('/nilai/{id}', [NilaiMahasiswaController::class, 'update'])->name('nilai.update');
     Route::delete('/nilai/{id}', [NilaiMahasiswaController::class, 'destroy'])->name('nilai.destroy');
+
+    Route::get('/profil', function () {return view('profil.index');})->name('profil');
 });
+

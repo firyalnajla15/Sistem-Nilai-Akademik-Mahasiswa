@@ -60,7 +60,7 @@
                        style="border-color:#e5e7eb;">
 
                     <thead style="background:#1f2a44; color:#fff;">
-                        <tr class="text-center">
+                        <tr>
                             <th>Kode</th>
                             <th>Nama</th>
                             <th>SKS</th>
@@ -73,7 +73,7 @@
 
                     <tbody style="background:#ffffff;">
                     @forelse($data as $item)
-                        <tr class="text-center">
+                        <tr>
                             <td class="fw-semibold text-dark">{{ $item->kode }}</td>
                             <td class="text-dark">{{ $item->nama }}</td>
 

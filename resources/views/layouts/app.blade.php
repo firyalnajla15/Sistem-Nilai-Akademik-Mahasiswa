@@ -223,61 +223,73 @@
         </div>
         @endauth
         
-        <a href="/dashboard" class="brand">KELOLA AKADEMIK</a>
-
-        <div class="sidebar-section">
-            <div class="sidebar-section-title">Menu Utama</div>
-            <a href="/dashboard" class="{{ request()->is('/') || request()->is('dashboard') ? 'active' : '' }}">
-                <i class="fa-solid fa-house"></i>
-                Dashboard
-            </a>
-        </div>
-
         @auth
-        <div class="sidebar-section">
-            <div class="sidebar-section-title">Kelola Data</div>
-            <a href="/mahasiswa" class="{{ request()->is('mahasiswa') ? 'active' : '' }}">
-                <i class="fa-solid fa-user"></i>
-                Mahasiswa
-            </a>
 
-            <a href="/mata-kuliah" class="{{ request()->is('mata-kuliah*') ? 'active' : '' }}">
-                <i class="fa-solid fa-book"></i>
-                Mata Kuliah
-            </a>
-        </div>
+<a href="/dashboard" class="brand">KELOLA AKADEMIK</a>
 
-        <div class="sidebar-section">
-            <div class="sidebar-section-title">Manajemen Nilai</div>
-            <a href="/nilai-mahasiswa">
-                <i class="fa-solid fa-pen-to-square"></i>
-                Input Nilai
-            </a>
+<div class="sidebar-section">
+    <div class="sidebar-section-title">Menu Utama</div>
 
-            <a href="#">
-                <i class="fa-solid fa-file-lines"></i>
-                Laporan Nilai
-            </a>
+    <a href="/dashboard"
+       class="{{ request()->is('dashboard') ? 'active' : '' }}">
+        <i class="fa-solid fa-house"></i>
+        Dashboard
+    </a>
+</div>
 
-            <a href="#">
-                <i class="fa-solid fa-bell"></i>
-                Kelola Notifikasi
-            </a>
-        </div>
+<div class="sidebar-section">
+    <div class="sidebar-section-title">Kelola Data</div>
 
-        <div class="sidebar-section">
-            <div class="sidebar-section-title">Akun</div>
-            <a href="#">
-                <i class="fa-solid fa-circle-user"></i>
-                Profil
-            </a>
+    <a href="/mahasiswa"
+       class="{{ request()->is('mahasiswa*') ? 'active' : '' }}">
+        <i class="fa-solid fa-user"></i>
+        Mahasiswa
+    </a>
 
-            <a href="/logout">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                Logout
-            </a>
-        </div>
-        @endauth
+    <a href="/mata-kuliah"
+       class="{{ request()->is('mata-kuliah*') ? 'active' : '' }}">
+        <i class="fa-solid fa-book"></i>
+        Mata Kuliah
+    </a>
+</div>
+
+<div class="sidebar-section">
+    <div class="sidebar-section-title">Manajemen Nilai</div>
+
+    <a href="/nilai/create"
+       class="{{ request()->is('nilai/create') ? 'active' : '' }}">
+        <i class="fa-solid fa-pen-to-square"></i>
+        Input Nilai
+    </a>
+
+    <a href="/nilai"
+       class="{{ request()->is('nilai') || request()->is('nilai/*/edit') ? 'active' : '' }}">
+        <i class="fa-solid fa-file-lines"></i>
+        Laporan Nilai
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-bell"></i>
+        Kelola Notifikasi
+    </a>
+</div>
+
+<div class="sidebar-section">
+    <div class="sidebar-section-title">Akun</div>
+
+    <a href="{{ route('profil') }}"
+       class="{{ request()->routeIs('profil') ? 'active' : '' }}">
+        <i class="fa-solid fa-circle-user"></i>
+        Profil
+    </a>
+
+    <a href="/logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+    </a>
+</div>
+
+@endauth
 
         @guest
         <div class="sidebar-section">

@@ -28,13 +28,58 @@
                 </div>
             @endif
 
+            <form method="GET" action="{{ route('mahasiswa.index') }}" class="row mb-3">
+
+    <div class="col-md-4">
+        <select name="prodi" class="form-select">
+            <option value="">Semua Prodi</option>
+
+            @foreach($prodis as $prodi)
+                <option value="{{ $prodi }}"
+                    {{ request('prodi') == $prodi ? 'selected' : '' }}>
+                    {{ $prodi }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="col-md-3">
+        <select name="angkatan" class="form-select">
+            <option value="">Semua Angkatan</option>
+
+            @foreach($angkatans as $angkatan)
+                <option value="{{ $angkatan }}"
+                    {{ request('angkatan') == $angkatan ? 'selected' : '' }}>
+                    {{ $angkatan }}
+                </option>
+            @endforeach
+        </select>
+    </div>
+
+    <div class="col-md-2">
+        <button type="submit"
+                class="btn w-100"
+                style="background:#1f2a44;color:white;">
+            Filter
+        </button>
+    </div>
+
+    <div class="col-md-2">
+        <a href="{{ route('mahasiswa.index') }}"
+           class="btn btn-secondary w-100">
+            Reset
+        </a>
+    </div>
+
+</form>
+
             <!-- Table -->
             <div class="table-responsive">
                 <table class="table table-hover align-middle"
                        style="border-color:#e5e7eb;">
 
                     <thead style="background:#1f2a44; color:#fff;">
-                        <tr class="text-center">
+                        <tr>
                             <th>NIM</th>
                             <th>Nama</th>
                             <th>Prodi</th>
@@ -45,7 +90,7 @@
 
                     <tbody style="background:#ffffff;">
                     @forelse($data as $item)
-                        <tr class="text-center">
+                        <tr>
 
                             <td class="fw-semibold text-dark">{{ $item->nim }}</td>
                             <td class="text-dark">{{ $item->nama }}</td>
