@@ -268,6 +268,11 @@
         Laporan Nilai
     </a>
 
+    <a href="{{ route('transkrip.index') }}">
+    <i class="fa-solid fa-file-lines"></i>
+    Transkrip Nilai
+</a>
+    
     <a href="#">
         <i class="fa-solid fa-bell"></i>
         Kelola Notifikasi

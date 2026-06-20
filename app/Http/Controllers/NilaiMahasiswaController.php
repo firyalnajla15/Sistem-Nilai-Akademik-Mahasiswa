@@ -21,74 +21,94 @@ class NilaiMahasiswaController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'matkul_id' => 'required',
-            'nim' => 'required',
-            'nama_mahasiswa' => 'required',
-            'kehadiran' => 'required',
-            'tugas' => 'required',
-            'uts' => 'required',
-            'uas' => 'required',
-        ]);
+{
+    $request->validate([
+        'matkul_id' => 'required',
+        'nim' => 'required',
+        'nama_mahasiswa' => 'required',
+        'kehadiran' => 'required',
+        'tugas' => 'required',
+        'uts' => 'required',
+        'uas' => 'required',
+    ]);
 
-        $nilai = NilaiMahasiswa::create($request->all());
+    // =========================
+    // CEK DUPLIKAT (INI YANG BARU)
+    // =========================
+    $cek = NilaiMahasiswa::where('nim', $request->nim)
+        ->where('matkul_id', $request->matkul_id)
+        ->first();
 
-        $nilai->refresh();
-
-        $na = $nilai->nilai_akhir;
-
-        if ($na >= 95) {
-            $grade = 'A+';
-        } elseif ($na >= 90) {
-            $grade = 'A';
-        } elseif ($na >= 85) {
-            $grade = 'A-';
-        } elseif ($na >= 80) {
-            $grade = 'B+';
-        } elseif ($na >= 75) {
-            $grade = 'B';
-        } elseif ($na >= 70) {
-            $grade = 'B-';
-        } elseif ($na >= 65) {
-            $grade = 'C+';
-        } elseif ($na >= 60) {
-            $grade = 'C';
-        } elseif ($na >= 55) {
-            $grade = 'C-';
-        } elseif ($na >= 50) {
-            $grade = 'D';
-        } else {
-            $grade = 'E';
-        }
-
-        $nilai->update([
-            'grade' => $grade
-        ]);
-
-        return redirect()
-            ->route('nilai.index')
-            ->with('success', 'Nilai berhasil ditambahkan');
+    if ($cek) {
+        return redirect()->back()->withErrors([
+            'nim' => '❌ Mahasiswa ini sudah pernah mengambil mata kuliah ini!'
+        ])->withInput();
     }
+
+    // =========================
+    // SIMPAN DATA
+    // =========================
+    $nilai = NilaiMahasiswa::create($request->all());
+
+    $nilai->refresh();
+
+    $na = $nilai->nilai_akhir;
+
+    if ($na >= 95) $grade = 'A+';
+    elseif ($na >= 90) $grade = 'A';
+    elseif ($na >= 85) $grade = 'A-';
+    elseif ($na >= 80) $grade = 'B+';
+    elseif ($na >= 75) $grade = 'B';
+    elseif ($na >= 70) $grade = 'B-';
+    elseif ($na >= 65) $grade = 'C+';
+    elseif ($na >= 60) $grade = 'C';
+    elseif ($na >= 55) $grade = 'C-';
+    elseif ($na >= 50) $grade = 'D';
+    else $grade = 'E';
+
+    $nilai->update([
+        'grade' => $grade
+    ]);
+
+    return redirect()
+        ->route('nilai.index')
+        ->with('success', 'Nilai berhasil ditambahkan');
+}
 
     public function index(Request $request)
-    {
-        $semesters = MataKuliah::distinct()->pluck('semester')->sort()->values();
-        $selectedSemester = $request->input('semester', 'all');
+{
+    $semesters = MataKuliah::distinct()
+        ->pluck('semester')
+        ->sort()
+        ->values();
 
-        $query = NilaiMahasiswa::with('matkul');
+    $mahasiswa = Mahasiswa::orderBy('nama')->get();
 
-        if ($selectedSemester !== 'all') {
-            $query->whereHas('matkul', function ($q) use ($selectedSemester) {
-                $q->where('semester', $selectedSemester);
-            });
-        }
+    $selectedSemester = $request->input('semester', 'all');
+    $selectedNim = $request->input('nim', 'all');
 
-        $data = $query->get();
+    $query = NilaiMahasiswa::with('matkul');
 
-        return view('nilai.index', compact('data', 'semesters', 'selectedSemester'));
+    if ($selectedSemester !== 'all') {
+        $query->whereHas('matkul', function ($q) use ($selectedSemester) {
+            $q->where('semester', $selectedSemester);
+        });
     }
 
+    if ($selectedNim !== 'all') {
+        $query->where('nim', $selectedNim);
+    }
+
+    $data = $query->get();
+
+    return view('nilai.index', compact(
+        'data',
+        'semesters',
+        'selectedSemester',
+        'mahasiswa',
+        'selectedNim'
+    ));
+}
     public function edit($id)
     {
         $nilai = NilaiMahasiswa::findOrFail($id);

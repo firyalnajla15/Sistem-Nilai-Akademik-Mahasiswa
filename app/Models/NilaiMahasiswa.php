@@ -22,7 +22,12 @@ class NilaiMahasiswa extends Model
     ];
 
     public function matkul()
-    {
-        return $this->belongsTo(MataKuliah::class, 'matkul_id');
-    }
+{
+    return $this->belongsTo(MataKuliah::class, 'matkul_id');
+}
+
+public function mahasiswa()
+{
+    return $this->belongsTo(Mahasiswa::class, 'nim', 'nim');
+}
 }
