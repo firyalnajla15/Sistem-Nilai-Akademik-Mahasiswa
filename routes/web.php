@@ -7,8 +7,14 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TranskripController;
 
-Route::view('/', 'dashboard.index')->name('home');
+Route::view('/', 'landing.index')->name('home');
 Route::view('/dashboard', 'dashboard.index')->name('dashboard');
+
+Route::view('/mahasiswa/login', 'auth.login_mahasiswa')
+    ->name('mahasiswa.login');
+
+Route::view('/mahasiswa/register', 'auth.register_mahasiswa')
+    ->name('mahasiswa.register');
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
