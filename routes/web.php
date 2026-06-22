@@ -6,16 +6,27 @@ use App\Http\Controllers\NilaiMahasiswaController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TranskripController;
+use App\Http\Controllers\AuthMahasiswaController;
 
 Route::view('/', 'landing.index')->name('home');
 Route::view('/dashboard', 'dashboard.index')->name('dashboard');
 
-Route::view('/mahasiswa/login', 'auth.login_mahasiswa')
-    ->name('mahasiswa.login');
+// Route Login Mahasiswa
+Route::get('/login-mahasiswa', [AuthMahasiswaController::class, 'showLogin'])->name('mahasiswa.login');
+Route::post('/login-mahasiswa', [AuthMahasiswaController::class, 'login']);
 
-Route::view('/mahasiswa/register', 'auth.register_mahasiswa')
-    ->name('mahasiswa.register');
+// Route Register / Aktivasi Mahasiswa
+Route::get('/mahasiswa/register', [AuthMahasiswaController::class, 'showRegister'])->name('mahasiswa.register');
+Route::post('/mahasiswa/register', [AuthMahasiswaController::class, 'register']);
 
+// Route Dashboard & Logout Mahasiswa
+Route::get('/mahasiswa/dashboard', [AuthMahasiswaController::class, 'dashboard'])->name('mahasiswa.dashboard');
+Route::post('/mahasiswa/logout', [AuthMahasiswaController::class, 'logout'])->name('mahasiswa.logout');
+
+Route::get('/mahasiswa/register', [AuthMahasiswaController::class, 'showRegister'])->name('mahasiswa.register');
+Route::post('/mahasiswa/register', [AuthMahasiswaController::class, 'register']);
+Route::get('/mahasiswa/dashboard', [AuthMahasiswaController::class, 'dashboard'])->name('mahasiswa.dashboard');
+Route::get('/mahasiswa/logout', [AuthMahasiswaController::class, 'logout'])->name('mahasiswa.logout');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
@@ -25,7 +36,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('mahasiswa', MahasiswaController::class);
     Route::get('/logout', [AuthController::class, 'logout']);
 
-
     Route::get('/nilai', [NilaiMahasiswaController::class, 'index'])->name('nilai.index');
     Route::get('/nilai/create', [NilaiMahasiswaController::class, 'create'])->name('nilai.create');
     Route::post('/nilai', [NilaiMahasiswaController::class, 'store'])->name('nilai.store');
@@ -33,30 +43,27 @@ Route::middleware('auth')->group(function () {
     Route::put('/nilai/{id}', [NilaiMahasiswaController::class, 'update'])->name('nilai.update');
     Route::delete('/nilai/{id}', [NilaiMahasiswaController::class, 'destroy'])->name('nilai.destroy');
 
-    Route::get('/profil', function () {return view('profil.index');})->name('profil');
+    Route::get('/profil', function () { return view('profil.index'); })->name('profil');
 
     Route::get('/transkrip', [TranskripController::class, 'index'])->name('transkrip.index');
     Route::get('/transkrip/pdf', [TranskripController::class, 'pdf'])->name('transkrip.pdf');
+    
     Route::get('/api/search-mahasiswa', function (Illuminate\Http\Request $request) {
-
-    $q = $request->q;
-
-    return \App\Models\Mahasiswa::where('nim', 'like', $q . '%')
-        ->limit(10)
-        ->get(['nim', 'nama']);
-});
-Route::get('/search-mahasiswa', function (Illuminate\Http\Request $request) {
-
-    return \App\Models\Mahasiswa::where('nim', 'like', $request->q . '%')
-        ->limit(10)
-        ->get(['nim', 'nama']);
-});
-
-Route::get('/check-nilai', function (Illuminate\Http\Request $request) {
-
-    return \App\Models\NilaiMahasiswa::where('nim', $request->nim)
-        ->where('matkul_id', $request->matkul_id)
-        ->exists();
-});
+        $q = $request->q;
+        return \App\Models\Mahasiswa::where('nim', 'like', $q . '%')
+            ->limit(10)
+            ->get(['nim', 'nama']);
     });
 
+    Route::get('/search-mahasiswa', function (Illuminate\Http\Request $request) {
+        return \App\Models\Mahasiswa::where('nim', 'like', $request->q . '%')
+            ->limit(10)
+            ->get(['nim', 'nama']);
+    });
+
+    Route::get('/check-nilai', function (Illuminate\Http\Request $request) {
+        return \App\Models\NilaiMahasiswa::where('nim', $request->nim)
+            ->where('matkul_id', $request->matkul_id)
+            ->exists();
+    });
+});
