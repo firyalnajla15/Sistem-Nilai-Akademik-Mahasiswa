@@ -10,6 +10,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+        /* Mengaktifkan efek scroll halus saat link navbar diklik */
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             color: #334155;
@@ -112,6 +117,20 @@
             margin-right: 6px;
         }
 
+        /* ================= TENTANG SECTION ================= */
+        .about-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .about-icon {
+            font-size: 2.5rem;
+            color: #0284c7;
+            margin-bottom: 15px;
+        }
+
         /* ================= FEATURE CARDS ================= */
         .section-title {
             font-weight: 700;
@@ -172,6 +191,30 @@
             margin-bottom: 0;
         }
 
+        /* ================= TOMBOL BALIK KE ATAS (BACK TO TOP) ================= */
+        .back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 99;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+            background-color: #0284c7 !important;
+            border: none !important;
+            color: white !important;
+        }
+
+        .back-to-top:hover {
+            background-color: #0369a1 !important;
+            transform: translateY(-3px);
+        }
+
         /* ================= FOOTER ================= */
         footer {
             background: #0f172a !important;
@@ -208,8 +251,8 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/">
-            <span style="font-size: 1.5rem;">🎓</span> Sistem Nilai Akademik Mahasiswa
+        <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
+            <span style="font-size: 1.5rem;">🎓</span> Sistem Nilai Academic Mahasiswa
         </a>
 
         <button class="navbar-toggler"
@@ -293,6 +336,66 @@
     </div>
 </div>
 
+<section id="tentang" class="py-5" style="background-color: #ffffff;">
+    <div class="container py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="text-primary fw-bold text-uppercase tracking-wider" style="font-size: 0.85rem;">Profil Sistem</span>
+                <h2 class="fw-bold text-dark display-6 mt-2 mb-4">Mengenai SIAKAD</h2>
+                <p class="text-muted mb-4" style="line-height: 1.8;">
+                    Sistem Informasi Akademik (SIAKAD) merupakan platform tata kelola administrasi pendidikan yang dirancang khusus untuk memfasilitasi kebutuhan seluruh sivitas akademika. Dengan mengedepankan efisiensi, transparansi, dan kecepatan akses data guna mendukung kelancaran proses belajar mengajar.
+                </p>
+                <div class="row g-4 mt-2">
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="text-primary fs-4 mt-1"><i class="fa-solid fa-circle-check"></i></div>
+                            <div>
+                                <h6 class="fw-bold text-dark mb-1">Akses 24/7</h6>
+                                <p class="text-muted small mb-0">Sistem dapat diakses kapan saja dan dari mana saja.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="text-primary fs-4 mt-1"><i class="fa-solid fa-shield-halved"></i></div>
+                            <div>
+                                <h6 class="fw-bold text-dark mb-1">Keamanan Data</h6>
+                                <p class="text-muted small mb-0">Data nilai dan profil mahasiswa tersimpan aman dalam server.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="p-4 about-card">
+                    <div class="row text-center g-4">
+                        <div class="col-6">
+                            <div class="about-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                            <h3 class="fw-bold text-dark mb-1">Aktif</h3>
+                            <p class="text-muted small mb-0">Integrasi Data Mahasiswa</p>
+                        </div>
+                        <div class="col-6">
+                            <div class="about-icon"><i class="fa-solid fa-book"></i></div>
+                            <h3 class="fw-bold text-dark mb-1">Terstruktur</h3>
+                            <p class="text-muted small mb-0">Kurikulum Program Studi</p>
+                        </div>
+                        <div class="col-6">
+                            <div class="about-icon"><i class="fa-solid fa-chart-line"></i></div>
+                            <h3 class="fw-bold text-dark mb-1">Otomatis</h3>
+                            <p class="text-muted small mb-0">Kalkulasi IPK & Transkrip</p>
+                        </div>
+                        <div class="col-6">
+                            <div class="about-icon"><i class="fa-solid fa-network-wired"></i></div>
+                            <h3 class="fw-bold text-dark mb-1">Real-Time</h3>
+                            <p class="text-muted small mb-0">Sinkronisasi Basis Data</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section id="fitur" class="py-5 bg-opacity-10 bg-light">
     <div class="container py-4">
         <div class="text-center mb-5">
@@ -339,6 +442,10 @@
         </div>
     </div>
 </section>
+
+<a href="#" class="btn back-to-top" title="Kembali ke atas">
+    <i class="fa-solid fa-arrow-up"></i>
+</a>
 
 <footer class="text-center">
     <div class="container">
