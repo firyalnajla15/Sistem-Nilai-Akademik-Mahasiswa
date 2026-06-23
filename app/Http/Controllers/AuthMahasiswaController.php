@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AuthMahasiswaController extends Controller
 {
@@ -47,37 +48,31 @@ class AuthMahasiswaController extends Controller
 
     public function register(Request $request)
     {
-        // Validasi input form pendaftaran
         $request->validate([
             'nim' => 'required',
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'password' => 'required|min:6|confirmed' // 'confirmed' otomatis mencocokkan field password_confirmation
+            'password' => 'required|min:6|confirmed'
         ], [
-            // Pesan error kustom jika password tidak sama saat diinput mahasiswa
             'password.confirmed' => 'Konfirmasi password yang Anda masukkan tidak cocok!'
         ]);
 
-        // 1. Cek apakah NIM tersebut valid (sudah diinput dosen di tabel mahasiswa)
         $mahasiswa = Mahasiswa::where('nim', $request->nim)->first();
 
         if (!$mahasiswa) {
             return back()->withErrors(['nim' => 'NIM Anda belum terdaftar di sistem akademik. Silakan hubungi Dosen/Admin.'])->withInput();
         }
 
-        // 2. Cek apakah NIM ini sudah memiliki akun login di tabel users
         $akunLama = User::where('nim', $request->nim)->first();
         if ($akunLama) {
             return back()->withErrors(['nim' => 'NIM ini sudah diaktivasi sebelumnya. Silakan langsung login.'])->withInput();
         }
 
-        // 3. Cek apakah Email yang diinput sudah dipakai user lain di tabel users
         $emailLama = User::where('email', $request->email)->first();
         if ($emailLama) {
             return back()->withErrors(['email' => 'Email ini sudah digunakan oleh akun lain.'])->withInput();
         }
 
-        // 4. Jika semua valid, simpan ke tabel users
         User::create([
             'name' => $request->nama,       
             'email' => $request->email,     
@@ -91,7 +86,7 @@ class AuthMahasiswaController extends Controller
             ->with('success', 'Akun berhasil diaktivasi! Silakan login menggunakan password baru Anda.');
     }
 
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         if (!Auth::check() || Auth::user()->role !== 'mahasiswa') {
             Auth::logout();
@@ -99,7 +94,74 @@ class AuthMahasiswaController extends Controller
             return redirect()->route('mahasiswa.login');
         }
 
-        return view('dashboard.mahasiswa');
+        $nimSesi = Auth::user()->nim;
+        $semesterDipilih = $request->input('semester');
+
+        // 1. QUERY TABEL: Mengambil nilai mahasiswa (Filter per semester + diurutkan dari Semester 1, 2, dst)
+        $queryNilai = DB::table('nilai_mahasiswa')
+            ->join('mata_kuliah', 'nilai_mahasiswa.matkul_id', '=', 'mata_kuliah.id')
+            ->where('nilai_mahasiswa.nim', $nimSesi);
+
+        if (!empty($semesterDipilih)) {
+            $queryNilai->where('mata_kuliah.semester', $semesterDipilih);
+        }
+
+        $daftarNilai = $queryNilai->select(
+            'mata_kuliah.nama as nama_matakuliah', 
+            'mata_kuliah.semester',
+            'nilai_mahasiswa.kehadiran', 
+            'nilai_mahasiswa.tugas', 
+            'nilai_mahasiswa.uts', 
+            'nilai_mahasiswa.uas', 
+            'nilai_mahasiswa.nilai_akhir', 
+            'nilai_mahasiswa.grade'
+        )->orderBy('mata_kuliah.semester', 'asc')->get();
+
+        // 2. QUERY CARD STATISTIK: SKS & Total Matkul otomatis ikut ter-filter per semester jika dipilih
+        $querySks = DB::table('nilai_mahasiswa')
+            ->join('mata_kuliah', 'nilai_mahasiswa.matkul_id', '=', 'mata_kuliah.id')
+            ->where('nilai_mahasiswa.nim', $nimSesi);
+
+        $queryJumlahMatkul = DB::table('nilai_mahasiswa')
+            ->join('mata_kuliah', 'nilai_mahasiswa.matkul_id', '=', 'mata_kuliah.id')
+            ->where('nilai_mahasiswa.nim', $nimSesi);
+
+        if (!empty($semesterDipilih)) {
+            $querySks->where('mata_kuliah.semester', $semesterDipilih);
+            $queryJumlahMatkul->where('mata_kuliah.semester', $semesterDipilih);
+        }
+
+        $totalSks = $querySks->sum('mata_kuliah.sks');
+        $jumlahMatkul = $queryJumlahMatkul->count();
+
+        // 3. LOGIKA KURVA DINAMIS: Otomatis mendeteksi seluruh semester tertinggi di database mahasiswa tersebut
+        $semesterTertinggi = DB::table('nilai_mahasiswa')
+            ->join('mata_kuliah', 'nilai_mahasiswa.matkul_id', '=', 'mata_kuliah.id')
+            ->where('nilai_mahasiswa.nim', $nimSesi)
+            ->max('mata_kuliah.semester');
+
+        $batasLoop = $semesterTertinggi ? $semesterTertinggi : 1;
+
+        $grafikIpk = [];
+        for ($i = 1; $i <= $batasLoop; $i++) {
+            $rataRataSemester = DB::table('nilai_mahasiswa')
+                ->join('mata_kuliah', 'nilai_mahasiswa.matkul_id', '=', 'mata_kuliah.id')
+                ->where('nilai_mahasiswa.nim', $nimSesi)
+                ->where('mata_kuliah.semester', $i)
+                ->avg('nilai_mahasiswa.nilai_akhir'); 
+
+            if ($rataRataSemester) {
+                $grafikIpk[] = number_format($rataRataSemester / 25, 2);
+            } else {
+                $grafikIpk[] = 0.00; 
+            }
+        }
+
+        // 4. IPK KUMULATIF TOTAL (Tetap menghitung akumulasi seluruh nilai)
+        $semuaNilai = DB::table('nilai_mahasiswa')->where('nim', $nimSesi)->avg('nilai_akhir');
+        $ipkTotal = $semuaNilai ? number_format($semuaNilai / 25, 2) : '0.00';
+
+        return view('dashboard.mahasiswa', compact('daftarNilai', 'totalSks', 'jumlahMatkul', 'grafikIpk', 'ipkTotal', 'semesterDipilih'));
     }
 
     public function logout()
@@ -107,5 +169,12 @@ class AuthMahasiswaController extends Controller
         Auth::logout();
         session()->flush();
         return redirect()->route('mahasiswa.login');
+    }
+
+    public function logoutToLanding()
+    {
+        Auth::logout();
+        session()->flush();
+        return redirect('/');
     }
 }

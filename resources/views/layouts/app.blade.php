@@ -186,7 +186,8 @@
     <aside id="sidebarMenu" class="sidebar">
 
         @auth
-        <div style="
+            <div
+                style="
             background: rgba(255,255,255,0.08);
             padding: 12px;
             border-radius: 12px;
@@ -196,7 +197,8 @@
             gap: 10px;
         ">
 
-            <div style="
+                <div
+                    style="
                 width: 38px;
                 height: 38px;
                 border-radius: 50%;
@@ -207,103 +209,98 @@
                 font-size: 16px;
                 color: white;
             ">
-                <i class="fa-solid fa-user"></i>
-            </div>
-
-            <div style="line-height: 1.2;">
-                <div style="font-size: 13px; font-weight: 600; color: #fff;">
-                    {{ optional(Auth::user())->name ?? 'Guest' }}
+                    <i class="fa-solid fa-user"></i>
                 </div>
 
-                <div style="font-size: 11px; opacity: 0.7; color: #fff;">
-                    {{ optional(Auth::user())->email ?? '' }}
-                </div>
-            </div>
+                <div style="line-height: 1.2;">
+                    <div style="font-size: 13px; font-weight: 600; color: #fff;">
+                        {{ optional(Auth::user())->name ?? 'Guest' }}
+                    </div>
 
-        </div>
+                    <div style="font-size: 11px; opacity: 0.7; color: #fff;">
+                        {{ optional(Auth::user())->email ?? '' }}
+                    </div>
+                </div>
+
+            </div>
         @endauth
-        
+
         @auth
 
-<a href="/dashboard" class="brand">KELOLA AKADEMIK</a>
+            <a href="/dashboard" class="brand">KELOLA AKADEMIK</a>
 
-<div class="sidebar-section">
-    <div class="sidebar-section-title">Menu Utama</div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Menu Utama</div>
 
-    <a href="/dashboard"
-       class="{{ request()->is('dashboard') ? 'active' : '' }}">
-        <i class="fa-solid fa-house"></i>
-        Dashboard
-    </a>
-</div>
+                <a href="/dashboard" class="{{ request()->is('dashboard') ? 'active' : '' }}">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </a>
+            </div>
 
-<div class="sidebar-section">
-    <div class="sidebar-section-title">Kelola Data</div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Kelola Data</div>
 
-    <a href="/mahasiswa"
-       class="{{ request()->is('mahasiswa*') ? 'active' : '' }}">
-        <i class="fa-solid fa-user"></i>
-        Mahasiswa
-    </a>
+                <a href="/mahasiswa" class="{{ request()->is('mahasiswa*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-user"></i>
+                    Mahasiswa
+                </a>
 
-    <a href="/mata-kuliah"
-       class="{{ request()->is('mata-kuliah*') ? 'active' : '' }}">
-        <i class="fa-solid fa-book"></i>
-        Mata Kuliah
-    </a>
-</div>
+                <a href="/mata-kuliah" class="{{ request()->is('mata-kuliah*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-book"></i>
+                    Mata Kuliah
+                </a>
+            </div>
 
-<div class="sidebar-section">
-    <div class="sidebar-section-title">Manajemen Nilai</div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Manajemen Nilai</div>
 
-    <a href="/nilai/create"
-       class="{{ request()->is('nilai/create') ? 'active' : '' }}">
-        <i class="fa-solid fa-pen-to-square"></i>
-        Input Nilai
-    </a>
+                <a href="{{ route('nilai.index') }}"
+                    class="{{ request()->is('nilai') || request()->is('nilai/*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-file-lines"></i>
+                    Input Nilai
+                </a>
 
-    <a href="/nilai"
-       class="{{ request()->is('nilai') || request()->is('nilai/*/edit') ? 'active' : '' }}">
-        <i class="fa-solid fa-file-lines"></i>
-        Laporan Nilai
-    </a>
+                <a href="/nilai" class="{{ request()->is('nilai') || request()->is('nilai/*/edit') ? 'active' : '' }}">
+                    <i class="fa-solid fa-file-lines"></i>
+                    Laporan Nilai
+                </a>
 
-    <a href="{{ route('transkrip.index') }}">
-    <i class="fa-solid fa-file-lines"></i>
-    Transkrip Nilai
-</a>
-    
-    <a href="#">
-        <i class="fa-solid fa-bell"></i>
-        Kelola Notifikasi
-    </a>
-</div>
+                <a href="{{ route('transkrip.index') }}">
+                    <i class="fa-solid fa-file-lines"></i>
+                    Transkrip Nilai
+                </a>
 
-<div class="sidebar-section">
-    <div class="sidebar-section-title">Akun</div>
+                <a href="#">
+                    <i class="fa-solid fa-bell"></i>
+                    Kelola Notifikasi
+                </a>
+            </div>
 
-    <a href="{{ route('profil') }}"
-       class="{{ request()->routeIs('profil') ? 'active' : '' }}">
-        <i class="fa-solid fa-circle-user"></i>
-        Profil
-    </a>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Akun</div>
 
-    <a href="/logout">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        Logout
-    </a>
-</div>
+                <a href="{{ route('profil') }}" class="{{ request()->routeIs('profil') ? 'active' : '' }}">
+                    <i class="fa-solid fa-circle-user"></i>
+                    Profil
+                </a>
 
-@endauth
+                <a href="/logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </div>
+
+        @endauth
 
         @guest
-        <div class="sidebar-section">
-            <div class="sidebar-section-title">Akses</div>
-            <a href="/login">
-                <i class="fa-solid fa-right-to-bracket"></i>
-                Login
-            </a>
-        </div>
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Akses</div>
+                <a href="/login">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    Login
+                </a>
+            </div>
         @endguest
 
     </aside>
