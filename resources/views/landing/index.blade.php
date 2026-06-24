@@ -341,7 +341,7 @@
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
                 <span class="text-primary fw-bold text-uppercase tracking-wider" style="font-size: 0.85rem;">Profil Sistem</span>
-                <h2 class="fw-bold text-dark display-6 mt-2 mb-4">Mengenai SIAKAD</h2>
+                <h2 class="fw-bold text-dark display-6 mt-2 mb-4">Mengenai SIAKAD</h2> 
                 <p class="text-muted mb-4" style="line-height: 1.8;">
                     Sistem Informasi Akademik (SIAKAD) merupakan platform tata kelola administrasi pendidikan yang dirancang khusus untuk memfasilitasi kebutuhan seluruh sivitas akademika. Dengan mengedepankan efisiensi, transparansi, dan kecepatan akses data guna mendukung kelancaran proses belajar mengajar.
                 </p>
