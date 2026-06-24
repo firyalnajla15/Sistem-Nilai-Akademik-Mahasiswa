@@ -57,105 +57,68 @@
         padding: 0.6rem 1rem;
     }
 
-    .btn-filter {
+    .form-label-filter {
+        color: #475569;
+        font-weight: 600;
+        font-size: 0.8rem;
+        margin-bottom: 4px;
+    }
+
+    .form-control-sm-custom, .form-select-sm-custom {
+        border-radius: 10px;
+        padding: 0.5rem 1rem;
+        border: 1.5px solid #e2e8f0;
+        font-size: 0.9rem;
+        transition: 0.2s;
+        background: #fafbfc;
+    }
+
+    .form-control-sm-custom:focus, .form-select-sm-custom:focus {
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        border-color: #38bdf8;
         background: #ffffff;
-        color: #0f172a;
+    }
+
+    .btn-cari {
+        background: #0f172a;
+        color: white;
+        border: none;
+        padding: 0.5rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        font-size: 0.85rem;
+        width: 100%;
+    }
+
+    .btn-cari:hover {
+        background: #1e293b;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .btn-cari i {
+        margin-right: 6px;
+    }
+
+    .btn-reset {
+        background: #f1f5f9;
+        color: #475569;
         border: 1px solid #e2e8f0;
-        padding: 0.4rem 1.2rem;
+        padding: 0.5rem 1rem;
         border-radius: 50px;
         font-weight: 500;
+        transition: all 0.3s ease;
         font-size: 0.85rem;
-        transition: 0.2s;
-    }
-
-    .btn-filter:hover {
-        background: #f1f5f9;
-        border-color: #cbd5e1;
-    }
-
-    .btn-filter i {
-        margin-right: 4px;
-    }
-
-    .btn-filter span {
-        color: #0284c7;
-    }
-
-    .dropdown-menu-custom {
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 0.5rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        min-width: 220px;
-    }
-
-    .dropdown-item-custom {
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        color: #334155;
-        transition: 0.2s;
         text-decoration: none;
-        display: block;
+        display: inline-block;
+        text-align: center;
+        width: 100%;
     }
 
-    .dropdown-item-custom:hover {
-        background: #f1f5f9;
+    .btn-reset:hover {
+        background: #e2e8f0;
         color: #0f172a;
-    }
-
-    .dropdown-item-custom i {
-        margin-right: 8px;
-        color: #94a3b8;
-    }
-
-    .dropdown-divider-custom {
-        border: none;
-        border-top: 1px solid #f0f2f5;
-        margin: 0.3rem 0;
-    }
-
-    .dropdown-header-custom {
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: #94a3b8;
-        padding: 0.3rem 1rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .dropdown-submenu {
-        position: relative;
-    }
-
-    .dropdown-submenu .dropdown-menu-sub {
-        position: absolute;
-        top: 0;
-        left: 100%;
-        margin-top: -2px;
-        margin-left: 4px;
-        display: none;
-        min-width: 250px;
-        max-width: 300px;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        background: #ffffff;
-        padding: 0.4rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        z-index: 1050;
-    }
-
-    .dropdown-submenu:hover > .dropdown-menu-sub {
-        display: block;
-    }
-
-    .dropdown-submenu > .dropdown-item-custom::after {
-        content: "›";
-        float: right;
-        font-weight: 700;
-        color: #94a3b8;
-        font-size: 1.2rem;
-        line-height: 1;
     }
 
     .table-custom {
@@ -204,7 +167,7 @@
         border: 1px solid #e2e8f0;
     }
 
-    .badge-grade-a {
+    .badge-grade-a-plus {
         background: #dcfce7;
         color: #166534;
         padding: 0.3rem 0.8rem;
@@ -212,8 +175,7 @@
         font-weight: 600;
         font-size: 0.8rem;
     }
-
-    .badge-grade-b {
+    .badge-grade-a {
         background: #dbeafe;
         color: #1e40af;
         padding: 0.3rem 0.8rem;
@@ -221,8 +183,15 @@
         font-weight: 600;
         font-size: 0.8rem;
     }
-
-    .badge-grade-c {
+    .badge-grade-a-minus {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+    .badge-grade-b-plus {
         background: #fef3c7;
         color: #92400e;
         padding: 0.3rem 0.8rem;
@@ -230,8 +199,23 @@
         font-weight: 600;
         font-size: 0.8rem;
     }
-
-    .badge-grade-d {
+    .badge-grade-b {
+        background: #fef3c7;
+        color: #92400e;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+    .badge-grade-b-minus {
+        background: #fef3c7;
+        color: #92400e;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+    .badge-grade-c-plus {
         background: #fde68a;
         color: #78350f;
         padding: 0.3rem 0.8rem;
@@ -239,7 +223,30 @@
         font-weight: 600;
         font-size: 0.8rem;
     }
-
+    .badge-grade-c {
+        background: #fde68a;
+        color: #78350f;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+    .badge-grade-c-minus {
+        background: #fde68a;
+        color: #78350f;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+    .badge-grade-d {
+        background: #fecaca;
+        color: #991b1b;
+        padding: 0.3rem 0.8rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
     .badge-grade-e {
         background: #fecaca;
         color: #991b1b;
@@ -258,12 +265,13 @@
         background: #0f172a;
         color: #ffffff;
         border: none;
-        padding: 0.25rem 1rem;
+        padding: 0.25rem 0.8rem;
         border-radius: 50px;
         font-weight: 500;
         font-size: 0.75rem;
         transition: 0.2s;
         text-decoration: none;
+        display: inline-block;
     }
 
     .btn-edit:hover {
@@ -275,7 +283,7 @@
         background: #dc2626;
         color: #ffffff;
         border: none;
-        padding: 0.25rem 1rem;
+        padding: 0.25rem 0.8rem;
         border-radius: 50px;
         font-weight: 500;
         font-size: 0.75rem;
@@ -295,6 +303,36 @@
     .text-start-custom {
         text-align: left !important;
     }
+
+    .list-group-item-action {
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .list-group-item-action:hover {
+        background: #f0f9ff;
+    }
+
+    .suggest-box {
+        z-index: 999;
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #e2e8f0;
+        border-radius: 0 0 10px 10px;
+        background: white;
+        display: none;
+    }
+
+    .suggest-box .list-group-item {
+        border: none;
+        border-bottom: 1px solid #f0f2f5;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .suggest-box .list-group-item:last-child {
+        border-bottom: none;
+    }
 </style>
 
 <div class="container py-4">
@@ -305,8 +343,8 @@
             <!-- Header -->
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h4 class="page-title">
-                    <i class="fa-solid fa-file-pen"></i>
-                    Data Nilai Mahasiswa
+                    <i class="fa-solid fa-file-lines"></i>
+                    Laporan Nilai Mahasiswa
                 </h4>
 
                 <a href="{{ route('nilai.create') }}" class="btn-tambah">
@@ -322,56 +360,59 @@
                 </div>
             @endif
 
-            <!-- Filter Dropdown -->
-            <div class="mb-4">
-                <div class="dropdown d-inline-block">
-                    <button class="btn-filter dropdown-toggle" type="button" id="filterDropdown" data-bs-toggle="dropdown">
-                        <i class="fa-solid fa-filter"></i>
-                        Filter:
-                        <span>
-                            @if(request('matkul_id'))
-                                {{ \App\Models\MataKuliah::find(request('matkul_id'))->nama ?? 'Semua' }}
-                            @elseif(request('semester'))
-                                Semua Matkul Sem. {{ request('semester') }}
-                            @else
-                                Semua Data (Urut Semester)
-                            @endif
-                        </span>
-                    </button>
+            <!-- Filter -->
+            <form method="GET" action="{{ route('nilai.index') }}" class="mb-3">
+                <div class="row g-3">
 
-                    <ul class="dropdown-menu dropdown-menu-custom" aria-labelledby="filterDropdown">
-                        <li>
-                            <a class="dropdown-item-custom" href="{{ route('nilai.index') }}">
-                                <i class="fa-solid fa-list"></i> Semua Nilai (Urut Semester)
-                            </a>
-                        </li>
-                        <li><hr class="dropdown-divider-custom"></li>
+                    <div class="col-md-3 position-relative">
+                        <label class="form-label-filter">Cari Mahasiswa</label>
+                        <input type="text"
+                               id="searchNama"
+                               name="search"
+                               class="form-control form-control-sm-custom"
+                               placeholder="Ketik NIM atau Nama"
+                               value="{{ request('search') }}">
+                        <div id="suggestBox" class="suggest-box"></div>
+                    </div>
 
-                        @for($i = 1; $i <= 8; $i++)
-                            <li class="dropdown-submenu">
-                                <a class="dropdown-item-custom" href="{{ route('nilai.index', ['semester' => $i]) }}">
-                                    <i class="fa-regular fa-calendar"></i> Semester {{ $i }}
-                                </a>
-                                <ul class="dropdown-menu-sub">
-                                    <li class="dropdown-header-custom">Pilih Matkul Sem. {{ $i }}</li>
-                                    @php
-                                        $filteredMatkul = \App\Models\MataKuliah::where('semester', $i)->get();
-                                    @endphp
-                                    @forelse($filteredMatkul as $m)
-                                        <li>
-                                            <a class="dropdown-item-custom" href="{{ route('nilai.index', ['matkul_id' => $m->id]) }}">
-                                                {{ $m->nama }}
-                                            </a>
-                                        </li>
-                                    @empty
-                                        <li><span class="dropdown-item-custom text-muted">Belum ada matkul</span></li>
-                                    @endforelse
-                                </ul>
-                            </li>
-                        @endfor
-                    </ul>
+                    <div class="col-md-2">
+                        <label class="form-label-filter">Semester</label>
+                        <select name="semester" class="form-select form-select-sm-custom">
+                            <option value="all">Semua</option>
+                            @for($i = 1; $i <= 8; $i++)
+                                <option value="{{ $i }}" {{ request('semester') == $i ? 'selected' : '' }}>
+                                    Semester {{ $i }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label-filter">Mata Kuliah</label>
+                        <select name="matkul_id" class="form-select form-select-sm-custom">
+                            <option value="all">Semua Matkul</option>
+                            @foreach($matkuls as $m)
+                                <option value="{{ $m->id }}" {{ request('matkul_id') == $m->id ? 'selected' : '' }}>
+                                    {{ $m->nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn-cari">
+                            <i class="fa-solid fa-magnifying-glass"></i> Cari
+                        </button>
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-end">
+                        <a href="{{ route('nilai.index') }}" class="btn-reset">
+                            <i class="fa-solid fa-rotate-right"></i> Reset
+                        </a>
+                    </div>
+
                 </div>
-            </div>
+            </form>
 
             <!-- Table -->
             <div class="table-responsive">
@@ -398,51 +439,64 @@
                         @php
                             // Filter data berdasarkan request
                             $filteredData = $data;
-                            if(request('matkul_id')) {
-                                $filteredData = $data->where('matkul_id', request('matkul_id'));
-                            } elseif(request('semester')) {
-                                $filteredData = $data->filter(function($item) {
+                            
+                            if(request('search')) {
+                                $search = request('search');
+                                $filteredData = $filteredData->filter(function($item) use ($search) {
+                                    return stripos($item->nim, $search) !== false || 
+                                           stripos($item->nama_mahasiswa, $search) !== false;
+                                });
+                            }
+                            
+                            if(request('semester') && request('semester') != 'all') {
+                                $filteredData = $filteredData->filter(function($item) {
                                     return isset($item->matkul->semester) && $item->matkul->semester == request('semester');
                                 });
                             }
+                            
+                            if(request('matkul_id') && request('matkul_id') != 'all') {
+                                $filteredData = $filteredData->where('matkul_id', request('matkul_id'));
+                            }
 
-                            // URUTKAN DATA BERDASARKAN SEMESTER (dari terkecil ke terbesar) dan NAMA MATA KULIAH
+                            // URUTKAN DATA BERDASARKAN SEMESTER
                             $filteredData = $filteredData->sortBy(function($item) {
-                                return [
-                                    $item->matkul->semester ?? 99,  // Urutkan berdasarkan semester
-                                    $item->matkul->nama ?? ''      // Lalu berdasarkan nama matkul
-                                ];
+                                return $item->matkul->semester ?? 99;
                             });
 
-                            // Reset index untuk nomor urut
                             $filteredData = $filteredData->values();
                         @endphp
 
                         @forelse($filteredData as $index => $n)
+                            @php
+                                $grade = $n->grade ?? 'E';
+                                $class = match($grade) {
+                                    'A+' => 'badge-grade-a-plus',
+                                    'A' => 'badge-grade-a',
+                                    'A-' => 'badge-grade-a-minus',
+                                    'B+' => 'badge-grade-b-plus',
+                                    'B' => 'badge-grade-b',
+                                    'B-' => 'badge-grade-b-minus',
+                                    'C+' => 'badge-grade-c-plus',
+                                    'C' => 'badge-grade-c',
+                                    'C-' => 'badge-grade-c-minus',
+                                    'D' => 'badge-grade-d',
+                                    default => 'badge-grade-e'
+                                };
+                            @endphp
                             <tr>
-                                <td class="text-muted">{{ $loop->iteration }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td class="fw-semibold text-dark">{{ $n->nim }}</td>
                                 <td class="text-start-custom">{{ $n->nama_mahasiswa }}</td>
                                 <td class="text-start-custom">{{ $n->matkul->nama ?? '-' }}</td>
                                 <td>
                                     <span class="badge-semester">Smt {{ $n->matkul->semester ?? '-' }}</span>
                                 </td>
-                                <td>{{ $n->kehadiran }}</td>
-                                <td>{{ $n->tugas }}</td>
-                                <td>{{ $n->uts }}</td>
-                                <td>{{ $n->uas }}</td>
+                                <td>{{ number_format($n->kehadiran, 2) }}</td>
+                                <td>{{ number_format($n->tugas, 2) }}</td>
+                                <td>{{ number_format($n->uts, 2) }}</td>
+                                <td>{{ number_format($n->uas, 2) }}</td>
                                 <td class="nilai-akhir">{{ number_format($n->nilai_akhir, 2) }}</td>
                                 <td>
-                                    @php
-                                        $grade = $n->grade ?? 'E';
-                                        $class = match($grade) {
-                                            'A' => 'badge-grade-a',
-                                            'B' => 'badge-grade-b',
-                                            'C' => 'badge-grade-c',
-                                            'D' => 'badge-grade-d',
-                                            default => 'badge-grade-e'
-                                        };
-                                    @endphp
                                     <span class="{{ $class }}">{{ $grade }}</span>
                                 </td>
                                 <td>
@@ -482,35 +536,49 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Submenu hover untuk desktop
-    document.querySelectorAll('.dropdown-submenu').forEach(function(element) {
-        element.addEventListener('mouseenter', function(e) {
-            var submenu = this.querySelector('.dropdown-menu-sub');
-            if (submenu) {
-                submenu.style.display = 'block';
-            }
-        });
-        element.addEventListener('mouseleave', function(e) {
-            var submenu = this.querySelector('.dropdown-menu-sub');
-            if (submenu) {
-                submenu.style.display = 'none';
-            }
-        });
-    });
+    const input = document.getElementById('searchNama');
+    const box = document.getElementById('suggestBox');
 
-    // Tutup dropdown saat klik di luar
-    document.addEventListener('click', function(e) {
-        var dropdown = document.querySelector('.dropdown-menu-custom');
-        var button = document.querySelector('.btn-filter');
-        if (dropdown && button) {
-            if (!dropdown.contains(e.target) && !button.contains(e.target)) {
-                var bsDropdown = bootstrap.Dropdown.getInstance(button);
-                if (bsDropdown) {
-                    bsDropdown.hide();
-                }
+    if (input) {
+        input.addEventListener('input', function() {
+            let value = this.value.trim();
+
+            if (value.length < 1) {
+                box.style.display = 'none';
+                return;
             }
-        }
-    });
+
+            fetch(`/api/search-mahasiswa?q=${value}`)
+                .then(res => res.json())
+                .then(data => {
+                    box.innerHTML = '';
+                    box.style.display = 'block';
+
+                    if (data.length === 0) {
+                        box.innerHTML = `<div class="list-group-item text-muted">Tidak ditemukan</div>`;
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        let div = document.createElement('div');
+                        div.className = 'list-group-item list-group-item-action';
+                        div.innerHTML = `<b>${item.nim}</b> - ${item.nama}`;
+                        div.onclick = () => {
+                            input.value = item.nim;
+                            box.style.display = 'none';
+                            input.form.submit();
+                        };
+                        box.appendChild(div);
+                    });
+                });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!input.contains(e.target) && !box.contains(e.target)) {
+                box.style.display = 'none';
+            }
+        });
+    }
 });
 </script>
 

@@ -35,6 +35,7 @@
             padding: 0 24px;
             z-index: 1400;
             box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .topbar-title {
@@ -82,7 +83,7 @@
             top: 0;
             overflow-y: auto;
             transform: translateX(-100%);
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1300;
             border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
@@ -110,7 +111,7 @@
 
         /* User Profile Card in Sidebar */
         .sidebar-user-card {
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15), rgba(14, 165, 233, 0.05));
+            background: rgba(14, 165, 233, 0.1);
             padding: 14px 16px;
             border-radius: 14px;
             margin-bottom: 22px;
@@ -122,8 +123,7 @@
         }
 
         .sidebar-user-card:hover {
-            background: rgba(14, 165, 233, 0.2);
-            border-color: rgba(14, 165, 233, 0.2);
+            background: rgba(14, 165, 233, 0.18);
         }
 
         .sidebar-avatar {
@@ -220,10 +220,12 @@
             color: #0ea5e9;
         }
 
+        /* ACTIVE STATE - Tanpa efek blur */
         .sidebar a.active {
-            background: linear-gradient(90deg, rgba(14, 165, 233, 0.2), transparent);
+            background: rgba(14, 165, 233, 0.2);
             color: #ffffff;
-            border-right: 3px solid #0ea5e9;
+            border-left: 3px solid #0ea5e9;
+            padding-left: 11px;
         }
 
         .sidebar a.active i {
@@ -256,15 +258,7 @@
             padding: 90px 30px 30px 30px;
             transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 100vh;
-        }
-
-        body.sidebar-open .content-area {
-            margin-left: 275px;
-        }
-
-        body.sidebar-open .topbar {
-            margin-left: 275px;
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-left: 0;
         }
 
         /* ================= OVERLAY ================= */
@@ -275,6 +269,7 @@
             display: none;
             z-index: 1250;
             backdrop-filter: blur(4px);
+            cursor: pointer;
         }
 
         .overlay.show {
@@ -300,14 +295,6 @@
                 padding: 80px 16px 20px 16px;
             }
 
-            body.sidebar-open .content-area {
-                margin-left: 0;
-            }
-
-            body.sidebar-open .topbar {
-                margin-left: 0;
-            }
-
             .sidebar {
                 width: 280px;
                 padding: 75px 14px 20px 14px;
@@ -320,6 +307,7 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -330,7 +318,6 @@
             animation: fadeInUp 0.4s ease;
         }
 
-        /* Card styling for content */
         .card-custom {
             background: white;
             border-radius: 16px;
@@ -348,11 +335,12 @@
 
 <body>
 
-    <div id="sidebarOverlay" class="overlay" onclick="toggleSidebar()"></div>
+    <!-- ============ OVERLAY ============ -->
+    <div id="sidebarOverlay" class="overlay"></div>
 
     <!-- ============ TOPBAR ============ -->
-    <div class="topbar">
-        <button class="toggle-btn" type="button" onclick="toggleSidebar()">
+    <div class="topbar" id="topbar">
+        <button class="toggle-btn" type="button" id="toggleBtn">
             <i class="fa-solid fa-bars"></i>
         </button>
         <div class="topbar-title">
@@ -411,19 +399,22 @@
             <!-- Manajemen Nilai -->
             <div class="sidebar-section">
                 <div class="sidebar-section-title">Manajemen Nilai</div>
-                <a href="{{ route('nilai.index') }}"
-                    class="{{ request()->is('nilai') || request()->is('nilai/*') ? 'active' : '' }}">
+
+                <a href="{{ route('nilai.create') }}" class="{{ request()->routeIs('nilai.create') ? 'active' : '' }}">
                     <i class="fa-solid fa-pen-to-square"></i>
                     Input Nilai
                 </a>
-                <a href="/nilai" class="{{ request()->is('nilai') || request()->is('nilai/*/edit') ? 'active' : '' }}">
+
+                <a href="{{ route('nilai.index') }}" class="{{ request()->routeIs('nilai.index') ? 'active' : '' }}">
                     <i class="fa-solid fa-file-alt"></i>
                     Laporan Nilai
                 </a>
+
                 <a href="{{ route('transkrip.index') }}">
                     <i class="fa-solid fa-file-pdf"></i>
                     Transkrip Nilai
                 </a>
+
                 <a href="#">
                     <i class="fa-solid fa-bell"></i>
                     Kelola Notifikasi
@@ -464,37 +455,120 @@
 
     <!-- ============ SCRIPTS ============ -->
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebarMenu');
-            const overlay = document.getElementById('sidebarOverlay');
-            const body = document.body;
+        const sidebar = document.getElementById('sidebarMenu');
+        const overlay = document.getElementById('sidebarOverlay');
+        const mainContent = document.getElementById('mainContent');
+        const topbar = document.getElementById('topbar');
+        const toggleBtn = document.getElementById('toggleBtn');
 
-            if (sidebar && overlay) {
-                sidebar.classList.toggle('open');
-                overlay.classList.toggle('show');
-                body.classList.toggle('sidebar-open');
+        // ====== FUNGSI BUKA SIDEBAR ======
+        function openSidebar() {
+            sidebar.classList.add('open');
 
-                // Close sidebar on Escape key
-                if (sidebar.classList.contains('open')) {
-                    document.addEventListener('keydown', function(e) {
-                        if (e.key === 'Escape') {
-                            toggleSidebar();
-                        }
-                    });
-                }
+            if (window.innerWidth > 768) {
+                mainContent.style.marginLeft = '275px';
+                topbar.style.marginLeft = '275px';
+                overlay.classList.remove('show');
+            } else {
+                overlay.classList.add('show');
+                mainContent.style.marginLeft = '0';
+                topbar.style.marginLeft = '0';
             }
         }
 
-        // Auto close sidebar on mobile when clicking content
-        document.getElementById('mainContent').addEventListener('click', function() {
+        // ====== FUNGSI TUTUP SIDEBAR ======
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+            mainContent.style.marginLeft = '0';
+            topbar.style.marginLeft = '0';
+        }
+
+        // ====== FUNGSI TOGGLE ======
+        function toggleSidebar() {
+            if (sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+
+        // ====== EVENT LISTENERS ======
+
+        // 1. Tombol toggle
+        toggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleSidebar();
+        });
+
+        // 2. Klik di overlay (tutup)
+        overlay.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeSidebar();
+        });
+
+        // 3. Klik di content (tutup di mobile)
+        mainContent.addEventListener('click', function() {
             if (window.innerWidth <= 768) {
-                const sidebar = document.getElementById('sidebarMenu');
-                const overlay = document.getElementById('sidebarOverlay');
-                if (sidebar && sidebar.classList.contains('open')) {
-                    toggleSidebar();
+                closeSidebar();
+            }
+        });
+
+        // 4. Klik di link sidebar (tutup di mobile)
+        document.querySelectorAll('.sidebar a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    closeSidebar();
+                }
+            });
+        });
+
+        // 5. Tombol ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeSidebar();
+            }
+        });
+
+        // 6. Resize layar
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                // Desktop: sidebar terbuka otomatis
+                if (!sidebar.classList.contains('open')) {
+                    sidebar.classList.add('open');
+                }
+                mainContent.style.marginLeft = '275px';
+                topbar.style.marginLeft = '275px';
+                overlay.classList.remove('show');
+            } else {
+                // Mobile
+                if (sidebar.classList.contains('open')) {
+                    mainContent.style.marginLeft = '0';
+                    topbar.style.marginLeft = '0';
+                    overlay.classList.add('show');
+                } else {
+                    mainContent.style.marginLeft = '0';
+                    topbar.style.marginLeft = '0';
+                    overlay.classList.remove('show');
                 }
             }
         });
+
+        // ====== INIT ======
+        // Saat pertama kali load
+        if (window.innerWidth > 768) {
+            // Desktop: sidebar terbuka
+            sidebar.classList.add('open');
+            mainContent.style.marginLeft = '275px';
+            topbar.style.marginLeft = '275px';
+            overlay.classList.remove('show');
+        } else {
+            // Mobile: sidebar tertutup
+            sidebar.classList.remove('open');
+            mainContent.style.marginLeft = '0';
+            topbar.style.marginLeft = '0';
+            overlay.classList.remove('show');
+        }
     </script>
 
 </body>

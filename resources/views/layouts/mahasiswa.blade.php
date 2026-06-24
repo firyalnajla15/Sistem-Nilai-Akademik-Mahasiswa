@@ -27,6 +27,13 @@
             color: white;
             overflow-y: auto;
             border-right: 1px solid rgba(255, 255, 255, 0.04);
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1300;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
         }
 
         .sidebar::-webkit-scrollbar {
@@ -36,6 +43,20 @@
         .sidebar::-webkit-scrollbar-thumb {
             background: rgba(14, 165, 233, 0.3);
             border-radius: 10px;
+        }
+
+        /* ========== OVERLAY ========== */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1200;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+
+        .sidebar-overlay.show {
+            display: block;
         }
 
         /* Brand */
@@ -201,6 +222,30 @@
             color: #ef4444;
         }
 
+        /* ========== HAMBURGER BUTTON ========== */
+        .hamburger-btn {
+            display: none;
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 1400;
+            background: #0b1f3a;
+            border: none;
+            color: white;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .hamburger-btn:hover {
+            background: #1c2b3a;
+            transform: scale(1.05);
+        }
+
         /* ========== TOPBAR ========== */
         .topbar {
             margin-left: 260px;
@@ -229,6 +274,7 @@
             margin-left: 260px;
             padding: 25px;
             min-height: calc(100vh - 60px);
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .welcome-box {
@@ -302,8 +348,34 @@
 
         /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
+            .hamburger-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .topbar {
+                margin-left: 0;
+                padding-left: 70px;
+                font-size: 14px;
+            }
+
+            .topbar i {
+                display: none;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 80px 15px 15px 15px;
+            }
+
             .sidebar {
-                width: 70px;
+                width: 280px;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
             }
 
             .sidebar .brand span,
@@ -311,56 +383,42 @@
             .sidebar .menu-header,
             .sidebar .nav-link span,
             .sidebar .btn-logout span {
-                display: none;
-            }
-
-            .sidebar .brand {
-                font-size: 20px;
-                padding: 16px;
-            }
-
-            .sidebar .user-profile {
-                padding: 10px;
-                justify-content: center;
+                display: inline;
             }
 
             .sidebar .nav-link {
-                justify-content: center;
-                padding: 12px;
+                justify-content: flex-start;
+                padding: 10px 16px;
             }
 
             .sidebar .nav-link i {
-                font-size: 18px;
+                font-size: 15px;
                 margin: 0;
             }
 
             .sidebar .nav-link.active {
-                border-left: none;
-                padding-left: 12px;
+                border-left: 3px solid #0ea5e9;
+                padding-left: 13px;
             }
 
             .sidebar .btn-logout {
-                justify-content: center;
-                padding: 12px;
+                justify-content: flex-start;
+                padding: 10px 16px;
             }
 
             .sidebar .btn-logout i {
-                font-size: 18px;
+                font-size: 15px;
                 margin: 0;
             }
+        }
 
-            .topbar,
-            .content {
-                margin-left: 70px;
+        @media (min-width: 769px) {
+            .hamburger-btn {
+                display: none !important;
             }
 
-            .content {
-                padding: 15px;
-            }
-
-            .topbar {
-                font-size: 14px;
-                padding: 0 16px;
+            .sidebar {
+                transform: translateX(0) !important;
             }
         }
     </style>
@@ -368,7 +426,16 @@
 
 <body>
 
-    <aside class="sidebar">
+    <!-- ========== OVERLAY ========== -->
+    <div id="sidebarOverlay" class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <!-- ========== HAMBURGER BUTTON (Mobile) ========== -->
+    <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar" id="sidebarMenu">
         <div class="brand">
             <i class="fa-solid fa-graduation-cap"></i>
             <span>Portal Student</span>
@@ -452,16 +519,76 @@
         </ul>
     </aside>
 
+    <!-- ========== TOPBAR ========== -->
     <div class="topbar">
         <i class="fa-solid fa-graduation-cap"></i>
         Portal Akademik Mahasiswa
     </div>
 
-    <div class="content">
+    <!-- ========== CONTENT ========== -->
+    <div class="content" id="mainContent">
         @yield('content')
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const sidebar = document.getElementById('sidebarMenu');
+        const overlay = document.getElementById('sidebarOverlay');
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mainContent = document.getElementById('mainContent');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+
+        // ====== KLIK DI LUAR SIDEBAR UNTUK MENUTUP ======
+        // 1. Klik di overlay
+        overlay.addEventListener('click', closeSidebar);
+
+        // 2. Klik di content (area utama)
+        mainContent.addEventListener('click', function() {
+            if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
+                closeSidebar();
+            }
+        });
+
+        // 3. Klik di tombol hamburger
+        hamburgerBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleSidebar();
+        });
+
+        // 4. Klik di link sidebar (tutup otomatis di mobile)
+        document.querySelectorAll('.sidebar .nav-link, .sidebar .btn-logout').forEach(function(link) {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    closeSidebar();
+                }
+            });
+        });
+
+        // 5. Tutup dengan tombol ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                closeSidebar();
+            }
+        });
+
+        // 6. Resize: jika layar membesar, tutup sidebar mobile
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeSidebar();
+            }
+        });
+    </script>
+
 </body>
 
 </html>

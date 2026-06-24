@@ -23,52 +23,41 @@ Route::post('/mahasiswa/register', [AuthMahasiswaController::class, 'register'])
 Route::get('/mahasiswa/dashboard', [AuthMahasiswaController::class, 'dashboard'])->name('mahasiswa.dashboard');
 Route::post('/mahasiswa/logout', [AuthMahasiswaController::class, 'logout'])->name('mahasiswa.logout');
 
-Route::get('/mahasiswa/register', [AuthMahasiswaController::class, 'showRegister'])->name('mahasiswa.register');
-Route::post('/mahasiswa/register', [AuthMahasiswaController::class, 'register']);
-Route::get('/mahasiswa/dashboard', [AuthMahasiswaController::class, 'dashboard'])->name('mahasiswa.dashboard');
-Route::get('/mahasiswa/logout', [AuthMahasiswaController::class, 'logout'])->name('mahasiswa.logout');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 
 Route::middleware('auth')->group(function () {
-    Route::resource('mata-kuliah', MataKuliahController::class);
-    Route::get('/nilai-mahasiswa', [NilaiMahasiswaController::class, 'index']);
-
-    Route::get('/mahasiswa/profil', function () {
-    return view('profil.profil');
-})->name('mahasiswa.profil');
-
+    // ================= MAHASISWA =================
     Route::resource('mahasiswa', MahasiswaController::class);
-    Route::get('/logout', [AuthController::class, 'logout']);
-
-    Route::get('/nilai', [NilaiMahasiswaController::class, 'index'])->name('nilai.index');
-    Route::get('/nilai/create', [NilaiMahasiswaController::class, 'create'])->name('nilai.create');
-    Route::post('/nilai', [NilaiMahasiswaController::class, 'store'])->name('nilai.store');
-    Route::get('/nilai/{id}/edit', [NilaiMahasiswaController::class, 'edit'])->name('nilai.edit');
-    Route::put('/nilai/{id}', [NilaiMahasiswaController::class, 'update'])->name('nilai.update');
-    Route::delete('/nilai/{id}', [NilaiMahasiswaController::class, 'destroy'])->name('nilai.destroy');
-
-    Route::get('/profil', function () { return view('profil.index'); })->name('profil');
-
+    
+    // ================= MATA KULIAH =================
+    Route::resource('mata-kuliah', MataKuliahController::class);
+    
+    // ================= NILAI =================
+    Route::prefix('nilai')->group(function () {
+        Route::get('/', [NilaiMahasiswaController::class, 'index'])->name('nilai.index');
+        Route::get('/create', [NilaiMahasiswaController::class, 'create'])->name('nilai.create');
+        Route::post('/', [NilaiMahasiswaController::class, 'store'])->name('nilai.store');
+        Route::get('/{id}/edit', [NilaiMahasiswaController::class, 'edit'])->name('nilai.edit');
+        Route::put('/{id}', [NilaiMahasiswaController::class, 'update'])->name('nilai.update');
+        Route::delete('/{id}', [NilaiMahasiswaController::class, 'destroy'])->name('nilai.destroy');
+    });
+    
+    // ================= API ROUTES =================
+    Route::prefix('api')->group(function () {
+        Route::get('/search-mahasiswa', [NilaiMahasiswaController::class, 'searchMahasiswa']);
+        Route::get('/matkul-by-semester', [NilaiMahasiswaController::class, 'getMatkulBySemester']);
+        Route::get('/check-nilai', [NilaiMahasiswaController::class, 'checkNilai']);
+    });
+    
+    // ================= TRANSKRIP =================
     Route::get('/transkrip', [TranskripController::class, 'index'])->name('transkrip.index');
     Route::get('/transkrip/pdf', [TranskripController::class, 'pdf'])->name('transkrip.pdf');
     
-    Route::get('/api/search-mahasiswa', function (Illuminate\Http\Request $request) {
-        $q = $request->q;
-        return \App\Models\Mahasiswa::where('nim', 'like', $q . '%')
-            ->limit(10)
-            ->get(['nim', 'nama']);
-    });
-
-    Route::get('/search-mahasiswa', function (Illuminate\Http\Request $request) {
-        return \App\Models\Mahasiswa::where('nim', 'like', $request->q . '%')
-            ->limit(10)
-            ->get(['nim', 'nama']);
-    });
-
-    Route::get('/check-nilai', function (Illuminate\Http\Request $request) {
-        return \App\Models\NilaiMahasiswa::where('nim', $request->nim)
-            ->where('matkul_id', $request->matkul_id)
-            ->exists();
-    });
+    // ================= PROFIL =================
+    Route::get('/profil', function () { return view('profil.index'); })->name('profil');
+    Route::get('/mahasiswa/profil', function () { return view('profil.profil'); })->name('mahasiswa.profil');
+    
+    // ================= LOGOUT =================
+    Route::get('/logout', [AuthController::class, 'logout']);
 });

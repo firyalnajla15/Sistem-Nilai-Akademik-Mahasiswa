@@ -8,23 +8,21 @@
         border-radius: 16px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         background: #ffffff;
-        max-width: 700px;
-        margin: 0 auto;
         border: 1px solid #e2e8f0;
     }
 
     .form-card .card-body {
-        padding: 2rem 2rem 2.2rem;
+        padding: 2rem;
     }
 
-    .form-title {
+    .page-title {
         color: #0f172a;
         font-weight: 700;
         font-size: 1.3rem;
         margin-bottom: 2px;
     }
 
-    .form-title i {
+    .page-title i {
         color: #38bdf8;
         margin-right: 10px;
     }
@@ -55,11 +53,6 @@
         box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
         border-color: #38bdf8;
         background: #ffffff;
-    }
-
-    .form-control::placeholder {
-        color: #a0aec0;
-        font-size: 0.85rem;
     }
 
     .form-control[readonly] {
@@ -109,33 +102,70 @@
         margin-right: 6px;
     }
 
-    .alert-danger-custom {
-        background: #fef2f2;
-        color: #991b1b;
-        border: 1px solid #fecaca;
-        border-radius: 10px;
-        padding: 0.6rem 1rem;
-        font-size: 0.85rem;
-    }
-
-    .alert-danger-custom ul {
+    .table-nilai {
+        border-color: #e2e8f0;
         margin-bottom: 0;
-        padding-left: 1.2rem;
     }
 
-    .alert-warning-custom {
-        background: #fffbeb;
-        color: #92400e;
-        border: 1px solid #fde68a;
+    .table-nilai thead {
+        background: #0f172a;
+        color: #ffffff;
+    }
+
+    .table-nilai thead th {
+        padding: 0.6rem 0.8rem;
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-align: center;
+        border-bottom: none;
+    }
+
+    .table-nilai tbody td {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.85rem;
+        vertical-align: middle;
+        background: #ffffff;
+        text-align: center;
+    }
+
+    .table-nilai tbody tr {
+        border-bottom: 1px solid #f0f2f5;
+    }
+
+    .table-nilai tbody tr:hover {
+        background: #f8fafc;
+    }
+
+    .table-nilai tbody td input {
+        width: 70px;
+        text-align: center;
+        border-radius: 8px;
+        padding: 0.3rem 0.5rem;
+        border: 1.5px solid #e2e8f0;
+        font-size: 0.85rem;
+        transition: 0.2s;
+        background: #fafbfc;
+    }
+
+    .table-nilai tbody td input:focus {
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+        border-color: #38bdf8;
+        background: #ffffff;
+        outline: none;
+    }
+
+    .matkul-name {
+        font-weight: 500;
+        color: #0f172a;
+        text-align: left !important;
+    }
+
+    .alert-custom {
+        background: #f0f9ff;
+        color: #0f172a;
+        border: 1px solid #b3d4fc;
         border-radius: 10px;
         padding: 0.6rem 1rem;
-        font-size: 0.85rem;
-    }
-
-    .divider {
-        border: none;
-        border-top: 2px solid #f0f2f5;
-        margin: 1.2rem 0;
     }
 
     .list-group-item-action {
@@ -146,6 +176,27 @@
     .list-group-item-action:hover {
         background: #f0f9ff;
     }
+
+    .suggest-box {
+        z-index: 999;
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #e2e8f0;
+        border-radius: 0 0 10px 10px;
+        background: white;
+        display: none;
+    }
+
+    .suggest-box .list-group-item {
+        border: none;
+        border-bottom: 1px solid #f0f2f5;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .suggest-box .list-group-item:last-child {
+        border-bottom: none;
+    }
 </style>
 
 <div class="container py-4">
@@ -153,16 +204,22 @@
     <div class="form-card">
         <div class="card-body">
 
-            <h4 class="form-title">
+            <h4 class="page-title">
                 <i class="fa-solid fa-pen-to-square"></i>
-                Input Nilai Mahasiswa
+                Input Nilai Per Semester
             </h4>
-            <p class="form-subtitle">Isi data nilai dengan benar</p>
+            <p class="form-subtitle">Pilih mahasiswa dan semester, lalu input semua nilai mata kuliah</p>
 
-            {{-- ERROR --}}
+            @if(session('success'))
+                <div class="alert alert-custom mb-3">
+                    <i class="fa-regular fa-circle-check me-1"></i>
+                    {{ session('success') }}
+                </div>
+            @endif
+
             @if ($errors->any())
-                <div class="alert alert-danger-custom mb-3">
-                    <ul>
+                <div class="alert alert-danger" style="background:#fef2f2; color:#991b1b; border:1px solid #fecaca; border-radius:10px; padding:0.6rem 1rem; font-size:0.85rem;">
+                    <ul class="mb-0 ps-3">
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
@@ -173,161 +230,206 @@
             <form action="{{ route('nilai.store') }}" method="POST">
                 @csrf
 
-                {{-- ================= MATA KULIAH ================= --}}
-                <div class="mb-3">
-                    <label class="form-label">Mata Kuliah</label>
-                    <select name="matkul_id" class="form-select" required>
-                        <option value="">-- Pilih Mata Kuliah --</option>
-                        @foreach($matkul as $m)
-                            <option value="{{ $m->id }}">{{ $m->kode }} - {{ $m->nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                <!-- Pilih Mahasiswa -->
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6 position-relative">
+                        <label class="form-label">Cari Mahasiswa</label>
+                        <input type="text"
+                               id="searchMahasiswa"
+                               class="form-control"
+                               placeholder="Ketik NIM atau Nama"
+                               autocomplete="off">
+                        <input type="hidden" name="nim" id="nimHidden">
+                        <input type="hidden" name="nama_mahasiswa" id="namaHidden">
+                        <div id="suggestMahasiswa" class="suggest-box"></div>
+                    </div>
 
-                {{-- ================= NIM AUTOCOMPLETE ================= --}}
-                <div class="mb-3 position-relative">
-                    <label class="form-label">NIM Mahasiswa</label>
-                    <input type="text"
-                           name="nim"
-                           id="nimInput"
-                           class="form-control"
-                           autocomplete="off"
-                           placeholder="Ketik NIM (contoh: 2401092007)"
-                           required>
-                    <div id="nimBox"
-                         class="list-group position-absolute w-100"
-                         style="z-index:999; display:none; max-height:200px; overflow-y:auto; border:1px solid #e2e8f0; border-radius:0 0 10px 10px; background:white;">
+                    <div class="col-md-6">
+                        <label class="form-label">Pilih Semester</label>
+                        <select name="semester" class="form-select" id="semesterSelect" required>
+                            <option value="">-- Pilih Semester --</option>
+                            @for($i = 1; $i <= 8; $i++)
+                                <option value="{{ $i }}">Semester {{ $i }}</option>
+                            @endfor
+                        </select>
                     </div>
                 </div>
 
-                {{-- ================= NAMA ================= --}}
-                <div class="mb-3">
-                    <label class="form-label">Nama Mahasiswa</label>
-                    <input type="text"
-                           name="nama_mahasiswa"
-                           id="namaInput"
-                           class="form-control"
-                           readonly
-                           required
-                           placeholder="Nama akan muncul otomatis">
-                </div>
-
-                <hr class="divider">
-
-                {{-- ================= NILAI ================= --}}
-                <div class="row g-2 mb-3">
-                    <div class="col-6 col-md-3">
-                        <label class="form-label">Kehadiran</label>
-                        <input type="number" name="kehadiran" class="form-control" min="0" max="100" placeholder="0-100" required>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <label class="form-label">Tugas</label>
-                        <input type="number" name="tugas" class="form-control" min="0" max="100" placeholder="0-100" required>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <label class="form-label">UTS</label>
-                        <input type="number" name="uts" class="form-control" min="0" max="100" placeholder="0-100" required>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <label class="form-label">UAS</label>
-                        <input type="number" name="uas" class="form-control" min="0" max="100" placeholder="0-100" required>
+                <!-- Info Mahasiswa Terpilih -->
+                <div id="infoMahasiswa" class="mb-3" style="display:none;">
+                    <div class="p-3" style="background:#f8fafc; border-radius:10px; border:1px solid #e2e8f0;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class="text-muted small">NIM:</span>
+                                <strong id="displayNim" class="ms-2"></strong>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="text-muted small">Nama:</span>
+                                <strong id="displayNama" class="ms-2"></strong>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                {{-- ================= BUTTON ================= --}}
-                <div class="d-flex justify-content-between mt-4">
-                    <a href="{{ route('nilai.index') }}" class="btn-kembali">
-                        <i class="fa-solid fa-arrow-left"></i> Kembali
-                    </a>
-                    <button type="submit" class="btn-simpan">
-                        <i class="fa-regular fa-floppy-disk"></i> Simpan
-                    </button>
+                <!-- Tabel Mata Kuliah -->
+                <div id="tableMatkulWrapper" style="display:none;">
+                    <div class="table-responsive mt-3">
+                        <table class="table table-nilai">
+                            <thead>
+                                <tr>
+                                    <th style="width:50px;">No</th>
+                                    <th style="text-align:left;">Mata Kuliah</th>
+                                    <th style="width:100px;">Kehadiran</th>
+                                    <th style="width:100px;">Tugas</th>
+                                    <th style="width:100px;">UTS</th>
+                                    <th style="width:100px;">UAS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="matkulBody">
+                                <!-- Data diisi oleh JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ route('nilai.index') }}" class="btn-kembali">
+                            <i class="fa-solid fa-arrow-left"></i> Kembali
+                        </a>
+                        <button type="submit" class="btn-simpan" id="btnSimpan" disabled>
+                            <i class="fa-regular fa-floppy-disk"></i> Simpan Semua Nilai
+                        </button>
+                    </div>
                 </div>
 
             </form>
 
         </div>
     </div>
+
 </div>
 
-{{-- ================= AUTOCOMPLETE SCRIPT ================= --}}
 <script>
-const nimInput = document.getElementById('nimInput');
-const nimBox = document.getElementById('nimBox');
-const namaInput = document.getElementById('namaInput');
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchMahasiswa');
+    const suggestBox = document.getElementById('suggestMahasiswa');
+    const nimHidden = document.getElementById('nimHidden');
+    const namaHidden = document.getElementById('namaHidden');
+    const displayNim = document.getElementById('displayNim');
+    const displayNama = document.getElementById('displayNama');
+    const infoMahasiswa = document.getElementById('infoMahasiswa');
+    const semesterSelect = document.getElementById('semesterSelect');
+    const tableWrapper = document.getElementById('tableMatkulWrapper');
+    const matkulBody = document.getElementById('matkulBody');
+    const btnSimpan = document.getElementById('btnSimpan');
 
-nimInput.addEventListener('input', function () {
-    let value = this.value.trim();
+    let selectedNim = null;
 
-    if (value.length < 1) {
-        nimBox.style.display = 'none';
-        namaInput.value = '';
-        return;
-    }
+    // Autocomplete Mahasiswa
+    searchInput.addEventListener('input', function() {
+        let value = this.value.trim();
 
-    fetch(`/api/search-mahasiswa?q=${value}`)
-        .then(res => res.json())
-        .then(data => {
-            nimBox.innerHTML = '';
-            nimBox.style.display = 'block';
+        if (value.length < 1) {
+            suggestBox.style.display = 'none';
+            return;
+        }
 
-            if (data.length === 0) {
-                nimBox.innerHTML = `<div class="list-group-item text-muted">Tidak ditemukan</div>`;
-                return;
-            }
+        fetch(`/api/search-mahasiswa?q=${value}`)
+            .then(res => res.json())
+            .then(data => {
+                suggestBox.innerHTML = '';
+                suggestBox.style.display = 'block';
 
-            data.forEach(item => {
-                let div = document.createElement('div');
-                div.className = 'list-group-item list-group-item-action';
-                div.innerHTML = `<b>${item.nim}</b> - ${item.nama}`;
-                div.onclick = () => {
-                    nimInput.value = item.nim;
-                    namaInput.value = item.nama;
-                    nimBox.style.display = 'none';
-                };
-                nimBox.appendChild(div);
+                if (data.length === 0) {
+                    suggestBox.innerHTML = `<div class="list-group-item text-muted">Tidak ditemukan</div>`;
+                    return;
+                }
+
+                data.forEach(item => {
+                    let div = document.createElement('div');
+                    div.className = 'list-group-item list-group-item-action';
+                    div.innerHTML = `<b>${item.nim}</b> - ${item.nama}`;
+                    div.onclick = () => {
+                        selectMahasiswa(item);
+                    };
+                    suggestBox.appendChild(div);
+                });
             });
-        });
-});
+    });
 
-document.addEventListener('click', function (e) {
-    if (!nimInput.contains(e.target) && !nimBox.contains(e.target)) {
-        nimBox.style.display = 'none';
+    function selectMahasiswa(item) {
+        searchInput.value = `${item.nim} - ${item.nama}`;
+        nimHidden.value = item.nim;
+        namaHidden.value = item.nama;
+        displayNim.textContent = item.nim;
+        displayNama.textContent = item.nama;
+        infoMahasiswa.style.display = 'block';
+        suggestBox.style.display = 'none';
+        selectedNim = item.nim;
+        loadMatkul();
     }
+
+    // Load Mata Kuliah berdasarkan semester
+    function loadMatkul() {
+        const semester = semesterSelect.value;
+        const nim = nimHidden.value;
+
+        if (!semester || !nim) {
+            tableWrapper.style.display = 'none';
+            btnSimpan.disabled = true;
+            return;
+        }
+
+        fetch(`/api/matkul-by-semester?semester=${semester}`)
+            .then(res => res.json())
+            .then(data => {
+                matkulBody.innerHTML = '';
+                tableWrapper.style.display = 'block';
+
+                if (data.length === 0) {
+                    matkulBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-3">
+                                Tidak ada mata kuliah untuk semester ini
+                            </td>
+                        </tr>
+                    `;
+                    btnSimpan.disabled = true;
+                    return;
+                }
+
+                data.forEach((matkul, index) => {
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td class="matkul-name">${matkul.nama}</td>
+                        <td><input type="number" name="nilai[${matkul.id}][kehadiran]" min="0" max="100" placeholder="0-100"></td>
+                        <td><input type="number" name="nilai[${matkul.id}][tugas]" min="0" max="100" placeholder="0-100"></td>
+                        <td><input type="number" name="nilai[${matkul.id}][uts]" min="0" max="100" placeholder="0-100"></td>
+                        <td><input type="number" name="nilai[${matkul.id}][uas]" min="0" max="100" placeholder="0-100"></td>
+                    `;
+                    matkulBody.appendChild(tr);
+                });
+
+                btnSimpan.disabled = false;
+            });
+    }
+
+    semesterSelect.addEventListener('change', function() {
+        if (selectedNim && this.value) {
+            loadMatkul();
+        } else {
+            tableWrapper.style.display = 'none';
+            btnSimpan.disabled = true;
+        }
+    });
+
+    // Click outside suggestion
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !suggestBox.contains(e.target)) {
+            suggestBox.style.display = 'none';
+        }
+    });
 });
-</script>
-
-{{-- ================= CEK DUPLIKAT ================= --}}
-<script>
-const nimInputCek = document.querySelector('input[name="nim"]');
-const matkulSelect = document.querySelector('select[name="matkul_id"]');
-
-let warning = document.createElement('div');
-warning.className = "alert alert-warning-custom mt-2 d-none";
-warning.innerHTML = "<i class='fa-solid fa-triangle-exclamation me-1'></i> Mahasiswa sudah pernah mengambil mata kuliah ini!";
-
-document.querySelector('form').prepend(warning);
-
-function cekData() {
-    let nim = nimInputCek.value;
-    let matkul = matkulSelect.value;
-
-    if (!nim || !matkul) return;
-
-    fetch(`/api/check-nilai?nim=${nim}&matkul_id=${matkul}`)
-        .then(res => res.json())
-        .then(exists => {
-            if (exists) {
-                warning.classList.remove('d-none');
-            } else {
-                warning.classList.add('d-none');
-            }
-        });
-}
-
-nimInputCek.addEventListener('change', cekData);
-nimInputCek.addEventListener('blur', cekData);
-matkulSelect.addEventListener('change', cekData);
 </script>
 
 @endsection

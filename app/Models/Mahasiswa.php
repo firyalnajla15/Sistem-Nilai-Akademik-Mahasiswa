@@ -15,5 +15,8 @@ class Mahasiswa extends Model
         'angkatan'
     ];
 
-    public $timestamps = false;
+    public function nilai()
+    {
+        return $this->hasMany(NilaiMahasiswa::class, 'mahasiswa_id');
+    }
 }
