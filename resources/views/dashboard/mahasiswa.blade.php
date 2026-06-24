@@ -267,42 +267,78 @@
             </div>
         </div>
 
-        <div class="menu-header">Menu Utama</div>
-        <ul class="nav nav-pills flex-column mb-auto" style="padding-left: 0;">
-            <li class="nav-item">
-                <a href="#" class="nav-link active">
-                    <i class="fa-solid fa-gauge"></i>Dashboard
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link">
-                    <i class="fa-solid fa-book-bookmark"></i>Fitur KRS
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link">
-                    <i class="fa-solid fa-file-lines"></i>Transkrip Nilai
-                </a>
-            </li>
-        </ul>
-        
-        <div class="menu-header">Akun</div>
-        <ul class="nav nav-pills flex-column mb-3" style="padding-left: 0;">
-            <li>
-                <a href="#" class="nav-link">
-                    <i class="fa-solid fa-user"></i>Profil
-                </a>
-            </li>
-            <li>
-                <form action="{{ route('mahasiswa.logout') }}" method="POST" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-link nav-link w-100 text-start text-danger border-0 m-0"
-                        style="padding-left: 15px; gap: 12px;">
-                        <i class="fa-solid fa-power-off"></i>Logout
-                    </button>
-                </form>
-            </li>
-        </ul>
+      <div class="menu-header">Menu Utama</div>
+
+<ul class="nav nav-pills flex-column mb-auto" style="padding-left:0;">
+
+    <li class="nav-item">
+        <a href="#" class="nav-link active">
+            <i class="fa-solid fa-gauge"></i>
+            Dashboard
+        </a>
+    </li>
+
+    <li>
+        <a href="#" class="nav-link">
+            <i class="fa-solid fa-book"></i>
+            KRS
+        </a>
+    </li>
+
+    <li>
+        <a href="#" class="nav-link">
+            <i class="fa-solid fa-file-pen"></i>
+            Nilai
+        </a>
+    </li>
+
+    <li>
+        <a href="#" class="nav-link">
+            <i class="fa-solid fa-file-lines"></i>
+            Transkrip
+        </a>
+    </li>
+
+    <li>
+        <a href="#" class="nav-link">
+            <i class="fa-solid fa-chart-line"></i>
+            Grafik IPK
+        </a>
+    </li>
+
+    <li>
+        <a href="#" class="nav-link">
+            <i class="fa-solid fa-bell"></i>
+            Notifikasi
+        </a>
+    </li>
+
+</ul>
+
+<div class="menu-header">Akun</div>
+
+<ul class="nav nav-pills flex-column mb-3" style="padding-left:0;">
+
+    <li>
+        <a href="#" class="nav-link">
+            <i class="fa-solid fa-user"></i>
+            Profil
+        </a>
+    </li>
+
+    <li>
+        <form action="{{ route('mahasiswa.logout') }}" method="POST">
+            @csrf
+            <button type="submit"
+                class="btn btn-link nav-link w-100 text-start text-danger border-0 m-0"
+                style="padding-left:15px;gap:12px;">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </button>
+        </form>
+    </li>
+
+</ul>
     </aside>
 
     <main id="mainContent" class="content-area">
