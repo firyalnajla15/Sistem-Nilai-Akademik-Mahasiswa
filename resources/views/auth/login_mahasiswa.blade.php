@@ -233,6 +233,7 @@
 
             @if (session('error'))
                 <div class="alert alert-danger alert-dismissible fade show small p-2" role="alert">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
                     {{ session('error') }}
                     <button type="button" class="btn-close p-2" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
@@ -240,23 +241,41 @@
 
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show small p-2" role="alert">
+                    <i class="fa-regular fa-circle-check me-1"></i>
                     {{ session('success') }}
                     <button type="button" class="btn-close p-2" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
 
-            <form action="{{ url('/login-mahasiswa') }}" method="POST">
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show small p-2" role="alert">
+                    <i class="fa-solid fa-circle-exclamation me-1"></i>
+                    {{ $errors->first() }}
+                    <button type="button" class="btn-close p-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <form action="{{ route('mahasiswa.login') }}" method="POST">
                 @csrf
 
                 <div class="mb-3">
                     <label class="form-label">NIM</label>
-                    <input type="text" name="nim" class="form-control" placeholder="Masukkan NIM Anda" required
-                        autocomplete="off" value="{{ old('nim') }}">
+                    <input type="text" 
+                           name="nim" 
+                           class="form-control" 
+                           placeholder="Masukkan NIM Anda" 
+                           required
+                           autocomplete="off" 
+                           value="{{ old('nim') }}">
                 </div>
 
                 <div class="mb-4">
                     <label class="form-label">Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="Masukkan password" required>
+                    <input type="password" 
+                           name="password" 
+                           class="form-control" 
+                           placeholder="Masukkan password" 
+                           required>
                 </div>
 
                 <div class="d-grid gap-2 mb-2">
@@ -274,7 +293,7 @@
         </div>
 
         <div class="footer-text">
-            &copy; 2026 Sistem Nilai Akademik Mahasiswa
+            &copy; {{ date('Y') }} Sistem Nilai Akademik Mahasiswa
         </div>
     </div>
 

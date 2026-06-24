@@ -54,9 +54,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/transkrip', [TranskripController::class, 'index'])->name('transkrip.index');
     Route::get('/transkrip/pdf', [TranskripController::class, 'pdf'])->name('transkrip.pdf');
     
-    // ================= PROFIL =================
-    Route::get('/profil', function () { return view('profil.index'); })->name('profil');
-    Route::get('/mahasiswa/profil', function () { return view('profil.profil'); })->name('mahasiswa.profil');
+    // ================= PROFIL ADMIN =================
+    Route::get('/profil', function () { 
+        return view('profil.index'); 
+    })->name('profil');
+    
+    // ================= PROFIL MAHASISWA =================
+    Route::get('/mahasiswa/profil', function () { 
+        return view('profil.profil'); 
+    })->name('mahasiswa.profil');
     
     // ================= LOGOUT =================
     Route::get('/logout', [AuthController::class, 'logout']);

@@ -4,6 +4,32 @@
 
 @section('content')
 
+@php
+    // Ambil user yang login
+    $user = Auth::user();
+    
+    // Cari mahasiswa berdasarkan email atau user_id
+    $mahasiswa = \App\Models\Mahasiswa::where('email', $user->email)->first();
+    
+    // Jika tidak ditemukan, coba berdasarkan user_id
+    if (!$mahasiswa) {
+        $mahasiswa = \App\Models\Mahasiswa::where('user_id', $user->id)->first();
+    }
+    
+    // Jika masih tidak ditemukan, coba berdasarkan nim dari session
+    if (!$mahasiswa) {
+        $mahasiswa = \App\Models\Mahasiswa::where('nim', session('nim'))->first();
+    }
+    
+    // Debug: tampilkan info jika masih kosong
+    $debug = [
+        'user_email' => $user->email ?? 'tidak ada',
+        'user_id' => $user->id ?? 'tidak ada',
+        'session_nim' => session('nim') ?? 'tidak ada',
+        'mahasiswa_ditemukan' => $mahasiswa ? 'ya' : 'tidak',
+    ];
+@endphp
+
 <style>
     .profile-card {
         border: none;
@@ -64,10 +90,6 @@
 
     .profile-table {
         margin-bottom: 0;
-    }
-
-    .profile-table tr {
-        transition: background 0.2s;
     }
 
     .profile-table tr:hover {
@@ -133,6 +155,15 @@
             padding: 10px 14px;
         }
     }
+
+    .alert-debug {
+        background: #fef3c7;
+        border: 1px solid #f59e0b;
+        color: #78350f;
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
 </style>
 
 <div class="container-fluid">
@@ -149,6 +180,18 @@
 
         <!-- Body -->
         <div class="card-body">
+
+            <!-- Debug Info -->
+            @if(!$mahasiswa)
+                <div class="alert-debug">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                    <strong>Data mahasiswa tidak ditemukan!</strong><br>
+                    Email: <code>{{ $debug['user_email'] }}</code><br>
+                    User ID: <code>{{ $debug['user_id'] }}</code><br>
+                    Session NIM: <code>{{ $debug['session_nim'] }}</code><br>
+                    <small class="text-muted">Pastikan tabel mahasiswa memiliki data dengan email yang sama.</small>
+                </div>
+            @endif
 
             <div class="row">
 
@@ -177,22 +220,34 @@
 
                         <tr>
                             <th><i class="fa-regular fa-user"></i> Nama Lengkap</th>
-                            <td>{{ Auth::user()->name ?? 'Firyal Najla' }}</td>
+                            <td>{{ Auth::user()->name ?? '-' }}</td>
                         </tr>
 
                         <tr>
                             <th><i class="fa-regular fa-envelope"></i> Email</th>
-                            <td>{{ Auth::user()->email ?? 'najla@gmail.com' }}</td>
+                            <td>{{ Auth::user()->email ?? '-' }}</td>
                         </tr>
 
                         <tr>
                             <th><i class="fa-regular fa-id-card"></i> NIM</th>
-                            <td>{{ session('nim') ?? '2401092007' }}</td>
+                            <td>
+                                @if($mahasiswa)
+                                    {{ $mahasiswa->nim }}
+                                @else
+                                    {{ session('nim') ?? '-' }}
+                                @endif
+                            </td>
                         </tr>
 
                         <tr>
                             <th><i class="fa-regular fa-building-columns"></i> Program Studi</th>
-                            <td>{{ session('jurusan') ?? 'Manajemen Informatika' }}</td>
+                            <td>
+                                @if($mahasiswa)
+                                    {{ $mahasiswa->prodi }}
+                                @else
+                                    {{ session('jurusan') ?? '-' }}
+                                @endif
+                            </td>
                         </tr>
 
                         <tr>
@@ -202,7 +257,13 @@
 
                         <tr>
                             <th><i class="fa-regular fa-calendar"></i> Angkatan</th>
-                            <td>2024</td>
+                            <td>
+                                @if($mahasiswa)
+                                    {{ $mahasiswa->angkatan }}
+                                @else
+                                    {{ session('angkatan') ?? '-' }}
+                                @endif
+                            </td>
                         </tr>
 
                         <tr>
