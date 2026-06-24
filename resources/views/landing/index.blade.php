@@ -390,7 +390,7 @@
                             <p class="text-muted small mb-0">Sinkronisasi Basis Data</p>
                         </div>
                     </div>
-                </div>
+                </div> 
             </div>
         </div>
     </div>
