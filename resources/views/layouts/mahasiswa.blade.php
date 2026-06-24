@@ -13,53 +13,75 @@
         body {
             margin: 0;
             background: #f4f6f9;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Arial, sans-serif;
         }
 
+        /* ========== SIDEBAR ========== */
         .sidebar {
             width: 260px;
             height: 100vh;
-            background: #1c2b3a;
+            background: linear-gradient(180deg, #0b1f3a 0%, #1c2b3a 100%);
             position: fixed;
             left: 0;
             top: 0;
             color: white;
             overflow-y: auto;
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
         }
 
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(14, 165, 233, 0.3);
+            border-radius: 10px;
+        }
+
+        /* Brand */
         .brand {
-            padding: 20px;
+            padding: 20px 18px 16px;
             text-align: center;
             font-size: 18px;
-            font-weight: bold;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 700;
+            border-bottom: 2px solid rgba(14, 165, 233, 0.15);
+            letter-spacing: 0.5px;
         }
 
         .brand i {
-            margin-right: 8px;
+            margin-right: 10px;
+            color: #0ea5e9;
         }
 
+        /* User Profile */
         .user-profile {
-            margin: 15px 10px;
-            padding: 12px;
-            background: rgba(255, 255, 255, .08);
-            border-radius: 12px;
+            margin: 16px 12px;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
             display: flex;
             gap: 12px;
             align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.1);
         }
 
         .avatar {
-            width: 45px;
-            height: 45px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: #0ea5e9;
+            background: linear-gradient(135deg, #0ea5e9, #3b82f6);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-weight: bold;
-            font-size: 18px;
+            font-weight: 700;
+            font-size: 17px;
             flex-shrink: 0;
+            box-shadow: 0 2px 12px rgba(14, 165, 233, 0.25);
         }
 
         .user-info {
@@ -73,6 +95,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: #fff;
         }
 
         .user-status {
@@ -83,48 +106,106 @@
             text-overflow: ellipsis;
         }
 
+        /* Menu Header */
         .menu-header {
-            padding: 15px 20px 5px;
-            font-size: 11px;
-            opacity: .6;
+            padding: 16px 20px 6px;
+            font-size: 10px;
+            opacity: 0.5;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
+            font-weight: 600;
         }
 
+        /* Navigation */
         .sidebar .nav {
             padding: 0 10px;
         }
 
         .sidebar .nav-link {
             color: rgba(255, 255, 255, 0.7);
-            margin: 2px 0;
+            margin: 1px 0;
             border-radius: 10px;
-            padding: 10px 15px;
-            transition: all 0.3s;
+            padding: 10px 16px;
+            transition: all 0.25s ease;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
+            font-size: 13px;
+            font-weight: 500;
+            position: relative;
         }
 
         .sidebar .nav-link i {
             width: 20px;
             text-align: center;
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.4);
+            transition: all 0.25s ease;
         }
 
         .sidebar .nav-link:hover {
-            background: rgba(255, 255, 255, .1);
-            color: white;
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+
+        .sidebar .nav-link:hover i {
+            color: #0ea5e9;
         }
 
         .sidebar .nav-link.active {
-            background: rgba(14, 165, 233, 0.2);
-            color: #60a5fa;
+            background: rgba(14, 165, 233, 0.15);
+            color: #ffffff;
+            border-left: 3px solid #0ea5e9;
+            padding-left: 13px;
         }
 
+        .sidebar .nav-link.active i {
+            color: #0ea5e9;
+        }
+
+        /* Logout Button */
+        .sidebar .btn-logout {
+            color: rgba(239, 68, 68, 0.6);
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            margin: 1px 0;
+            cursor: pointer;
+        }
+
+        .sidebar .btn-logout i {
+            width: 20px;
+            text-align: center;
+            font-size: 15px;
+            color: rgba(239, 68, 68, 0.4);
+            transition: all 0.25s ease;
+        }
+
+        .sidebar .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            transform: translateX(4px);
+        }
+
+        .sidebar .btn-logout:hover i {
+            color: #ef4444;
+        }
+
+        /* ========== TOPBAR ========== */
         .topbar {
             margin-left: 260px;
             height: 60px;
-            background: #0b1f3a;
+            background: linear-gradient(135deg, #0b1f3a, #1a365d);
             color: white;
             display: flex;
             align-items: center;
@@ -134,12 +215,16 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: 2px solid rgba(14, 165, 233, 0.15);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
         }
 
         .topbar i {
             margin-right: 10px;
+            color: #0ea5e9;
         }
 
+        /* ========== CONTENT ========== */
         .content {
             margin-left: 260px;
             padding: 25px;
@@ -147,25 +232,30 @@
         }
 
         .welcome-box {
-            background: #1c2b3a;
+            background: linear-gradient(135deg, #1c2b3a, #0b1f3a);
             color: white;
             padding: 25px 30px;
-            border-radius: 12px;
+            border-radius: 14px;
             margin-bottom: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .welcome-box h5 {
             font-size: 20px;
+            font-weight: 700;
         }
 
+        /* ========== CARDS ========== */
         .card {
             border: none;
-            border-radius: 12px;
-            transition: transform 0.2s;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
         }
 
         .card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
         }
 
         .card small {
@@ -183,7 +273,7 @@
         .card .card-icon {
             width: 45px;
             height: 45px;
-            border-radius: 10px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -210,6 +300,7 @@
             color: #06b6d4;
         }
 
+        /* ========== RESPONSIVE ========== */
         @media (max-width: 768px) {
             .sidebar {
                 width: 70px;
@@ -218,13 +309,14 @@
             .sidebar .brand span,
             .sidebar .user-info,
             .sidebar .menu-header,
-            .sidebar .nav-link span {
+            .sidebar .nav-link span,
+            .sidebar .btn-logout span {
                 display: none;
             }
 
             .sidebar .brand {
                 font-size: 20px;
-                padding: 15px;
+                padding: 16px;
             }
 
             .sidebar .user-profile {
@@ -242,6 +334,21 @@
                 margin: 0;
             }
 
+            .sidebar .nav-link.active {
+                border-left: none;
+                padding-left: 12px;
+            }
+
+            .sidebar .btn-logout {
+                justify-content: center;
+                padding: 12px;
+            }
+
+            .sidebar .btn-logout i {
+                font-size: 18px;
+                margin: 0;
+            }
+
             .topbar,
             .content {
                 margin-left: 70px;
@@ -249,6 +356,11 @@
 
             .content {
                 padding: 15px;
+            }
+
+            .topbar {
+                font-size: 14px;
+                padding: 0 16px;
             }
         }
     </style>
@@ -331,7 +443,7 @@
             <li>
                 <form action="{{ route('mahasiswa.logout') }}" method="POST">
                     @csrf
-                    <button type="submit" class="nav-link border-0 bg-transparent w-100 text-start" style="color: rgba(255,255,255,0.7);">
+                    <button type="submit" class="btn-logout">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span>Logout</span>
                     </button>
