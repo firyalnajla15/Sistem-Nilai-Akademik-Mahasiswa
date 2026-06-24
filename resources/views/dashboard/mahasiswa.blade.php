@@ -3,125 +3,252 @@
 @section('title', 'Dashboard Mahasiswa - Sistem Akademik')
 
 @section('content')
+
+<style>
+    .welcome-box {
+        background: #1c2b3a;
+        color: white;
+        padding: 20px 25px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+    }
+
+    .welcome-box h5 {
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .badge-status {
+        background: #22c55e;
+        padding: 5px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .stat-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        transition: 0.2s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    .stat-card .card-body {
+        padding: 20px;
+    }
+
+    .stat-card .stat-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+    }
+
+    .stat-card .stat-label {
+        font-size: 13px;
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .stat-card .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1c2b3a;
+        margin: 0;
+    }
+
+    .bg-soft-primary { background: rgba(14,165,233,0.1); color: #0ea5e9; }
+    .bg-soft-success { background: rgba(34,197,94,0.1); color: #22c55e; }
+    .bg-soft-warning { background: rgba(234,179,8,0.1); color: #eab308; }
+    .bg-soft-info { background: rgba(6,182,212,0.1); color: #06b6d4; }
+
+    .chart-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        margin-top: 25px;
+    }
+
+    .chart-card .card-header {
+        background: white;
+        padding: 15px 20px;
+        border-bottom: 1px solid #eee;
+        font-weight: 600;
+    }
+
+    .chart-card .card-header i {
+        color: #0ea5e9;
+        margin-right: 8px;
+    }
+
+    .chart-card .card-body {
+        padding: 20px;
+    }
+
+    .chart-bar {
+        border-radius: 4px 4px 0 0;
+        transition: 0.3s;
+        min-height: 10px;
+    }
+
+    .chart-bar:hover {
+        opacity: 0.8;
+    }
+
+    .chart-label {
+        font-size: 11px;
+        color: #6c757d;
+        margin-top: 6px;
+    }
+
+    .chart-value {
+        font-size: 11px;
+        font-weight: 600;
+        color: #1c2b3a;
+    }
+
+    @media (max-width: 768px) {
+        .welcome-box {
+            flex-direction: column;
+            text-align: center;
+            gap: 10px;
+        }
+        .stat-card .stat-value {
+            font-size: 20px;
+        }
+    }
+</style>
+
+<!-- Welcome Box -->
 <div class="welcome-box d-flex justify-content-between align-items-center">
     <div>
-        <h5 class="fw-bold m-0">
-            Selamat Datang, {{ session('nama') ?? Auth::user()->name }}!
-        </h5>
+        <h5 class="m-0">Selamat Datang, {{ session('nama') ?? Auth::user()->name }}!</h5>
         <p class="small m-0 text-white-50">
             NIM: {{ session('nim') ?? 'NIM tidak tersedia' }} | {{ session('jurusan') ?? 'Manajemen Informatika' }}
         </p>
     </div>
     <div>
-        <span class="badge bg-success">Mahasiswa Aktif</span>
+        <span class="badge-status text-white">
+            <i class="fa-regular fa-circle-check"></i> Mahasiswa Aktif
+        </span>
     </div>
 </div>
 
-<div class="row g-4">
-    <div class="col-md-3">
-        <div class="card shadow-sm">
+<!-- Stat Cards -->
+<div class="row g-3">
+
+    <div class="col-md-3 col-sm-6">
+        <div class="card stat-card">
             <div class="card-body d-flex justify-content-between align-items-center">
                 <div>
-                    <small>IPK Kumulatif</small>
-                    <h3>{{ $ipkTotal ?? '3.79' }}</h3>
+                    <div class="stat-label">IPK Kumulatif</div>
+                    <div class="stat-value">{{ $ipkTotal ?? '3.79' }}</div>
                 </div>
-                <div class="card-icon bg-soft-primary">
+                <div class="stat-icon bg-soft-primary">
                     <i class="fa-solid fa-star"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card shadow-sm">
+    <div class="col-md-3 col-sm-6">
+        <div class="card stat-card">
             <div class="card-body d-flex justify-content-between align-items-center">
                 <div>
-                    <small>Total SKS Kumulatif</small>
-                    <h3>{{ $totalSks ?? '27' }} SKS</h3>
+                    <div class="stat-label">Total SKS</div>
+                    <div class="stat-value">{{ $totalSks ?? '27' }}</div>
                 </div>
-                <div class="card-icon bg-soft-success">
+                <div class="stat-icon bg-soft-success">
                     <i class="fa-solid fa-book"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card shadow-sm">
+    <div class="col-md-3 col-sm-6">
+        <div class="card stat-card">
             <div class="card-body d-flex justify-content-between align-items-center">
                 <div>
-                    <small>Total Semua Matkul</small>
-                    <h3>{{ $jumlahMatkul ?? '9' }}</h3>
+                    <div class="stat-label">Total Matkul</div>
+                    <div class="stat-value">{{ $jumlahMatkul ?? '9' }}</div>
                 </div>
-                <div class="card-icon bg-soft-warning">
+                <div class="stat-icon bg-soft-warning">
                     <i class="fa-solid fa-list-check"></i>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-md-3">
-        <div class="card shadow-sm">
+    <div class="col-md-3 col-sm-6">
+        <div class="card stat-card">
             <div class="card-body d-flex justify-content-between align-items-center">
                 <div>
-                    <small>Status Portal</small>
-                    <h3 style="font-size: 16px; color: #22c55e;">Mahasiswa Aktif</h3>
+                    <div class="stat-label">Status</div>
+                    <div class="stat-value" style="font-size: 18px; color: #22c55e;">
+                        <i class="fa-regular fa-circle-check"></i> Aktif
+                    </div>
                 </div>
-                <div class="card-icon bg-soft-info">
+                <div class="stat-icon bg-soft-info">
                     <i class="fa-solid fa-circle-check"></i>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
-<!-- Grafik Perkembangan IPK -->
-<div class="card shadow-sm mt-4">
-    <div class="card-header bg-white">
-        <h6 class="fw-bold m-0">
-            <i class="fa-solid fa-chart-line me-2"></i>
-            Grafik Perkembangan Indeks Prestasi (Seluruh Semester)
-        </h6>
+<!-- Grafik -->
+<div class="card chart-card">
+    <div class="card-header">
+        <i class="fa-solid fa-chart-line"></i>
+        Grafik Perkembangan IPS (Semester 1-8)
     </div>
     <div class="card-body">
-        <div class="d-flex justify-content-between align-items-end" style="height: 250px; padding: 0 10px;">
+
+        <div class="d-flex justify-content-between align-items-end" style="height: 200px; padding: 0 5px;">
+
             @php
                 $semesters = range(1, 8);
                 $ipsData = [
-                    1 => 3.50,
-                    2 => 3.65,
-                    3 => 3.70,
-                    4 => 3.75,
-                    5 => 3.78,
-                    6 => 3.79,
-                    7 => 3.80,
-                    8 => 3.82
+                    1 => 3.50, 2 => 3.65, 3 => 3.70,
+                    4 => 3.75, 5 => 3.78, 6 => 3.79,
+                    7 => 3.80, 8 => 3.82
                 ];
                 $maxIps = 4.0;
             @endphp
 
             @foreach($semesters as $sem)
                 @php
-                    $height = ($ipsData[$sem] / $maxIps) * 200;
+                    $height = ($ipsData[$sem] / $maxIps) * 170;
                 @endphp
                 <div class="text-center" style="flex: 1;">
-                    <div class="bg-primary rounded" 
-                         style="height: {{ $height }}px; width: 35px; margin: 0 auto; transition: height 0.5s; 
-                                background: linear-gradient(to top, #0ea5e9, #3b82f6);">
+                    <div class="chart-bar" 
+                         style="height: {{ max($height, 15) }}px; 
+                                width: 30px; 
+                                margin: 0 auto;
+                                background: {{ $ipsData[$sem] == max($ipsData) ? '#0ea5e9' : '#93c5fd' }};">
                     </div>
-                    <div style="margin-top: 8px; font-size: 11px; color: #6c757d;">
-                        Sem {{ $sem }}
-                    </div>
-                    <div style="font-size: 11px; font-weight: 600; color: #1c2b3a;">
-                        {{ number_format($ipsData[$sem], 2) }}
-                    </div>
+                    <div class="chart-label">Sem {{ $sem }}</div>
+                    <div class="chart-value">{{ number_format($ipsData[$sem], 2) }}</div>
                 </div>
             @endforeach
+
         </div>
+
         <p class="text-center text-muted small mt-3 mb-0">
-            <i class="fa-solid fa-arrow-up text-success me-1"></i>
+            <i class="fa-regular fa-calendar me-1"></i>
             Indeks Prestasi Semester (IPS)
         </p>
+
     </div>
 </div>
+
 @endsection

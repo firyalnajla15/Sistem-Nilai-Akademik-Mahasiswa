@@ -4,14 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIAKAD - Sistem Informasi Akademik</title>
+    <title>Sistem Nilai Akademik Mahasiswa</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        /* Mengaktifkan efek scroll halus saat link navbar diklik */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         html {
             scroll-behavior: smooth;
         }
@@ -19,27 +24,33 @@
         body {
             font-family: 'Inter', sans-serif;
             color: #334155;
-            overflow-x: hidden;
+            background: #f8fafc;
         }
 
-        /* ================= MODERN NAVBAR ================= */
+        /* ================= NAVBAR ================= */
         .navbar {
-            backdrop-filter: blur(12px);
-            background-color: rgba(15, 23, 42, 0.95) !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px 0;
-            transition: all 0.3s ease;
+            background: rgba(15, 23, 42, 0.92) !important;
+            padding: 14px 0;
+            border-bottom: 2px solid rgba(56, 189, 248, 0.15);
+            backdrop-filter: blur(8px);
         }
 
         .navbar-brand {
-            font-size: 1.25rem;
-            letter-spacing: -0.5px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: white !important;
+        }
+
+        .navbar-brand i {
+            color: #38bdf8;
+            margin-right: 10px;
         }
 
         .nav-link {
+            color: rgba(255, 255, 255, 0.7) !important;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.8) !important;
-            transition: color 0.2s ease;
+            font-size: 0.95rem;
+            transition: 0.2s;
         }
 
         .nav-link:hover {
@@ -49,34 +60,53 @@
         .btn-login-nav {
             background: #0284c7;
             border: none;
-            font-weight: 500;
-            padding: 8px 20px;
+            color: white !important;
+            padding: 8px 22px;
             border-radius: 8px;
-            transition: all 0.2s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.2s;
         }
 
-        .btn-login-nav:hover,
-        .btn-login-nav:focus {
+        .btn-login-nav:hover {
             background: #0369a1 !important;
-            transform: translateY(-1px);
         }
 
-        /* ================= HERO SECTION ================= */
+        .dropdown-menu {
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            padding: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .dropdown-item {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .dropdown-item:hover {
+            background: #f1f5f9;
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            color: #64748b;
+        }
+
+        /* ================= HERO ================= */
         .hero {
-            height: 91vh;
-            background: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f');
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.75) 100%),
+                        url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1920&q=80');
             background-size: cover;
             background-position: center;
-            position: relative;
+            background-attachment: fixed;
             display: flex;
             align-items: center;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.20);
+            padding: 80px 0 50px;
+            position: relative;
         }
 
         .hero .container {
@@ -84,235 +114,294 @@
             z-index: 2;
         }
 
-        .hero-content {
-            max-width: 500px;
-            margin-left: 20px;
-        }
-
-        .hero-content h1 {
+        .hero h1 {
             color: white;
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 700;
-            line-height: 1;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 span {
+            color: #38bdf8;
+        }
+
+        .hero p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.15rem;
+            max-width: 500px;
+            line-height: 1.7;
             margin-bottom: 25px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, .3);
         }
 
-        .hero-subtitle {
-            color: #ffffff;
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin-top: 15px;
-            line-height: 1.8;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, .4);
-        }
-
-        .search-box {
-            width: 420px;
+        .btn-hero {
             background: white;
-            display: flex;
-            overflow: hidden;
-            border-radius: 3px;
-        }
-
-        .search-box input {
-            flex: 1;
-            border: none;
-            padding: 12px 15px;
-            outline: none;
-        }
-
-        .search-box button {
-            width: 55px;
-            border: none;
-            background: white;
-            color: #666;
-        }
-
-        .search-box button:hover {
-            background: #f8f9fa;
-        }
-
-        @media(max-width:768px) {
-
-            .hero-content h1 {
-                font-size: 2.7rem;
-            }
-
-            .search-box {
-                width: 100%;
-            }
-
-        }
-
-        .btn-hero-login {
-            background: #ffffff;
             color: #0f172a !important;
             font-weight: 600;
-            padding: 14px 32px;
+            padding: 13px 34px;
             border-radius: 10px;
             border: none;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+            font-size: 1rem;
+            transition: 0.3s;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: inline-block;
         }
 
-        .btn-hero-login:hover {
-            background: #f8fafc;
+        .btn-hero:hover {
+            background: #f1f5f9;
             transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-hero i {
+            margin-right: 8px;
+        }
+
+        .hero-image {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .hero-image i {
+            font-size: 4rem;
+            color: #38bdf8;
+            opacity: 0.7;
+        }
+
+        .hero-image p {
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 12px;
+            font-size: 0.9rem;
+            max-width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                min-height: 100vh;
+                padding: 90px 0 40px;
+                background-attachment: scroll;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+                max-width: 100%;
+            }
+
+            .hero-image {
+                margin-top: 30px;
+                padding: 25px;
+            }
         }
 
         /* ================= INFO BAR ================= */
         .info-bar {
             background: #0f172a;
-            color: #94a3b8;
-            font-size: 0.9rem;
-            padding: 18px 0;
+            padding: 14px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .info-bar i {
+        .info-bar .info-item {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .info-bar .info-item i {
             color: #38bdf8;
-            margin-right: 6px;
+            margin-right: 8px;
+            width: 18px;
         }
 
-        /* ================= TENTANG SECTION ================= */
-        .about-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        .about-icon {
-            font-size: 2.5rem;
-            color: #0284c7;
-            margin-bottom: 15px;
-        }
-
-        /* ================= FEATURE CARDS ================= */
+        /* ================= SECTION ================= */
         .section-title {
             font-weight: 700;
             color: #0f172a;
-            letter-spacing: -0.5px;
-            position: relative;
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .section-subtitle {
+            color: #64748b;
+            font-size: 1.05rem;
+        }
+
+        /* ================= TENTANG ================= */
+        #tentang {
+            background: white;
+            padding: 70px 0 50px;
+        }
+
+        .about-text {
+            color: #475569;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .about-card {
+            background: #f8fafc;
+            border-radius: 14px;
+            padding: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .about-card .item {
+            text-align: center;
+            padding: 15px 10px;
+        }
+
+        .about-card .item i {
+            font-size: 2rem;
+            color: #0284c7;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .about-card .item h6 {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 2px;
+        }
+
+        .about-card .item small {
+            color: #64748b;
+        }
+
+        .check-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
             margin-bottom: 16px;
         }
 
-        .feature-card {
+        .check-item i {
+            color: #0284c7;
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .check-item h6 {
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 2px;
+        }
+
+        .check-item p {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        /* ================= LAYANAN AKADEMIK (BARU) ================= */
+        #layanan {
+            background: #f8fafc;
+            padding: 60px 0 70px;
+        }
+
+        .layanan-card {
+            background: white;
             border: 1px solid #e2e8f0;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 14px;
+            padding: 28px 24px;
             height: 100%;
+            transition: 0.3s;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
         }
 
-        .feature-card:hover {
-            transform: translateY(-6px);
-            border-color: #cbd5e1;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        .layanan-card:hover {
+            transform: translateY(-4px);
+            border-color: #b3d4fc;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
         }
 
-        .feature-icon-wrapper {
-            width: 50px;
-            height: 50px;
-            background: #f0fdf4;
-            color: #16a34a;
+        .layanan-icon {
+            width: 48px;
+            height: 48px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-
-        .col-md-4:nth-child(2) .feature-icon-wrapper {
-            background: #f0f9ff;
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            background: #eff6ff;
             color: #0284c7;
         }
 
-        .col-md-4:nth-child(3) .feature-icon-wrapper {
+        .layanan-card:nth-child(2) .layanan-icon {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .layanan-card:nth-child(3) .layanan-icon {
             background: #faf5ff;
             color: #9333ea;
         }
 
-        .feature-card h5 {
+        .layanan-card h5 {
             font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 12px;
+            color: #0f172a;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
         }
 
-        .feature-card p {
+        .layanan-card p {
             color: #64748b;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             line-height: 1.6;
             margin-bottom: 0;
         }
 
-        /* ================= TOMBOL BALIK KE ATAS (BACK TO TOP) ================= */
+        /* ================= BACK TO TOP ================= */
         .back-to-top {
             position: fixed;
             bottom: 25px;
             right: 25px;
             z-index: 99;
             border-radius: 50%;
-            width: 45px;
-            height: 45px;
+            width: 44px;
+            height: 44px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-            transition: all 0.3s ease;
-            background-color: #0284c7 !important;
-            border: none !important;
-            color: white !important;
+            background: #0f172a;
+            border: none;
+            color: white;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+            transition: 0.3s;
         }
 
         .back-to-top:hover {
-            background-color: #0369a1 !important;
+            background: #0284c7;
             transform: translateY(-3px);
         }
 
         /* ================= FOOTER ================= */
         footer {
-            background: #0f172a !important;
-            color: #64748b !important;
-            font-size: 0.9rem;
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 18px 0;
+            text-align: center;
+            font-size: 0.85rem;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 10px 0 !important;
-        }
-
-        /* Dropdown Styling Menu Customization */
-        .dropdown-menu {
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            padding: 8px;
-        }
-
-        .dropdown-item {
-            padding: 10px 16px;
-            border-radius: 8px;
-            color: #334155;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-        }
-
-        .dropdown-item:hover {
-            background: #f1f5f9;
-            color: #0f172a;
         }
     </style>
 </head>
 
 <body>
 
+    <!-- ================= NAVBAR ================= -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="#">
-                <span style="font-size: 1.5rem;">🎓</span> Sistem Nilai Akademik Mahasiswa
+            <a class="navbar-brand" href="#">
+                <i class="fa-solid fa-graduation-cap"></i>
+                Sistem Nilai Akademik Mahasiswa
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
@@ -322,26 +411,24 @@
             <div class="collapse navbar-collapse" id="menu">
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="#tentang">Tentang</a>
+                        <a class="nav-link" href="#tentang">Tentang</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link px-3" href="#fitur">Layanan</a>
+                        <a class="nav-link" href="#layanan">Layanan</a>
                     </li>
-
                     <li class="nav-item dropdown ms-lg-2 mt-2 mt-lg-0">
-                        <a class="btn btn-primary btn-login-nav dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown">
-                            Masuk ke Sistem
+                        <a class="btn btn-login-nav dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="fa-solid fa-right-to-bracket"></i> Login
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end mt-2">
+                        <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <a class="dropdown-item d-flex align-items-center gap-2" href="/login">
-                                    <i class="fa-solid fa-user-tie text-secondary"></i> Portal Admin & Dosen
+                                <a class="dropdown-item" href="/login">
+                                    <i class="fa-solid fa-user-tie"></i> Portal Admin & Dosen
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item d-flex align-items-center gap-2" href="/login-mahasiswa">
-                                    <i class="fa-solid fa-graduation-cap text-secondary"></i> Portal Mahasiswa
+                                <a class="dropdown-item" href="/login-mahasiswa">
+                                    <i class="fa-solid fa-graduation-cap"></i> Portal Mahasiswa
                                 </a>
                             </li>
                         </ul>
@@ -351,163 +438,170 @@
         </div>
     </nav>
 
+    <!-- ================= HERO ================= -->
     <section class="hero">
         <div class="container">
-
-            <div class="hero-content">
-
-                <h1>
-                    Welcome to <br>
-                    Politeknik Negeri Padang
-                </h1>
-
-                <p class="hero-subtitle">
-                    Kelola dan pantau perkembangan akademik Anda dalam satu platform terintegrasi.
-                </p>
-
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <h1>Politeknik <span>Negeri</span> Padang</h1>
+                    <p>Sistem Informasi Akademik untuk mengelola data nilai, mahasiswa, dan transkrip secara terintegrasi.</p>
+                </div>
+                <div class="col-lg-5 d-none d-lg-block">
+                    <div class="hero-image">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <p>SIAKAD - Terintegrasi & Real-Time</p>
+                    </div>
+                </div>
             </div>
-
         </div>
     </section>
 
+    <!-- ================= INFO BAR ================= -->
     <div class="info-bar">
-        <div class="container d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 gap-md-4">
-            <div><i class="fa-solid fa-location-dot"></i> Politeknik Negeri Padang</div>
-            <div class="d-none d-md-block text-muted">|</div>
-            <div><i class="fa-solid fa-phone"></i> (0751) 72590</div>
-            <div class="d-none d-md-block text-muted">|</div>
-            <div><i class="fa-solid fa-envelope"></i> www.pnp.ac.id</div>
+        <div class="container">
+            <div class="row text-center text-md-start">
+                <div class="col-md-4 info-item">
+                    <i class="fa-solid fa-location-dot"></i> Politeknik Negeri Padang
+                </div>
+                <div class="col-md-4 info-item">
+                    <i class="fa-solid fa-phone"></i> (0751) 72590
+                </div>
+                <div class="col-md-4 info-item">
+                    <i class="fa-solid fa-envelope"></i> www.pnp.ac.id
+                </div>
+            </div>
         </div>
     </div>
 
-    <section id="tentang" class="py-5" style="background-color: #ffffff;">
-        <div class="container py-5">
+    <!-- ================= TENTANG ================= -->
+    <section id="tentang">
+        <div class="container">
             <div class="row align-items-center g-5">
+
                 <div class="col-lg-6">
-                    <span class="text-primary fw-bold text-uppercase tracking-wider" style="font-size: 0.85rem;">Profil
-                        Sistem</span>
-                    <h2 class="fw-bold text-dark display-6 mt-2 mb-4">Mengenai SIAKAD</h2>
-                    <p class="text-muted mb-4" style="line-height: 1.8;">
-                        Sistem Informasi Akademik (SIAKAD) merupakan platform tata kelola administrasi pendidikan yang
-                        dirancang khusus untuk memfasilitasi kebutuhan seluruh sivitas akademika. Dengan mengedepankan
-                        efisiensi, transparansi, dan kecepatan akses data guna mendukung kelancaran proses belajar
-                        mengajar.
+                    <h2 class="section-title">Tentang SIAKAD</h2>
+                    <p class="section-subtitle mb-3">Platform terpadu untuk administrasi akademik</p>
+                    <p class="about-text">
+                        Sistem Informasi Akademik (SIAKAD) dirancang untuk memudahkan pengelolaan data mahasiswa, 
+                        mata kuliah, nilai, dan transkrip dalam satu platform yang terintegrasi.
                     </p>
-                    <div class="row g-4 mt-2">
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-start gap-3">
-                                <div class="text-primary fs-4 mt-1"><i class="fa-solid fa-circle-check"></i></div>
-                                <div>
-                                    <h6 class="fw-bold text-dark mb-1">Akses 24/7</h6>
-                                    <p class="text-muted small mb-0">Sistem dapat diakses kapan saja dan dari mana saja.
-                                    </p>
-                                </div>
+
+                    <div class="mt-4">
+                        <div class="check-item">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <div>
+                                <h6>Akses 24/7</h6>
+                                <p>Dapat diakses kapan saja dari perangkat apapun</p>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-start gap-3">
-                                <div class="text-primary fs-4 mt-1"><i class="fa-solid fa-shield-halved"></i></div>
-                                <div>
-                                    <h6 class="fw-bold text-dark mb-1">Keamanan Data</h6>
-                                    <p class="text-muted small mb-0">Data nilai dan profil mahasiswa tersimpan aman
-                                        dalam server.</p>
-                                </div>
+                        <div class="check-item">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div>
+                                <h6>Keamanan Data</h6>
+                                <p>Data nilai dan profil mahasiswa terlindungi dengan baik</p>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="col-lg-6">
-                    <div class="p-4 about-card">
-                        <div class="row text-center g-4">
+                    <div class="about-card">
+                        <div class="row g-2">
                             <div class="col-6">
-                                <div class="about-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                                <h3 class="fw-bold text-dark mb-1">Aktif</h3>
-                                <p class="text-muted small mb-0">Integrasi Data Mahasiswa</p>
+                                <div class="item">
+                                    <i class="fa-solid fa-graduation-cap"></i>
+                                    <h6>Aktif</h6>
+                                    <small>Data Mahasiswa</small>
+                                </div>
                             </div>
                             <div class="col-6">
-                                <div class="about-icon"><i class="fa-solid fa-book"></i></div>
-                                <h3 class="fw-bold text-dark mb-1">Terstruktur</h3>
-                                <p class="text-muted small mb-0">Kurikulum Program Studi</p>
+                                <div class="item">
+                                    <i class="fa-solid fa-book"></i>
+                                    <h6>Terstruktur</h6>
+                                    <small>Kurikulum</small>
+                                </div>
                             </div>
                             <div class="col-6">
-                                <div class="about-icon"><i class="fa-solid fa-chart-line"></i></div>
-                                <h3 class="fw-bold text-dark mb-1">Otomatis</h3>
-                                <p class="text-muted small mb-0">Kalkulasi IPK & Transkrip</p>
+                                <div class="item">
+                                    <i class="fa-solid fa-chart-line"></i>
+                                    <h6>Otomatis</h6>
+                                    <small>Kalkulasi IPK</small>
+                                </div>
                             </div>
                             <div class="col-6">
-                                <div class="about-icon"><i class="fa-solid fa-network-wired"></i></div>
-                                <h3 class="fw-bold text-dark mb-1">Real-Time</h3>
-                                <p class="text-muted small mb-0">Sinkronisasi Basis Data</p>
+                                <div class="item">
+                                    <i class="fa-solid fa-database"></i>
+                                    <h6>Real-Time</h6>
+                                    <small>Sinkronisasi</small>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <section id="fitur" class="py-5 bg-opacity-10 bg-light">
-        <div class="container py-4">
+    <!-- ================= LAYANAN AKADEMIK ================= -->
+    <section id="layanan">
+        <div class="container">
             <div class="text-center mb-5">
-                <h2 class="section-title fs-1">Layanan Akademik</h2>
-                <p class="text-muted">Modul aplikasi utama penunjang manajemen data dan aktivitas operasional akademik
-                    perguruan tinggi</p>
+                <h2 class="section-title">Layanan Akademik</h2>
+                <p class="section-subtitle">Modul utama untuk manajemen data akademik</p>
             </div>
 
             <div class="row g-4">
+
                 <div class="col-md-4">
-                    <div class="card feature-card p-4">
-                        <div class="feature-icon-wrapper">
-                            <i class="fa-solid fa-users"></i>
-                        </div>
-                        <h5>Biodata & Status Mahasiswa</h5>
-                        <p>
-                            Pusat penyimpanan informasi data induk mahasiswa, riwayat registrasi, serta pengelolaan
-                            status keaktifan akademik.
-                        </p>
+                    <div class="layanan-card">
+                        <div class="layanan-icon"><i class="fa-solid fa-users"></i></div>
+                        <h5>Data Mahasiswa</h5>
+                        <p>Kelola biodata, status, dan riwayat registrasi mahasiswa dengan mudah.</p>
                     </div>
                 </div>
 
                 <div class="col-md-4">
-                    <div class="card feature-card p-4">
-                        <div class="feature-icon-wrapper">
-                            <i class="fa-solid fa-book-bookmark"></i>
-                        </div>
-                        <h5>Kurikulum & Mata Kuliah</h5>
-                        <p>
-                            Manajemen distribusi mata kuliah berdasar struktur kurikulum program studi, semester,
-                            beserta bobot SKS terkait.
-                        </p>
+                    <div class="layanan-card">
+                        <div class="layanan-icon"><i class="fa-solid fa-book-bookmark"></i></div>
+                        <h5>Kurikulum & Matkul</h5>
+                        <p>Manajemen mata kuliah, SKS, dan struktur kurikulum program studi.</p>
                     </div>
                 </div>
 
                 <div class="col-md-4">
-                    <div class="card feature-card p-4">
-                        <div class="feature-icon-wrapper">
-                            <i class="fa-solid fa-file-invoice"></i>
-                        </div>
-                        <h5>Evaluasi & Transkrip Nilai</h5>
-                        <p>
-                            Kalkulasi nilai akhir semester otomatis, pencetakan KHS, pemantauan indeks prestasi (IPK),
-                            hingga lembar transkrip resmi.
-                        </p>
+                    <div class="layanan-card">
+                        <div class="layanan-icon"><i class="fa-solid fa-file-invoice"></i></div>
+                        <h5>Nilai & Transkrip</h5>
+                        <p>Input nilai, hitung IPK, dan cetak transkrip nilai secara otomatis.</p>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <a href="#" class="btn back-to-top" title="Kembali ke atas">
+    <!-- ================= BACK TO TOP ================= -->
+    <a href="#" class="back-to-top" title="Kembali ke atas">
         <i class="fa-solid fa-arrow-up"></i>
     </a>
 
-    <footer class="text-center">
+    <!-- ================= FOOTER ================= -->
+    <footer>
         <div class="container">
-            © {{ date('Y') }} SIAKAD - Sistem Informasi Akademik. Seluruh Hak Cipta Dilindungi.
+            &copy; {{ date('Y') }} Sistem Nilai Akademik Mahasiswa. All Rights Reserved.
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Back to top smooth
+        document.querySelector('.back-to-top').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
 
 </body>
 
