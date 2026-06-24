@@ -8,34 +8,34 @@ use Illuminate\Http\Request;
 class MahasiswaController extends Controller
 {
     public function index(Request $request)
-{
-    $query = Mahasiswa::query();
+    {
+        $query = Mahasiswa::query();
 
-    if ($request->prodi) {
-        $query->where('prodi', $request->prodi);
+        if ($request->prodi) {
+            $query->where('prodi', $request->prodi);
+        }
+
+        if ($request->angkatan) {
+            $query->where('angkatan', $request->angkatan);
+        }
+
+        $data = $query->get();
+
+        $prodis = Mahasiswa::select('prodi')
+            ->distinct()
+            ->pluck('prodi');
+
+        $angkatans = Mahasiswa::select('angkatan')
+            ->distinct()
+            ->orderBy('angkatan')
+            ->pluck('angkatan');
+
+        return view('mahasiswa.index', compact(
+            'data',
+            'prodis',
+            'angkatans'
+        ));
     }
-
-    if ($request->angkatan) {
-        $query->where('angkatan', $request->angkatan);
-    }
-
-    $data = $query->get();
-
-    $prodis = Mahasiswa::select('prodi')
-        ->distinct()
-        ->pluck('prodi');
-
-    $angkatans = Mahasiswa::select('angkatan')
-        ->distinct()
-        ->orderBy('angkatan')
-        ->pluck('angkatan');
-
-    return view('mahasiswa.index', compact(
-        'data',
-        'prodis',
-        'angkatans'
-    ));
-}
 
     public function create()
     {
@@ -83,5 +83,13 @@ class MahasiswaController extends Controller
 
         return redirect('/mahasiswa')
             ->with('success', 'Data mahasiswa berhasil dihapus');
+    }
+    public function profil()
+    {
+        return view('mahasiswa.profil');
+    }
+    public function show($id)
+    {
+        //
     }
 }

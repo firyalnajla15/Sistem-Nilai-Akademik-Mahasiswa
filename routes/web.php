@@ -33,6 +33,11 @@ Route::post('/login', [AuthController::class, 'authenticate']);
 Route::middleware('auth')->group(function () {
     Route::resource('mata-kuliah', MataKuliahController::class);
     Route::get('/nilai-mahasiswa', [NilaiMahasiswaController::class, 'index']);
+
+    Route::get('/mahasiswa/profil', function () {
+    return view('profil.profil');
+})->name('mahasiswa.profil');
+
     Route::resource('mahasiswa', MahasiswaController::class);
     Route::get('/logout', [AuthController::class, 'logout']);
 
