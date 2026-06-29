@@ -40,7 +40,7 @@ class AuthMahasiswaController extends Controller
         // Login dengan email
         if (Auth::attempt(['email' => $user->email, 'password' => $request->password])) {
             $request->session()->regenerate();
-            
+
             session([
                 'mahasiswa_login' => true,
                 'nim' => $mahasiswa->nim,
@@ -62,7 +62,7 @@ class AuthMahasiswaController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'nim' => 'required|unique:mahasiswa,nim',
+            'nim' => 'required',
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email',
             'password' => 'required|min:6|confirmed'

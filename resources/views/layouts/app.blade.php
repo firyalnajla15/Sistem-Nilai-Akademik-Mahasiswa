@@ -19,6 +19,7 @@
         body {
             background: #f0f2f5;
             font-family: 'Segoe UI', Arial, sans-serif;
+            overflow-x: hidden;
         }
 
         /* ================= TOPBAR ================= */
@@ -35,7 +36,12 @@
             padding: 0 24px;
             z-index: 1400;
             box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
-            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Saat sidebar terbuka di desktop, topbar bergeser */
+        .topbar.shifted {
+            left: 275px;
         }
 
         .topbar-title {
@@ -64,6 +70,7 @@
             margin-right: 14px;
             transition: all 0.3s ease;
             font-size: 18px;
+            flex-shrink: 0;
         }
 
         .toggle-btn:hover {
@@ -220,7 +227,6 @@
             color: #0ea5e9;
         }
 
-        /* ACTIVE STATE - Tanpa efek blur */
         .sidebar a.active {
             background: rgba(14, 165, 233, 0.2);
             color: #ffffff;
@@ -232,7 +238,6 @@
             color: #0ea5e9;
         }
 
-        /* Logout button special */
         .sidebar a.logout-link {
             color: rgba(239, 68, 68, 0.7);
             margin-top: 5px;
@@ -259,6 +264,13 @@
             transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 100vh;
             margin-left: 0;
+            width: 100%;
+        }
+
+        /* Saat sidebar terbuka di desktop, content bergeser */
+        .content-area.shifted {
+            margin-left: 275px;
+            width: calc(100% - 275px);
         }
 
         /* ================= OVERLAY ================= */
@@ -281,23 +293,52 @@
             .topbar {
                 padding: 0 16px;
                 height: 60px;
+                left: 0 !important;
+            }
+
+            .topbar.shifted {
+                left: 0 !important;
             }
 
             .topbar-title {
-                font-size: 0.95rem;
+                font-size: 0.85rem;
+            }
+
+            .topbar-title span {
+                display: none;
             }
 
             .topbar-title i {
-                display: none;
+                display: inline-block;
             }
 
             .content-area {
                 padding: 80px 16px 20px 16px;
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+
+            .content-area.shifted {
+                margin-left: 0 !important;
+                width: 100% !important;
             }
 
             .sidebar {
                 width: 280px;
                 padding: 75px 14px 20px 14px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .topbar-title {
+                font-size: 0.75rem;
+            }
+
+            .toggle-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 15px;
+                margin-right: 10px;
             }
         }
 
@@ -307,7 +348,6 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -345,7 +385,7 @@
         </button>
         <div class="topbar-title">
             <i class="fa-solid fa-graduation-cap"></i>
-            Sistem Nilai Akademik Mahasiswa
+            <span>Sistem Nilai Akademik Mahasiswa</span>
         </div>
     </div>
 
@@ -453,122 +493,104 @@
         @yield('content')
     </main>
 
-    <!-- ============ SCRIPTS ============ -->
     <script>
-        const sidebar = document.getElementById('sidebarMenu');
-        const overlay = document.getElementById('sidebarOverlay');
-        const mainContent = document.getElementById('mainContent');
-        const topbar = document.getElementById('topbar');
-        const toggleBtn = document.getElementById('toggleBtn');
+        document.addEventListener("DOMContentLoaded", function() {
 
-        // ====== FUNGSI BUKA SIDEBAR ======
-        function openSidebar() {
-            sidebar.classList.add('open');
+            const sidebar = document.getElementById('sidebarMenu');
+            const toggleBtn = document.getElementById('toggleBtn');
+            const mainContent = document.getElementById('mainContent');
+            const topbar = document.getElementById('topbar');
+            const overlay = document.getElementById('sidebarOverlay');
 
-            if (window.innerWidth > 768) {
-                mainContent.style.marginLeft = '275px';
-                topbar.style.marginLeft = '275px';
-                overlay.classList.remove('show');
-            } else {
-                overlay.classList.add('show');
-                mainContent.style.marginLeft = '0';
-                topbar.style.marginLeft = '0';
+            // ===============================
+            // Fungsi untuk update state sidebar
+            // ===============================
+            function updateSidebarState(isOpen) {
+                const isDesktop = window.innerWidth > 768;
+
+                if (isOpen) {
+                    sidebar.classList.add('open');
+
+                    if (isDesktop) {
+                        mainContent.classList.add('shifted');
+                        topbar.classList.add('shifted');
+                        overlay.classList.remove('show');
+                    } else {
+                        overlay.classList.add('show');
+                        mainContent.classList.remove('shifted');
+                        topbar.classList.remove('shifted');
+                    }
+                } else {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('show');
+                    mainContent.classList.remove('shifted');
+                    topbar.classList.remove('shifted');
+                }
             }
-        }
 
-        // ====== FUNGSI TUTUP SIDEBAR ======
-        function closeSidebar() {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('show');
-            mainContent.style.marginLeft = '0';
-            topbar.style.marginLeft = '0';
-        }
+            // ===============================
+            // Toggle Sidebar
+            // ===============================
+            toggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isOpen = !sidebar.classList.contains('open');
+                updateSidebarState(isOpen);
+            });
 
-        // ====== FUNGSI TOGGLE ======
-        function toggleSidebar() {
-            if (sidebar.classList.contains('open')) {
-                closeSidebar();
-            } else {
-                openSidebar();
-            }
-        }
+            // ===============================
+            // Klik Overlay (di luar sidebar di mobile)
+            // ===============================
+            overlay.addEventListener('click', function() {
+                updateSidebarState(false);
+            });
 
-        // ====== EVENT LISTENERS ======
-
-        // 1. Tombol toggle
-        toggleBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleSidebar();
-        });
-
-        // 2. Klik di overlay (tutup)
-        overlay.addEventListener('click', function(e) {
-            e.stopPropagation();
-            closeSidebar();
-        });
-
-        // 3. Klik di content (tutup di mobile)
-        mainContent.addEventListener('click', function() {
-            if (window.innerWidth <= 768) {
-                closeSidebar();
-            }
-        });
-
-        // 4. Klik di link sidebar (tutup di mobile)
-        document.querySelectorAll('.sidebar a').forEach(function(link) {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    closeSidebar();
+            // ===============================
+            // Klik di luar Sidebar (sensitive click)
+            // ===============================
+            document.addEventListener('click', function(e) {
+                if (
+                    sidebar.classList.contains('open') &&
+                    !sidebar.contains(e.target) &&
+                    !toggleBtn.contains(e.target)
+                ) {
+                    updateSidebarState(false);
                 }
             });
-        });
 
-        // 5. Tombol ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeSidebar();
+            // ===============================
+            // Resize Browser
+            // ===============================
+            let resizeTimeout;
+
+            function handleResize() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(function() {
+                    const isDesktop = window.innerWidth > 768;
+
+                    if (isDesktop) {
+                        // Di desktop, sidebar selalu terbuka
+                        updateSidebarState(true);
+                    } else {
+                        // Di mobile, sidebar tertutup
+                        updateSidebarState(false);
+                    }
+                }, 150);
             }
-        });
 
-        // 6. Resize layar
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                // Desktop: sidebar terbuka otomatis
-                if (!sidebar.classList.contains('open')) {
-                    sidebar.classList.add('open');
-                }
-                mainContent.style.marginLeft = '275px';
-                topbar.style.marginLeft = '275px';
-                overlay.classList.remove('show');
+            window.addEventListener('resize', handleResize);
+
+            // ===============================
+            // Inisialisasi pertama kali halaman dibuka
+            // ===============================
+            // Cek lebar layar pertama kali
+            const isDesktop = window.innerWidth > 768;
+            if (isDesktop) {
+                updateSidebarState(true);
             } else {
-                // Mobile
-                if (sidebar.classList.contains('open')) {
-                    mainContent.style.marginLeft = '0';
-                    topbar.style.marginLeft = '0';
-                    overlay.classList.add('show');
-                } else {
-                    mainContent.style.marginLeft = '0';
-                    topbar.style.marginLeft = '0';
-                    overlay.classList.remove('show');
-                }
+                updateSidebarState(false);
             }
-        });
 
-        // ====== INIT ======
-        // Saat pertama kali load
-        if (window.innerWidth > 768) {
-            // Desktop: sidebar terbuka
-            sidebar.classList.add('open');
-            mainContent.style.marginLeft = '275px';
-            topbar.style.marginLeft = '275px';
-            overlay.classList.remove('show');
-        } else {
-            // Mobile: sidebar tertutup
-            sidebar.classList.remove('open');
-            mainContent.style.marginLeft = '0';
-            topbar.style.marginLeft = '0';
-            overlay.classList.remove('show');
-        }
+        });
     </script>
 
 </body>
