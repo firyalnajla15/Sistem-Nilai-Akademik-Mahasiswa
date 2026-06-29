@@ -443,16 +443,16 @@
 
         <div class="user-profile">
             <div class="avatar">
-                {{ strtoupper(substr(Auth::user()->name ?? 'U', 0, 1)) }}
-            </div>
-            <div class="user-info">
-                <div class="user-name">
-                    {{ Auth::user()->name ?? 'User' }}
-                </div>
-                <div class="user-status">
-                    {{ Auth::user()->email ?? 'user@email.com' }}
-                </div>
-            </div>
+    {{ strtoupper(substr(session('nama','M'), 0, 1)) }}
+</div>
+
+<div class="user-name">
+    {{ session('nama') }}
+</div>
+
+<div class="user-status">
+    NIM : {{ session('nim') }}
+</div>
         </div>
 
         <div class="menu-header">Dashboard</div>
@@ -502,11 +502,11 @@
         <div class="menu-header">Akun</div>
         <ul class="nav flex-column">
             <li>
-                <a href="{{ route('mahasiswa.profil') }}" class="nav-link {{ request()->routeIs('mahasiswa.profil') ? 'active' : '' }}">
-                    <i class="fa-solid fa-user"></i>
-                    <span>Profil</span>
-                </a>
-            </li>
+        <a href="{{ route('mahasiswa.profil') }}" class="nav-link {{ request()->routeIs('mahasiswa.profil') ? 'active' : '' }}">
+            <i class="fa-solid fa-user"></i>
+            <span>Profil</span>
+        </a>
+    </li>
             <li>
                 <form action="{{ route('mahasiswa.logout') }}" method="POST">
                     @csrf

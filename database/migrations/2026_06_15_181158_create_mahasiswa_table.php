@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nim', 20)->unique();
             $table->string('nama', 100);
+            $table->string('email')->nullable()->unique();
             $table->string('prodi', 100)->nullable();
             $table->integer('angkatan')->nullable();
             $table->timestamps();

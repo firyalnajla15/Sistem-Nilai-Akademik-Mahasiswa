@@ -29,6 +29,10 @@ Route::post('/login', [AuthController::class, 'authenticate']);
 Route::middleware('auth')->group(function () {
     // ================= MAHASISWA =================
     Route::resource('mahasiswa', MahasiswaController::class);
+
+    Route::get('/mahasiswa/profil', function () {
+    return 'PROFIL OK';
+})->name('mahasiswa.profil');
     
     // ================= MATA KULIAH =================
     Route::resource('mata-kuliah', MataKuliahController::class);
@@ -58,11 +62,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profil', function () { 
         return view('profil.index'); 
     })->name('profil');
-    
-    // ================= PROFIL MAHASISWA =================
-    Route::get('/mahasiswa/profil', function () { 
-        return view('profil.profil'); 
-    })->name('mahasiswa.profil');
     
     // ================= LOGOUT =================
     Route::get('/logout', [AuthController::class, 'logout']);
