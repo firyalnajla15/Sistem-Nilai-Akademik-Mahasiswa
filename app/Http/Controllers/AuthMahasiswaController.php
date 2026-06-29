@@ -13,7 +13,7 @@ class AuthMahasiswaController extends Controller
 {
     public function showLogin()
     {
-        return view('auth.login_mahasiswa');
+        return view('mahasiswa.auth.login_mahasiswa');
     }
 
     public function login(Request $request)
@@ -23,22 +23,23 @@ class AuthMahasiswaController extends Controller
             'password' => 'required'
         ]);
 
-        // Cari mahasiswa berdasarkan NIM
         $mahasiswa = Mahasiswa::where('nim', $request->nim)->first();
 
         if (!$mahasiswa) {
             return back()->with('error', 'NIM tidak ditemukan!');
         }
 
-        // Cari user berdasarkan email
         $user = User::where('email', $mahasiswa->email)->first();
 
         if (!$user) {
             return back()->with('error', 'Akun belum diaktivasi! Silakan register.');
         }
 
-        // Login dengan email
-        if (Auth::attempt(['email' => $user->email, 'password' => $request->password])) {
+        if (Auth::attempt([
+            'email' => $user->email,
+            'password' => $request->password
+        ])) {
+
             $request->session()->regenerate();
 
             session([
@@ -56,7 +57,7 @@ class AuthMahasiswaController extends Controller
 
     public function showRegister()
     {
-        return view('auth.register_mahasiswa');
+        return view('mahasiswa.auth.register_mahasiswa');
     }
 
     public function register(Request $request)
@@ -72,15 +73,17 @@ class AuthMahasiswaController extends Controller
             'nim.unique' => 'NIM sudah terdaftar!'
         ]);
 
-        // Cek NIM di tabel mahasiswa
         $mahasiswa = Mahasiswa::where('nim', $request->nim)->first();
 
         if (!$mahasiswa) {
-            return back()->withErrors(['nim' => 'NIM tidak terdaftar di sistem! Hubungi admin.'])->withInput();
+            return back()
+                ->withErrors([
+                    'nim' => 'NIM tidak terdaftar di sistem! Hubungi admin.'
+                ])
+                ->withInput();
         }
 
-        // Buat user
-        $user = User::create([
+        User::create([
             'name' => $request->nama,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -88,7 +91,6 @@ class AuthMahasiswaController extends Controller
             'nim' => $request->nim
         ]);
 
-        // Update email mahasiswa
         $mahasiswa->update([
             'email' => $request->email,
         ]);
@@ -97,91 +99,13 @@ class AuthMahasiswaController extends Controller
             ->route('mahasiswa.login')
             ->with('success', 'Akun berhasil diaktivasi! Silakan login.');
     }
-
-    public function dashboard(Request $request)
+    public function dashboard()
     {
-        if (!Auth::check() || Auth::user()->role !== 'mahasiswa') {
-            Auth::logout();
-            session()->flush();
+        if (!Auth::check()) {
             return redirect()->route('mahasiswa.login');
         }
 
-        $nimSesi = session('nim') ?? Auth::user()->nim;
-        $semesterDipilih = $request->input('semester');
-
-        // Query nilai
-        $queryNilai = DB::table('nilai_mahasiswa')
-            ->join('mata_kuliah', 'nilai_mahasiswa.matkul_id', '=', 'mata_kuliah.id')
-            ->where('nilai_mahasiswa.nim', $nimSesi);
-
-        if (!empty($semesterDipilih)) {
-            $queryNilai->where('mata_kuliah.semester', $semesterDipilih);
-        }
-
-        $daftarNilai = $queryNilai->select(
-            'mata_kuliah.nama as nama_matakuliah',
-            'mata_kuliah.semester',
-            'nilai_mahasiswa.kehadiran',
-            'nilai_mahasiswa.tugas',
-            'nilai_mahasiswa.uts',
-            'nilai_mahasiswa.uas',
-            'nilai_mahasiswa.nilai_akhir',
-            'nilai_mahasiswa.grade'
-        )->orderBy('mata_kuliah.semester', 'asc')->get();
-
-        // Total SKS
-        $querySks = DB::table('nilai_mahasiswa')
-            ->join('mata_kuliah', 'nilai_mahasiswa.matkul_id', '=', 'mata_kuliah.id')
-            ->where('nilai_mahasiswa.nim', $nimSesi);
-
-        if (!empty($semesterDipilih)) {
-            $querySks->where('mata_kuliah.semester', $semesterDipilih);
-        }
-
-        $totalSks = $querySks->sum('mata_kuliah.sks');
-
-        // Jumlah Matkul
-        $queryJumlahMatkul = DB::table('nilai_mahasiswa')
-            ->join('mata_kuliah', 'nilai_mahasiswa.matkul_id', '=', 'mata_kuliah.id')
-            ->where('nilai_mahasiswa.nim', $nimSesi);
-
-        if (!empty($semesterDipilih)) {
-            $queryJumlahMatkul->where('mata_kuliah.semester', $semesterDipilih);
-        }
-
-        $jumlahMatkul = $queryJumlahMatkul->count();
-
-        // Grafik IPK
-        $semesterTertinggi = DB::table('nilai_mahasiswa')
-            ->join('mata_kuliah', 'nilai_mahasiswa.matkul_id', '=', 'mata_kuliah.id')
-            ->where('nilai_mahasiswa.nim', $nimSesi)
-            ->max('mata_kuliah.semester');
-
-        $batasLoop = $semesterTertinggi ? $semesterTertinggi : 1;
-
-        $grafikIpk = [];
-        for ($i = 1; $i <= $batasLoop; $i++) {
-            $rataRataSemester = DB::table('nilai_mahasiswa')
-                ->join('mata_kuliah', 'nilai_mahasiswa.matkul_id', '=', 'mata_kuliah.id')
-                ->where('nilai_mahasiswa.nim', $nimSesi)
-                ->where('mata_kuliah.semester', $i)
-                ->avg('nilai_mahasiswa.nilai_akhir');
-
-            $grafikIpk[] = $rataRataSemester ? number_format($rataRataSemester / 25, 2) : 0.00;
-        }
-
-        // IPK Total
-        $semuaNilai = DB::table('nilai_mahasiswa')->where('nim', $nimSesi)->avg('nilai_akhir');
-        $ipkTotal = $semuaNilai ? number_format($semuaNilai / 25, 2) : '0.00';
-
-        return view('dashboard.mahasiswa', compact(
-            'daftarNilai',
-            'totalSks',
-            'jumlahMatkul',
-            'grafikIpk',
-            'ipkTotal',
-            'semesterDipilih'
-        ));
+        return view('mahasiswa.dashboard.index');
     }
 
     public function profil()
@@ -189,15 +113,24 @@ class AuthMahasiswaController extends Controller
         if (!Auth::check()) {
             return redirect()->route('mahasiswa.login');
         }
-        return view('profil.profil');
+
+        return view('mahasiswa.profil.index');
     }
 
     public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        session()->flush();
-        return redirect()->route('mahasiswa.login');
-    }
+{
+    Auth::logout();
+
+    $request->session()->forget([
+        'mahasiswa_login',
+        'nim',
+        'nama',
+        'jurusan'
+    ]);
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()->route('mahasiswa.login');
+}
 }

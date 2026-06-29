@@ -30,7 +30,7 @@ class MahasiswaController extends Controller
             ->orderBy('angkatan')
             ->pluck('angkatan');
 
-        return view('mahasiswa.index', compact(
+        return view('admin.mahasiswa.index', compact(
             'data',
             'prodis',
             'angkatans'
@@ -39,7 +39,7 @@ class MahasiswaController extends Controller
 
     public function create()
     {
-        return view('mahasiswa.create');
+        return view('admin.mahasiswa.create');
     }
 
     public function store(Request $request)
@@ -51,15 +51,21 @@ class MahasiswaController extends Controller
             'angkatan' => $request->angkatan,
         ]);
 
-        return redirect('/mahasiswa')
+        return redirect()
+            ->route('mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil ditambahkan');
+    }
+
+    public function show($id)
+    {
+        //
     }
 
     public function edit($id)
     {
         $mahasiswa = Mahasiswa::findOrFail($id);
 
-        return view('mahasiswa.edit', compact('mahasiswa'));
+        return view('admin.mahasiswa.edit', compact('mahasiswa'));
     }
 
     public function update(Request $request, $id)
@@ -73,7 +79,8 @@ class MahasiswaController extends Controller
             'angkatan' => $request->angkatan,
         ]);
 
-        return redirect('/mahasiswa')
+        return redirect()
+            ->route('mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil diubah');
     }
 
@@ -81,15 +88,13 @@ class MahasiswaController extends Controller
     {
         Mahasiswa::destroy($id);
 
-        return redirect('/mahasiswa')
+        return redirect()
+            ->route('mahasiswa.index')
             ->with('success', 'Data mahasiswa berhasil dihapus');
     }
+
     public function profil()
     {
-        return view('mahasiswa.profil');
-    }
-    public function show($id)
-    {
-        //
+        return view('mahasiswa.profil.index');
     }
 }

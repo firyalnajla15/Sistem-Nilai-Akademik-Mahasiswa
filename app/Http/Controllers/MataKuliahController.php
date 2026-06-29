@@ -10,6 +10,7 @@ class MataKuliahController extends Controller
     public function index(Request $request)
     {
         $query = MataKuliah::query();
+
         $selectedSemester = $request->input('semester');
 
         if ($selectedSemester && $selectedSemester !== 'all') {
@@ -18,12 +19,15 @@ class MataKuliahController extends Controller
 
         $data = $query->latest()->get();
 
-        return view('mata_kuliah.index', compact('data', 'selectedSemester'));
+        return view('admin.mata_kuliah.index', compact(
+            'data',
+            'selectedSemester'
+        ));
     }
 
     public function create()
     {
-        return view('mata_kuliah.create');
+        return view('admin.mata_kuliah.create');
     }
 
     public function store(Request $request)
@@ -39,12 +43,19 @@ class MataKuliahController extends Controller
 
         MataKuliah::create($validated);
 
-        return redirect()->route('mata-kuliah.index')->with('success', 'Mata kuliah berhasil ditambahkan.');
+        return redirect()
+            ->route('mata-kuliah.index')
+            ->with('success', 'Mata kuliah berhasil ditambahkan.');
+    }
+
+    public function show(MataKuliah $mata_kuliah)
+    {
+        //
     }
 
     public function edit(MataKuliah $mata_kuliah)
     {
-        return view('mata_kuliah.edit', compact('mata_kuliah'));
+        return view('admin.mata_kuliah.edit', compact('mata_kuliah'));
     }
 
     public function update(Request $request, MataKuliah $mata_kuliah)
@@ -60,13 +71,17 @@ class MataKuliahController extends Controller
 
         $mata_kuliah->update($validated);
 
-        return redirect()->route('mata-kuliah.index')->with('success', 'Mata kuliah berhasil diperbarui.');
+        return redirect()
+            ->route('mata-kuliah.index')
+            ->with('success', 'Mata kuliah berhasil diperbarui.');
     }
 
     public function destroy(MataKuliah $mata_kuliah)
     {
         $mata_kuliah->delete();
 
-        return redirect()->route('mata-kuliah.index')->with('success', 'Mata kuliah berhasil dihapus.');
+        return redirect()
+            ->route('mata-kuliah.index')
+            ->with('success', 'Mata kuliah berhasil dihapus.');
     }
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
 
@@ -58,7 +58,7 @@
         font-size: 0.85rem;
     }
 
-    .btn-update {
+    .btn-simpan {
         background: #0f172a;
         color: #ffffff;
         border: none;
@@ -69,13 +69,13 @@
         font-size: 0.9rem;
     }
 
-    .btn-update:hover {
+    .btn-simpan:hover {
         background: #1e293b;
         color: #ffffff;
         transform: translateY(-1px);
     }
 
-    .btn-update i {
+    .btn-simpan i {
         margin-right: 8px;
     }
 
@@ -107,21 +107,20 @@
         <div class="card-body">
 
             <h4 class="form-title">
-                <i class="fa-solid fa-pen-to-square"></i>
-                Edit Mata Kuliah
+                <i class="fa-solid fa-book"></i>
+                Tambah Mata Kuliah
             </h4>
 
-            <form action="{{ route('mata-kuliah.update', $mata_kuliah->id) }}" method="POST">
+            <form action="{{ route('mata-kuliah.store') }}" method="POST">
                 @csrf
-                @method('PUT')
 
                 <div class="mb-3">
                     <label class="form-label">Kode Mata Kuliah</label>
                     <input type="text"
                            name="kode"
                            class="form-control"
-                           placeholder="Masukkan kode mata kuliah"
-                           value="{{ old('kode', $mata_kuliah->kode) }}"
+                           placeholder="Masukkan kode (contoh: MK101)"
+                           value="{{ old('kode') }}"
                            required>
                 </div>
 
@@ -131,7 +130,7 @@
                            name="nama"
                            class="form-control"
                            placeholder="Masukkan nama mata kuliah"
-                           value="{{ old('nama', $mata_kuliah->nama) }}"
+                           value="{{ old('nama') }}"
                            required>
                 </div>
 
@@ -141,7 +140,7 @@
                            name="sks"
                            class="form-control"
                            placeholder="Masukkan jumlah SKS"
-                           value="{{ old('sks', $mata_kuliah->sks) }}"
+                           value="{{ old('sks') }}"
                            min="1"
                            max="6"
                            required>
@@ -153,7 +152,7 @@
                            name="semester"
                            class="form-control"
                            placeholder="Masukkan semester (1-8)"
-                           value="{{ old('semester', $mata_kuliah->semester) }}"
+                           value="{{ old('semester', request('semester') != 'all' ? request('semester') : '') }}"
                            min="1"
                            max="8"
                            required>
@@ -165,7 +164,7 @@
                            name="tahun_akademik"
                            class="form-control"
                            placeholder="Contoh: 2024/2025"
-                           value="{{ old('tahun_akademik', $mata_kuliah->tahun_akademik) }}"
+                           value="{{ old('tahun_akademik') }}"
                            required>
                 </div>
 
@@ -175,13 +174,13 @@
                            name="dosen"
                            class="form-control"
                            placeholder="Masukkan nama dosen"
-                           value="{{ old('dosen', $mata_kuliah->dosen) }}"
+                           value="{{ old('dosen') }}"
                            required>
                 </div>
 
                 <div class="d-flex gap-3">
-                    <button type="submit" class="btn-update">
-                        <i class="fa-regular fa-floppy-disk"></i> Update
+                    <button type="submit" class="btn-simpan">
+                        <i class="fa-regular fa-floppy-disk"></i> Simpan
                     </button>
                     <a href="{{ route('mata-kuliah.index') }}" class="btn-kembali">
                         <i class="fa-solid fa-arrow-left"></i> Kembali

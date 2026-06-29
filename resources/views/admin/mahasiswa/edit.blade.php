@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
 
@@ -58,7 +58,7 @@
         font-size: 0.85rem;
     }
 
-    .btn-simpan {
+    .btn-update {
         background: #0f172a;
         color: #ffffff;
         border: none;
@@ -69,13 +69,13 @@
         font-size: 0.9rem;
     }
 
-    .btn-simpan:hover {
+    .btn-update:hover {
         background: #1e293b;
         color: #ffffff;
         transform: translateY(-1px);
     }
 
-    .btn-simpan i {
+    .btn-update i {
         margin-right: 8px;
     }
 
@@ -107,20 +107,21 @@
         <div class="card-body">
 
             <h4 class="form-title">
-                <i class="fa-solid fa-user-plus"></i>
-                Tambah Mahasiswa
+                <i class="fa-solid fa-pen-to-square"></i>
+                Edit Mahasiswa
             </h4>
 
-            <form action="{{ route('mahasiswa.store') }}" method="POST">
+            <form action="{{ route('mahasiswa.update', $mahasiswa->id) }}" method="POST">
                 @csrf
+                @method('PUT')
 
                 <div class="mb-3">
                     <label class="form-label">NIM</label>
                     <input type="text"
                            name="nim"
                            class="form-control"
-                           placeholder="Masukkan NIM (contoh: 2401092007)"
-                           value="{{ old('nim') }}"
+                           placeholder="Masukkan NIM"
+                           value="{{ old('nim', $mahasiswa->nim) }}"
                            required>
                 </div>
 
@@ -130,7 +131,7 @@
                            name="nama"
                            class="form-control"
                            placeholder="Masukkan nama lengkap"
-                           value="{{ old('nama') }}"
+                           value="{{ old('nama', $mahasiswa->nama) }}"
                            required>
                 </div>
 
@@ -140,7 +141,7 @@
                            name="prodi"
                            class="form-control"
                            placeholder="Masukkan program studi"
-                           value="{{ old('prodi') }}"
+                           value="{{ old('prodi', $mahasiswa->prodi) }}"
                            required>
                 </div>
 
@@ -149,14 +150,14 @@
                     <input type="number"
                            name="angkatan"
                            class="form-control"
-                           placeholder="Masukkan tahun angkatan (contoh: 2024)"
-                           value="{{ old('angkatan') }}"
+                           placeholder="Masukkan tahun angkatan"
+                           value="{{ old('angkatan', $mahasiswa->angkatan) }}"
                            required>
                 </div>
 
                 <div class="d-flex gap-3">
-                    <button type="submit" class="btn-simpan">
-                        <i class="fa-regular fa-floppy-disk"></i> Simpan
+                    <button type="submit" class="btn-update">
+                        <i class="fa-regular fa-floppy-disk"></i> Update
                     </button>
                     <a href="{{ route('mahasiswa.index') }}" class="btn-kembali">
                         <i class="fa-solid fa-arrow-left"></i> Kembali

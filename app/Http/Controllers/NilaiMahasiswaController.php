@@ -11,7 +11,13 @@ class NilaiMahasiswaController extends Controller
 {
     public function create()
     {
-        return view('nilai.create');
+        $matkul = MataKuliah::all();
+        $mahasiswa = Mahasiswa::all();
+
+        return view('admin.nilai.create', compact(
+            'matkul',
+            'mahasiswa'
+        ));
     }
 
     public function store(Request $request)
@@ -24,18 +30,21 @@ class NilaiMahasiswaController extends Controller
         ]);
 
         foreach ($request->nilai as $matkul_id => $nilai) {
-            // Cek duplikat
+
             $existing = NilaiMahasiswa::where('nim', $request->nim)
                 ->where('matkul_id', $matkul_id)
                 ->first();
 
-            // Hitung nilai akhir dan grade
             $kehadiran = $nilai['kehadiran'] ?? 0;
             $tugas = $nilai['tugas'] ?? 0;
             $uts = $nilai['uts'] ?? 0;
             $uas = $nilai['uas'] ?? 0;
-            
-            $nilaiAkhir = ($kehadiran * 0.1) + ($tugas * 0.2) + ($uts * 0.3) + ($uas * 0.4);
+
+            $nilaiAkhir = ($kehadiran * 0.10)
+                + ($tugas * 0.20)
+                + ($uts * 0.30)
+                + ($uas * 0.40);
+
             $grade = $this->getGrade($nilaiAkhir);
 
             $data = [
@@ -46,6 +55,7 @@ class NilaiMahasiswaController extends Controller
                 'tugas' => $tugas,
                 'uts' => $uts,
                 'uas' => $uas,
+                'nilai_akhir' => $nilaiAkhir,
                 'grade' => $grade,
             ];
 
@@ -56,24 +66,33 @@ class NilaiMahasiswaController extends Controller
             }
         }
 
-        return redirect()->route('nilai.create')
+        return redirect()
+            ->route('nilai.create')
             ->with('success', 'Nilai berhasil disimpan untuk semester ' . $request->semester);
     }
 
     public function index(Request $request)
     {
         $data = NilaiMahasiswa::with('matkul')->get();
+
         $matkuls = MataKuliah::all();
-        
-        return view('nilai.index', compact('data', 'matkuls'));
+
+        return view('admin.nilai.index', compact(
+            'data',
+            'matkuls'
+        ));
     }
 
     public function edit($id)
     {
         $nilai = NilaiMahasiswa::findOrFail($id);
+
         $matkul = MataKuliah::all();
 
-        return view('nilai.edit', compact('nilai', 'matkul'));
+        return view('admin.nilai.edit', compact(
+            'nilai',
+            'matkul'
+        ));
     }
 
     public function update(Request $request, $id)
@@ -90,10 +109,13 @@ class NilaiMahasiswaController extends Controller
 
         $nilai->refresh();
 
-        // Hitung ulang grade
         $na = $nilai->nilai_akhir;
+
         $grade = $this->getGrade($na);
-        $nilai->update(['grade' => $grade]);
+
+        $nilai->update([
+            'grade' => $grade
+        ]);
 
         return redirect()
             ->route('nilai.index')
@@ -103,6 +125,7 @@ class NilaiMahasiswaController extends Controller
     public function destroy($id)
     {
         $nilai = NilaiMahasiswa::findOrFail($id);
+
         $nilai->delete();
 
         return redirect()
@@ -110,23 +133,34 @@ class NilaiMahasiswaController extends Controller
             ->with('success', 'Data berhasil dihapus');
     }
 
-    // ========== API METHODS ==========
+    // ================= API =================
+
     public function searchMahasiswa(Request $request)
     {
         $q = $request->q;
+
         $data = Mahasiswa::where('nim', 'like', "%{$q}%")
             ->orWhere('nama', 'like', "%{$q}%")
             ->limit(10)
-            ->get(['nim', 'nama']);
-        
+            ->get([
+                'nim',
+                'nama'
+            ]);
+
         return response()->json($data);
     }
 
     public function getMatkulBySemester(Request $request)
     {
         $semester = $request->semester;
-        $data = MataKuliah::where('semester', $semester)->get(['id', 'nama', 'sks']);
-        
+
+        $data = MataKuliah::where('semester', $semester)
+            ->get([
+                'id',
+                'nama',
+                'sks'
+            ]);
+
         return response()->json($data);
     }
 
@@ -135,7 +169,7 @@ class NilaiMahasiswaController extends Controller
         $exists = NilaiMahasiswa::where('nim', $request->nim)
             ->where('matkul_id', $request->matkul_id)
             ->exists();
-        
+
         return response()->json($exists);
     }
 

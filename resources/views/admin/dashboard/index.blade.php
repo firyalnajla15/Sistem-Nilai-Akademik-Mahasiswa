@@ -1,12 +1,18 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
     @php
         $totalMahasiswa = \App\Models\Mahasiswa::count();
         $totalMataKuliah = \App\Models\MataKuliah::count();
         $totalNilai = \App\Models\NilaiMahasiswa::count();
-        $ratarata = \App\Models\NilaiMahasiswa::whereNotNull('nilai_akhir')->avg('nilai_akhir');
-        $ratarata = $ratarata !== null ? number_format($ratarata, 2) : '0.00';
+
+        $dataNilai = \App\Models\NilaiMahasiswa::all();
+
+        $ratarata = $dataNilai->avg(function ($item) {
+            return $item->nilai_akhir;
+        });
+
+        $ratarata = number_format($ratarata ?? 0, 2);
     @endphp
 
     <style>
@@ -294,6 +300,4 @@
             </div>
         </div>
     </div>
-
-
 @endsection

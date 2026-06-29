@@ -509,12 +509,12 @@
     </li>
             <li>
                 <form action="{{ route('mahasiswa.logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn-logout">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Logout</span>
-                    </button>
-                </form>
+    @csrf
+    <button type="submit" class="btn-logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+    </button>
+</form>
             </li>
         </ul>
     </aside>
