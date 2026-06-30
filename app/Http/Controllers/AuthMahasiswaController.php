@@ -44,6 +44,7 @@ class AuthMahasiswaController extends Controller
 
             session([
                 'mahasiswa_login' => true,
+                'mahasiswa_id' => $mahasiswa->id,
                 'nim' => $mahasiswa->nim,
                 'nama' => $mahasiswa->nama,
                 'jurusan' => $mahasiswa->prodi ?? 'Manajemen Informatika',
@@ -118,19 +119,20 @@ class AuthMahasiswaController extends Controller
     }
 
     public function logout(Request $request)
-{
-    Auth::logout();
+    {
+        Auth::logout();
 
-    $request->session()->forget([
-        'mahasiswa_login',
-        'nim',
-        'nama',
-        'jurusan'
-    ]);
+        $request->session()->forget([
+            'mahasiswa_login',
+            'mahasiswa_id',
+            'nim',
+            'nama',
+            'jurusan'
+        ]);
 
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
-    return redirect()->route('mahasiswa.login');
-}
+        return redirect()->route('mahasiswa.login');
+    }
 }

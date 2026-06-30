@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\KRS; // WAJIB pakai model
+use App\Models\KRS;
 
 class KRSController extends Controller
 {
@@ -13,6 +12,6 @@ class KRSController extends Controller
             ->where('mahasiswa_id', session('mahasiswa_id'))
             ->get();
 
-        return view('krs.index', compact('krs'));
+        return view('mahasiswa.krs.index', compact('krs'));
     }
 }

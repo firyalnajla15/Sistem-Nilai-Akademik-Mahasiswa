@@ -443,22 +443,23 @@
 
         <div class="user-profile">
             <div class="avatar">
-    {{ strtoupper(substr(session('nama','M'), 0, 1)) }}
-</div>
-
-<div class="user-name">
-    {{ session('nama') }}
-</div>
-
-<div class="user-status">
-    NIM : {{ session('nim') }}
-</div>
+                {{ strtoupper(substr(session('nama', 'M'), 0, 1)) }}
+            </div>
+            <div class="user-info">
+                <div class="user-name">
+                    {{ session('nama') }}
+                </div>
+                <div class="user-status">
+                    NIM : {{ session('nim') }}
+                </div>
+            </div>
         </div>
 
         <div class="menu-header">Dashboard</div>
         <ul class="nav flex-column">
             <li>
-                <a href="{{ route('mahasiswa.dashboard') }}" class="nav-link {{ request()->routeIs('mahasiswa.dashboard') ? 'active' : '' }}">
+                <a href="{{ route('mahasiswa.dashboard') }}"
+                    class="nav-link {{ request()->routeIs('mahasiswa.dashboard') ? 'active' : '' }}">
                     <i class="fa-solid fa-gauge"></i>
                     <span>Dashboard</span>
                 </a>
@@ -468,7 +469,8 @@
         <div class="menu-header">Akademik</div>
         <ul class="nav flex-column">
             <li>
-                <a href="#" class="nav-link">
+                <a href="{{ route('mahasiswa.krs') }}"
+                    class="nav-link {{ request()->routeIs('mahasiswa.krs') ? 'active' : '' }}">
                     <i class="fa-solid fa-book"></i>
                     <span>KRS</span>
                 </a>
@@ -476,7 +478,7 @@
             <li>
                 <a href="#" class="nav-link">
                     <i class="fa-solid fa-star"></i>
-                    <span>Nilai</span>
+                    <span>KHS</span>
                 </a>
             </li>
             <li>
@@ -502,19 +504,20 @@
         <div class="menu-header">Akun</div>
         <ul class="nav flex-column">
             <li>
-        <a href="{{ route('mahasiswa.profil') }}" class="nav-link {{ request()->routeIs('mahasiswa.profil') ? 'active' : '' }}">
-            <i class="fa-solid fa-user"></i>
-            <span>Profil</span>
-        </a>
-    </li>
+                <a href="{{ route('mahasiswa.profil') }}"
+                    class="nav-link {{ request()->routeIs('mahasiswa.profil') ? 'active' : '' }}">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profil</span>
+                </a>
+            </li>
             <li>
                 <form action="{{ route('mahasiswa.logout') }}" method="POST">
-    @csrf
-    <button type="submit" class="btn-logout">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        <span>Logout</span>
-    </button>
-</form>
+                    @csrf
+                    <button type="submit" class="btn-logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </button>
+                </form>
             </li>
         </ul>
     </aside>

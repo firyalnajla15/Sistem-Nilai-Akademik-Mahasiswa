@@ -95,6 +95,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/mahasiswa/profil', [AuthMahasiswaController::class, 'profil'])
         ->name('mahasiswa.profil');
 
+         // KRS Mahasiswa
+    Route::get('/mahasiswa/krs', [KRSController::class, 'index'])
+        ->name('mahasiswa.krs');
+
     /*
     |--------------------------------------------------------------------------
     | DATA MAHASISWA
