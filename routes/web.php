@@ -7,6 +7,7 @@ use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\NilaiMahasiswaController;
 use App\Http\Controllers\TranskripController;
+use App\Http\Controllers\KRSController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,16 @@ Route::post('/mahasiswa/register', [AuthMahasiswaController::class, 'register'])
 */
 
 Route::middleware('auth')->group(function () {
+
+/*
+    |--------------------------------------------------------------------------
+    | KRS
+    |--------------------------------------------------------------------------
+    */
+
+    Route::prefix('krs')->name('krs.')->group(function () {
+    Route::get('/', [KRSController::class, 'index'])->name('index');
+});
 
     /*
     |--------------------------------------------------------------------------
@@ -132,6 +143,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TranskripController::class, 'index'])->name('index');
 
     });
+
 
     /*
     |--------------------------------------------------------------------------
