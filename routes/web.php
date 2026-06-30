@@ -8,6 +8,7 @@ use App\Http\Controllers\MataKuliahController;
 use App\Http\Controllers\NilaiMahasiswaController;
 use App\Http\Controllers\TranskripController;
 use App\Http\Controllers\KRSController;
+use App\Http\Controllers\KHSController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,15 +60,15 @@ Route::post('/mahasiswa/register', [AuthMahasiswaController::class, 'register'])
 
 Route::middleware('auth')->group(function () {
 
-/*
+    /*
     |--------------------------------------------------------------------------
     | KRS
     |--------------------------------------------------------------------------
     */
 
     Route::prefix('krs')->name('krs.')->group(function () {
-    Route::get('/', [KRSController::class, 'index'])->name('index');
-});
+        Route::get('/', [KRSController::class, 'index'])->name('index');
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -95,9 +96,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/mahasiswa/profil', [AuthMahasiswaController::class, 'profil'])
         ->name('mahasiswa.profil');
 
-         // KRS Mahasiswa
+    // KRS Mahasiswa
     Route::get('/mahasiswa/krs', [KRSController::class, 'index'])
         ->name('mahasiswa.krs');
+
+    Route::get('/mahasiswa/khs', [KHSController::class, 'index'])
+        ->name('mahasiswa.khs');
 
     /*
     |--------------------------------------------------------------------------
@@ -146,7 +150,6 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/', [TranskripController::class, 'index'])->name('index');
         Route::get('/pdf', [TranskripController::class, 'pdf'])->name('pdf');
-
     });
 
 
@@ -158,18 +161,23 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('api')->name('api.')->group(function () {
 
-        Route::get('/search-mahasiswa',
-            [NilaiMahasiswaController::class, 'searchMahasiswa'])
+        Route::get(
+            '/search-mahasiswa',
+            [NilaiMahasiswaController::class, 'searchMahasiswa']
+        )
             ->name('search.mahasiswa');
 
-        Route::get('/matkul-by-semester',
-            [NilaiMahasiswaController::class, 'getMatkulBySemester'])
+        Route::get(
+            '/matkul-by-semester',
+            [NilaiMahasiswaController::class, 'getMatkulBySemester']
+        )
             ->name('matkul.by.semester');
 
-        Route::get('/check-nilai',
-            [NilaiMahasiswaController::class, 'checkNilai'])
+        Route::get(
+            '/check-nilai',
+            [NilaiMahasiswaController::class, 'checkNilai']
+        )
             ->name('check.nilai');
-
     });
 
     /*

@@ -11,7 +11,7 @@
     </div>
 
     <div class="card">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #0b1f3a, #1a365d);">
             <span><i class="fa-solid fa-list me-2"></i>Daftar Mata Kuliah</span>
             <span class="badge bg-light text-dark">{{ count($krs) }} Mata Kuliah</span>
         </div>
@@ -19,9 +19,9 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover align-middle">
-                    <thead class="table-light">
+                    <thead style="background: #0b1f3a; color: white;">
                         <tr>
-                            <th width="50">No</th>
+                            <th width="50" class="text-center">No</th>
                             <th>Kode MK</th>
                             <th>Mata Kuliah</th>
                             <th width="80" class="text-center">SKS</th>
@@ -33,9 +33,9 @@
                         @forelse($krs as $i => $item)
                         <tr>
                             <td class="text-center">{{ $i + 1 }}</td>
-                            <td><span class="badge bg-secondary">{{ $item->mataKuliah->kode }}</span></td>
+                            <td><span class="badge" style="background: #0b1f3a;">{{ $item->mataKuliah->kode }}</span></td>
                             <td>{{ $item->mataKuliah->nama }}</td>
-                            <td class="text-center"><span class="badge bg-primary">{{ $item->mataKuliah->sks }}</span></td>
+                            <td class="text-center"><span class="badge" style="background: #0ea5e9;">{{ $item->mataKuliah->sks }}</span></td>
                             <td class="text-center">{{ $item->semester }}</td>
                         </tr>
                         @empty
@@ -49,10 +49,10 @@
                     </tbody>
 
                     @if(count($krs) > 0)
-                    <tfoot class="table-light fw-bold">
+                    <tfoot style="background: #f0f4f8; font-weight: bold;">
                         <tr>
                             <td colspan="3" class="text-end">Total SKS</td>
-                            <td class="text-center">{{ $krs->sum(fn($item) => $item->mataKuliah->sks) }}</td>
+                            <td class="text-center"><span class="badge" style="background: #0b1f3a; color: white;">{{ $krs->sum(fn($item) => $item->mataKuliah->sks) }}</span></td>
                             <td></td>
                         </tr>
                     </tfoot>

@@ -476,7 +476,8 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link">
+                <a href="{{ route('mahasiswa.khs') }}"
+                    class="nav-link {{ request()->routeIs('mahasiswa.khs') ? 'active' : '' }}">
                     <i class="fa-solid fa-star"></i>
                     <span>KHS</span>
                 </a>
