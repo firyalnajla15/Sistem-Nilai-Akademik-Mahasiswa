@@ -141,6 +141,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('transkrip')->name('transkrip.')->group(function () {
 
         Route::get('/', [TranskripController::class, 'index'])->name('index');
+        Route::get('/pdf', [TranskripController::class, 'pdf'])->name('pdf');
 
     });
 
