@@ -154,6 +154,7 @@
             font-size: 13px;
             font-weight: 500;
             position: relative;
+            text-decoration: none;
         }
 
         .sidebar .nav-link i {
@@ -183,6 +184,30 @@
 
         .sidebar .nav-link.active i {
             color: #0ea5e9;
+        }
+
+        /* Notification badge on nav link */
+        .sidebar .nav-link .nav-badge {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ef4444;
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+        }
+
+        .sidebar .nav-link .nav-badge.empty {
+            display: none;
         }
 
         /* Logout Button */
@@ -254,6 +279,7 @@
             color: white;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 0 25px;
             font-weight: 600;
             font-size: 16px;
@@ -264,7 +290,269 @@
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .topbar i {
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topbar-left i {
+            color: #0ea5e9;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* ========== NOTIFICATION BELL IN TOPBAR ========== */
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            padding: 8px 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .notification-bell:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.12);
+            transform: scale(1.02);
+        }
+
+        .notification-bell i {
+            font-size: 20px;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #ef4444;
+            color: white;
+            font-size: 9px;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);
+            animation: pulse-badge 2s infinite;
+            border: 2px solid #1a365d;
+        }
+
+        .notification-badge.empty {
+            display: none;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        /* ========== DROPDOWN NOTIFICATION ========== */
+        .notification-dropdown {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: white;
+            border-radius: 14px;
+            min-width: 420px;
+            max-width: 480px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.25);
+            display: none;
+            z-index: 1500;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .notification-dropdown.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .notification-dropdown-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+        }
+
+        .notification-dropdown-header h6 {
+            font-weight: 700;
+            color: #1c2b3a;
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .notification-dropdown-header h6 i {
+            color: #0ea5e9;
+        }
+
+        .notification-dropdown-header .mark-all-read {
+            font-size: 12px;
+            color: #0ea5e9;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 12px;
+            border-radius: 6px;
+            background: rgba(14, 165, 233, 0.08);
+            transition: all 0.2s ease;
+        }
+
+        .notification-dropdown-header .mark-all-read:hover {
+            background: rgba(14, 165, 233, 0.15);
+            text-decoration: none;
+        }
+
+        .notification-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+
+        .notification-list::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .notification-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .notification-list::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+
+        .notification-list::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+
+        .notification-item {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f3f4f6;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .notification-item:hover {
+            background: #f9fafb;
+        }
+
+        .notification-item.unread {
+            background: #eff6ff;
+            border-left: 4px solid #0ea5e9;
+        }
+
+        .notification-item.unread:hover {
+            background: #dbeafe;
+        }
+
+        .notification-item-title {
+            font-weight: 600;
+            color: #1c2b3a;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .notification-item-message {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .notification-item-time {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .notification-item .badge-jenis {
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 10px;
+        }
+
+        .notification-dropdown-footer {
+            padding: 12px 20px;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        .notification-dropdown-footer a {
+            color: #0ea5e9;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .notification-dropdown-footer a:hover {
+            text-decoration: none;
+            color: #0284c7;
+            transform: translateX(4px);
+        }
+
+        .notification-empty {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .notification-empty i {
+            font-size: 48px;
+            color: #d1d5db;
+            margin-bottom: 12px;
+        }
+
+        .notification-empty p {
+            color: #9ca3af;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* ========== TOPBAR TITLE ========== */
+        .topbar-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .topbar-title i {
             margin-right: 10px;
             color: #0ea5e9;
         }
@@ -356,11 +644,15 @@
 
             .topbar {
                 margin-left: 0;
-                padding-left: 70px;
+                padding: 0 16px;
                 font-size: 14px;
             }
 
-            .topbar i {
+            .topbar-title {
+                font-size: 14px;
+            }
+
+            .topbar-title i {
                 display: none;
             }
 
@@ -409,6 +701,32 @@
             .sidebar .btn-logout i {
                 font-size: 15px;
                 margin: 0;
+            }
+
+            .notification-dropdown {
+                min-width: 320px;
+                max-width: 340px;
+                right: -60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .notification-dropdown {
+                min-width: 290px;
+                max-width: 300px;
+                right: -80px;
+            }
+
+            .notification-item {
+                padding: 12px 16px;
+            }
+
+            .notification-item-title {
+                font-size: 13px;
+            }
+
+            .notification-item-message {
+                font-size: 12px;
             }
         }
 
@@ -490,9 +808,13 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link">
-                    <i class="fa-solid fa-bell"></i>
+                <a href="{{ route('mahasiswa.notifikasi') }}"
+                    class="nav-link {{ request()->routeIs('mahasiswa.notifikasi') ? 'active' : '' }}">
+                    <i class="fas fa-bell"></i>
                     <span>Notifikasi</span>
+                    <span class="nav-badge {{ $jumlahNotifikasi > 0 ? '' : 'empty' }}">
+                        {{ $jumlahNotifikasi > 0 ? $jumlahNotifikasi : '' }}
+                    </span>
                 </a>
             </li>
         </ul>
@@ -520,8 +842,97 @@
 
     <!-- ========== TOPBAR ========== -->
     <div class="topbar">
-        <i class="fa-solid fa-graduation-cap"></i>
-        Portal Akademik Mahasiswa
+        <div class="topbar-left">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span class="topbar-title">Portal Akademik Mahasiswa</span>
+        </div>
+        <div class="topbar-right">
+            <!-- Notification Bell -->
+            <div class="notification-bell" id="notificationBell" onclick="toggleNotificationDropdown(event)">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge {{ $jumlahNotifikasi > 0 ? '' : 'empty' }}" id="notificationBadge">
+                    {{ $jumlahNotifikasi > 0 ? $jumlahNotifikasi : '' }}
+                </span>
+
+                <!-- Dropdown -->
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-dropdown-header">
+                        <h6>
+                            <i class="fas fa-bell me-1"></i>
+                            Notifikasi
+                        </h6>
+                        @if($notifikasiTerbaru->count() > 0)
+                            <span class="mark-all-read" onclick="markAllNotificationsRead(event)">
+                                <i class="fas fa-check-double me-1"></i>
+                                Tandai semua dibaca
+                            </span>
+                        @endif
+                    </div>
+
+                    <div class="notification-list">
+                        @forelse($notifikasiTerbaru as $item)
+                            <div class="notification-item {{ !$item->dibaca ? 'unread' : '' }}" 
+                                 onclick="markNotificationRead({{ $item->id }}, event)">
+                                <div>
+                                    <div class="notification-item-title">
+                                        {{ $item->judul }}
+                                        @if(!$item->dibaca)
+                                            <span class="badge bg-danger badge-jenis ms-1">Baru</span>
+                                        @endif
+                                    </div>
+                                    <div class="notification-item-message">
+                                        {{ $item->pesan }}
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <span class="notification-item-time">
+                                            <i class="far fa-clock me-1"></i>
+                                            {{ $item->created_at->diffForHumans() }}
+                                        </span>
+                                        <span class="badge badge-jenis 
+                                            @switch($item->jenis)
+                                                @case('nilai')
+                                                    bg-success
+                                                    @break
+                                                @case('krs')
+                                                    bg-warning text-dark
+                                                    @break
+                                                @default
+                                                    bg-info
+                                            @endswitch
+                                        ">
+                                            @switch($item->jenis)
+                                                @case('nilai')
+                                                    <i class="fas fa-star me-1"></i>Nilai
+                                                    @break
+                                                @case('krs')
+                                                    <i class="fas fa-book me-1"></i>KRS
+                                                    @break
+                                                @default
+                                                    <i class="fas fa-info-circle me-1"></i>Info
+                                            @endswitch
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="notification-empty">
+                                <i class="fas fa-bell-slash"></i>
+                                <p>Tidak ada notifikasi baru</p>
+                            </div>
+                        @endforelse
+                    </div>
+
+                    @if($notifikasiTerbaru->count() > 0)
+                        <div class="notification-dropdown-footer">
+                            <a href="{{ route('mahasiswa.notifikasi') }}">
+                                Lihat semua notifikasi
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ========== CONTENT ========== -->
@@ -548,23 +959,19 @@
         }
 
         // ====== KLIK DI LUAR SIDEBAR UNTUK MENUTUP ======
-        // 1. Klik di overlay
         overlay.addEventListener('click', closeSidebar);
 
-        // 2. Klik di content (area utama)
         mainContent.addEventListener('click', function() {
             if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
                 closeSidebar();
             }
         });
 
-        // 3. Klik di tombol hamburger
         hamburgerBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             toggleSidebar();
         });
 
-        // 4. Klik di link sidebar (tutup otomatis di mobile)
         document.querySelectorAll('.sidebar .nav-link, .sidebar .btn-logout').forEach(function(link) {
             link.addEventListener('click', function() {
                 if (window.innerWidth <= 768) {
@@ -573,18 +980,140 @@
             });
         });
 
-        // 5. Tutup dengan tombol ESC
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && sidebar.classList.contains('open')) {
                 closeSidebar();
             }
         });
 
-        // 6. Resize: jika layar membesar, tutup sidebar mobile
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
                 closeSidebar();
             }
+        });
+
+        // ====== NOTIFICATION FUNCTIONS ======
+        const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+        function toggleNotificationDropdown(event) {
+            event.stopPropagation();
+            const dropdown = document.getElementById('notificationDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const bell = document.getElementById('notificationBell');
+            const dropdown = document.getElementById('notificationDropdown');
+            if (!bell.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        function markNotificationRead(id, event) {
+            if (event) {
+                event.stopPropagation();
+            }
+
+            fetch(`/mahasiswa/notifikasi/${id}/read`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': CSRF_TOKEN
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update UI
+                    const item = document.querySelector(`[onclick*="markNotificationRead(${id}"]`)?.closest('.notification-item');
+                    if (item) {
+                        item.classList.remove('unread');
+                        const badge = item.querySelector('.badge-danger');
+                        if (badge) badge.remove();
+                    }
+                    
+                    // Update badge count
+                    updateNotificationCount();
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function markAllNotificationsRead(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+
+            if (!confirm('Tandai semua notifikasi sebagai dibaca?')) {
+                return;
+            }
+
+            fetch('/mahasiswa/notifikasi/mark-all-read', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': CSRF_TOKEN
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update UI - remove unread class from all items
+                    document.querySelectorAll('.notification-item.unread').forEach(item => {
+                        item.classList.remove('unread');
+                        const badge = item.querySelector('.badge-danger');
+                        if (badge) badge.remove();
+                    });
+                    
+                    // Update badge count
+                    updateNotificationCount();
+                    
+                    // Close dropdown
+                    document.getElementById('notificationDropdown').classList.remove('show');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function updateNotificationCount() {
+            fetch('/mahasiswa/notifikasi/unread-count')
+                .then(response => response.json())
+                .then(data => {
+                    const badge = document.getElementById('notificationBadge');
+                    const navBadge = document.querySelector('.nav-badge');
+                    const count = data.count || 0;
+                    
+                    if (count > 0) {
+                        badge.textContent = count;
+                        badge.classList.remove('empty');
+                        if (navBadge) {
+                            navBadge.textContent = count;
+                            navBadge.classList.remove('empty');
+                        }
+                    } else {
+                        badge.textContent = '';
+                        badge.classList.add('empty');
+                        if (navBadge) {
+                            navBadge.textContent = '';
+                            navBadge.classList.add('empty');
+                        }
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Auto refresh notification count every 30 seconds
+        setInterval(updateNotificationCount, 30000);
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close dropdown on ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    document.getElementById('notificationDropdown').classList.remove('show');
+                }
+            });
         });
     </script>
 

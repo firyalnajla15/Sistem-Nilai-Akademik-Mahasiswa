@@ -10,6 +10,7 @@ use App\Http\Controllers\TranskripController;
 use App\Http\Controllers\KRSController;
 use App\Http\Controllers\KHSController;
 use App\Http\Controllers\GrafikIPKController;
+use App\Http\Controllers\NotifikasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +107,20 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/mahasiswa/grafik-ipk', [GrafikIPKController::class, 'index'])
         ->name('mahasiswa.grafik-ipk');
+
+    Route::get('/mahasiswa/notifikasi', [NotifikasiController::class, 'index'])
+        ->name('mahasiswa.notifikasi');
+
+    Route::get('/mahasiswa/notifikasi-terbaru', [NotifikasiController::class, 'terbaru'])
+        ->name('mahasiswa.notifikasi.terbaru');
+
+    Route::post('/mahasiswa/notifikasi/baca', [NotifikasiController::class, 'bacaSemua'])
+        ->name('mahasiswa.notifikasi.baca');
+    Route::get(
+        '/mahasiswa/notifikasi/baca',
+        [NotifikasiController::class, 'bacaSemua']
+    )
+        ->name('mahasiswa.notifikasi.baca');
 
     /*
     |--------------------------------------------------------------------------

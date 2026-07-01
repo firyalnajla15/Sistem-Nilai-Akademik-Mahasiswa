@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\NilaiMahasiswa;
 use App\Models\MataKuliah;
 use App\Models\Mahasiswa;
+use App\Models\Notifikasi;
 
 class NilaiMahasiswaController extends Controller
 {
@@ -59,11 +60,29 @@ class NilaiMahasiswaController extends Controller
                 'grade' => $grade,
             ];
 
+            $matkul = MataKuliah::find($matkul_id);
+
             if ($existing) {
+
                 $existing->update($data);
             } else {
+
                 NilaiMahasiswa::create($data);
             }
+
+            Notifikasi::create([
+
+                'nim' => $request->nim,
+
+                'judul' => 'Nilai Mata Kuliah',
+
+                'pesan' => 'Nilai mata kuliah ' . $matkul->nama . ' telah keluar.',
+
+                'jenis' => 'nilai',
+
+                'dibaca' => false
+
+            ]);
         }
 
         return redirect()
