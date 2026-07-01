@@ -62,15 +62,16 @@ Route::post('/mahasiswa/register', [AuthMahasiswaController::class, 'register'])
 
 Route::middleware('auth')->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | KRS
-    |--------------------------------------------------------------------------
-    */
+   /*
+|--------------------------------------------------------------------------
+| KRS
+|--------------------------------------------------------------------------
+*/
 
-    Route::prefix('krs')->name('krs.')->group(function () {
-        Route::get('/', [KRSController::class, 'index'])->name('index');
-    });
+Route::prefix('krs')->name('krs.')->group(function () {
+    Route::get('/', [KRSController::class, 'index'])->name('index');
+    Route::post('/store', [KRSController::class, 'store'])->name('store');
+});
 
     /*
     |--------------------------------------------------------------------------
@@ -99,8 +100,13 @@ Route::middleware('auth')->group(function () {
         ->name('mahasiswa.profil');
 
     // KRS Mahasiswa
-    Route::get('/mahasiswa/krs', [KRSController::class, 'index'])
-        ->name('mahasiswa.krs');
+Route::get('/mahasiswa/krs', [KRSController::class, 'index'])
+    ->name('mahasiswa.krs');
+    Route::get('/mahasiswa/krs/pdf', [KRSController::class, 'pdf'])
+    ->name('mahasiswa.krs.pdf');
+
+Route::post('/mahasiswa/krs/store', [KRSController::class, 'store'])
+    ->name('mahasiswa.krs.store');
 
     Route::get('/mahasiswa/khs', [KHSController::class, 'index'])
         ->name('mahasiswa.khs');
@@ -114,13 +120,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/mahasiswa/notifikasi-terbaru', [NotifikasiController::class, 'terbaru'])
         ->name('mahasiswa.notifikasi.terbaru');
 
-    Route::post('/mahasiswa/notifikasi/baca', [NotifikasiController::class, 'bacaSemua'])
-        ->name('mahasiswa.notifikasi.baca');
-    Route::get(
-        '/mahasiswa/notifikasi/baca',
-        [NotifikasiController::class, 'bacaSemua']
-    )
-        ->name('mahasiswa.notifikasi.baca');
+    Route::get('/mahasiswa/notifikasi/baca', [NotifikasiController::class, 'bacaSemua'])
+    ->name('mahasiswa.notifikasi.baca');
 
     /*
     |--------------------------------------------------------------------------

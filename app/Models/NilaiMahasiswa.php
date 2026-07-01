@@ -11,15 +11,16 @@ class NilaiMahasiswa extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'matkul_id',
-        'nim',
-        'nama_mahasiswa',
-        'kehadiran',
-        'tugas',
-        'uts',
-        'uas',
-        'grade'
-    ];
+    'matkul_id',
+    'nim',
+    'nama_mahasiswa',
+    'kehadiran',
+    'tugas',
+    'uts',
+    'uas',
+    'nilai_akhir',
+    'grade'
+];
 
     public function matkul()
     {

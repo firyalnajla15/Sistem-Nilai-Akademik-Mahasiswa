@@ -57,7 +57,7 @@
                         @forelse($nilai as $item)
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
-                            <td>{{ $item->matkul->nama_mk }}</td>
+                            <td>{{ $item->matkul->nama }}</td>
                             <td class="text-center"><span class="badge" style="background: #0b1f3a;">{{ $item->matkul->sks }}</span></td>
                             <td class="text-center fw-semibold">{{ number_format($item->nilai_akhir, 2) }}</td>
                             <td class="text-center">
