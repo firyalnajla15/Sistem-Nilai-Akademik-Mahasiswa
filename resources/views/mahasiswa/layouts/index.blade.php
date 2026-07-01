@@ -483,13 +483,8 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link">
-                    <i class="fa-solid fa-file-lines"></i>
-                    <span>Transkrip</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="nav-link">
+                <a href="{{ route('mahasiswa.grafik-ipk') }}"
+                    class="nav-link {{ request()->routeIs('mahasiswa.grafik-ipk') ? 'active' : '' }}">
                     <i class="fa-solid fa-chart-line"></i>
                     <span>Grafik IPK</span>
                 </a>

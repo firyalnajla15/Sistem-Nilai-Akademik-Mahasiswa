@@ -130,6 +130,60 @@
             color: #1c2b3a;
         }
 
+        /* Perbaikan grafik */
+        .chart-wrapper {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 220px;
+            padding: 0 10px;
+            gap: 8px;
+        }
+
+        .chart-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chart-bar-wrapper {
+            display: flex;
+            align-items: flex-end;
+            height: 180px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .chart-bar {
+            width: 32px;
+            border-radius: 4px 4px 0 0;
+            transition: 0.3s;
+            min-height: 8px;
+        }
+
+        .chart-bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.02);
+            transform-origin: bottom;
+        }
+
+        .chart-label {
+            font-size: 10px;
+            color: #6c757d;
+            margin-top: 6px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .chart-value {
+            font-size: 11px;
+            font-weight: 700;
+            color: #1c2b3a;
+            margin-top: 2px;
+        }
+
         @media (max-width: 768px) {
             .welcome-box {
                 flex-direction: column;
@@ -139,6 +193,28 @@
 
             .stat-card .stat-value {
                 font-size: 20px;
+            }
+
+            .chart-wrapper {
+                height: 180px;
+                padding: 0 5px;
+                gap: 4px;
+            }
+
+            .chart-bar-wrapper {
+                height: 140px;
+            }
+
+            .chart-bar {
+                width: 24px;
+            }
+
+            .chart-label {
+                font-size: 9px;
+            }
+
+            .chart-value {
+                font-size: 9px;
             }
         }
     </style>
@@ -254,47 +330,48 @@
         </div>
         <div class="card-body">
 
-            <div class="d-flex justify-content-between align-items-end" style="height: 200px; padding: 0 5px;">
+            @php
+                $semesters = range(1, 8);
+                $ipsData = [];
 
-                @php
+                for ($i = 1; $i <= 8; $i++) {
+                    $nilai = \App\Models\NilaiMahasiswa::where('nim', session('nim'))
+                        ->whereHas('matkul', function ($q) use ($i) {
+                            $q->where('semester', $i);
+                        })
+                        ->get()
+                        ->avg(function ($item) {
+                            return $item->nilai_akhir;
+                        });
 
-                    $semesters = range(1, 8);
+                    $ipsData[$i] = $nilai ? round($nilai / 25, 2) : 0;
+                }
 
-                    $ipsData = [];
+                $maxIps = 4;
+                $maxValue = max($ipsData);
+            @endphp
 
-                    for ($i = 1; $i <= 8; $i++) {
-                        $nilai = \App\Models\NilaiMahasiswa::where('nim', session('nim'))
-                            ->whereHas('matkul', function ($q) use ($i) {
-                                $q->where('semester', $i);
-                            })
-                            ->get()
-                            ->avg(function ($item) {
-                                return $item->nilai_akhir;
-                            });
-
-                        $ipsData[$i] = $nilai ? round($nilai / 25, 2) : 0;
-                    }
-
-                    $maxIps = 4;
-
-                @endphp
-
+            <div class="chart-wrapper">
                 @foreach ($semesters as $sem)
                     @php
-                        $height = ($ipsData[$sem] / $maxIps) * 170;
+                        $height = $ipsData[$sem] > 0 ? ($ipsData[$sem] / $maxIps) * 100 : 0;
+                        $percentage = max($height, 5);
+                        $isHighest = $ipsData[$sem] > 0 && $ipsData[$sem] == $maxValue;
+                        $barColor = $isHighest ? '#0ea5e9' : '#93c5fd';
                     @endphp
-                    <div class="text-center" style="flex: 1;">
-                        <div class="chart-bar"
-                            style="height: {{ max($height, 15) }}px; 
-                                width: 30px; 
-                                margin: 0 auto;
-                               background: {{ ($ipsData[$sem] > 0 && $ipsData[$sem] == max($ipsData)) ? '#0ea5e9' : '#93c5fd' }};
+                    <div class="chart-item">
+                        <div class="chart-bar-wrapper">
+                            <div class="chart-bar"
+                                style="height: {{ $percentage }}%; 
+                                       background: {{ $barColor }};
+                                       width: 100%;
+                                       max-width: 40px;">
+                            </div>
                         </div>
                         <div class="chart-label">Sem {{ $sem }}</div>
                         <div class="chart-value">{{ number_format($ipsData[$sem], 2) }}</div>
                     </div>
                 @endforeach
-
             </div>
 
             <p class="text-center text-muted small mt-3 mb-0">

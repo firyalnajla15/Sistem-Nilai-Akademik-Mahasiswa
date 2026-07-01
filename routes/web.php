@@ -9,6 +9,7 @@ use App\Http\Controllers\NilaiMahasiswaController;
 use App\Http\Controllers\TranskripController;
 use App\Http\Controllers\KRSController;
 use App\Http\Controllers\KHSController;
+use App\Http\Controllers\GrafikIPKController;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,6 +103,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/mahasiswa/khs', [KHSController::class, 'index'])
         ->name('mahasiswa.khs');
+
+    Route::get('/mahasiswa/grafik-ipk', [GrafikIPKController::class, 'index'])
+        ->name('mahasiswa.grafik-ipk');
 
     /*
     |--------------------------------------------------------------------------
