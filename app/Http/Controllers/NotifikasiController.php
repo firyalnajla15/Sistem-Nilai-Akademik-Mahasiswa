@@ -11,9 +11,17 @@ class NotifikasiController extends Controller
     {
         $nim = session('nim');
 
-        $notifikasi = Notifikasi::where('nim',$nim)
+        // Ambil semua notifikasi
+        $notifikasi = Notifikasi::where('nim', $nim)
             ->latest()
             ->paginate(10);
+
+        // Tandai semua sebagai sudah dibaca
+        Notifikasi::where('nim', $nim)
+            ->where('dibaca', false)
+            ->update([
+                'dibaca' => true
+            ]);
 
         return view(
             'mahasiswa.notifikasi.index',
@@ -25,8 +33,8 @@ class NotifikasiController extends Controller
     {
         $nim = session('nim');
 
-        $notifikasi = Notifikasi::where('nim',$nim)
-            ->where('dibaca',false)
+        $notifikasi = Notifikasi::where('nim', $nim)
+            ->where('dibaca', false)
             ->latest()
             ->take(5)
             ->get();
@@ -35,15 +43,15 @@ class NotifikasiController extends Controller
     }
 
     public function bacaSemua()
-{
-    $nim = session('nim');
+    {
+        $nim = session('nim');
 
-    Notifikasi::where('nim',$nim)
-        ->where('dibaca',false)
-        ->update([
-            'dibaca'=>true
-        ]);
+        Notifikasi::where('nim', $nim)
+            ->where('dibaca', false)
+            ->update([
+                'dibaca' => true
+            ]);
 
-    return redirect()->route('mahasiswa.notifikasi');
-}
+        return redirect()->route('mahasiswa.notifikasi');
+    }
 }

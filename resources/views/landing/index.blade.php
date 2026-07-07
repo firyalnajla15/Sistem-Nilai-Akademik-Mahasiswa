@@ -6,11 +6,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Nilai Akademik Mahasiswa</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+        /* ===== ROOT VARIABLES ===== */
+        :root {
+            --bg-body: #f5f8fc;
+            --bg-white: #ffffff;
+            --bg-card: #f8fafc;
+            --bg-navbar: rgba(255, 255, 255, 0.92);
+            --bg-dropdown: #ffffff;
+            --text-primary: #1a2a3a;
+            --text-secondary: #4a6a84;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-color: rgba(0, 0, 0, 0.04);
+            --shadow-hover: rgba(0, 0, 0, 0.06);
+            --hero-overlay: rgba(15, 23, 42, 0.85);
+            --hero-overlay2: rgba(26, 58, 92, 0.75);
+            --info-bar-bg: #0f172a;
+            --footer-bg: #0f172a;
+            --btn-login-bg: #1a3a5c;
+            --btn-login-hover: #2a5a7a;
+            --icon-bg: #eff6ff;
+            --icon-color: #1a3a5c;
+            --transition: 0.3s ease;
+        }
+
+        /* ===== DARK THEME ===== */
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-white: #1a2332;
+            --bg-card: #1e2a3d;
+            --bg-navbar: rgba(15, 23, 42, 0.92);
+            --bg-dropdown: #1a2332;
+            --text-primary: #e8edf3;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #2a3a55;
+            --shadow-color: rgba(0, 0, 0, 0.2);
+            --shadow-hover: rgba(0, 0, 0, 0.3);
+            --hero-overlay: rgba(15, 23, 42, 0.92);
+            --hero-overlay2: rgba(26, 58, 92, 0.85);
+            --info-bar-bg: #0a0f1a;
+            --footer-bg: #0a0f1a;
+            --btn-login-bg: #2a5a7a;
+            --btn-login-hover: #3a7a9a;
+            --icon-bg: #1a2a3a;
+            --icon-color: #38bdf8;
+        }
+
+        /* ===== GLOBAL ===== */
         * {
             margin: 0;
             padding: 0;
@@ -23,90 +71,174 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            color: #334155;
-            background: #f8fafc;
+            color: var(--text-primary);
+            background: var(--bg-body);
+            transition: background var(--transition), color var(--transition);
         }
 
-        /* ================= NAVBAR ================= */
+        /* ===== NAVBAR ===== */
         .navbar {
-            background: rgba(15, 23, 42, 0.92) !important;
-            padding: 14px 0;
-            border-bottom: 2px solid rgba(56, 189, 248, 0.15);
-            backdrop-filter: blur(8px);
+            background: var(--bg-navbar) !important;
+            padding: 12px 0;
+            box-shadow: 0 1px 3px var(--shadow-color);
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(12px);
+            transition: background var(--transition), border-color var(--transition);
         }
 
         .navbar-brand {
-            font-size: 1.05rem;
+            font-size: 1rem;
             font-weight: 700;
-            color: white !important;
+            color: var(--text-primary) !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color var(--transition);
         }
 
         .navbar-brand i {
-            color: #38bdf8;
-            margin-right: 10px;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            transition: color var(--transition);
         }
 
         .nav-link {
-            color: rgba(255, 255, 255, 0.7) !important;
+            color: var(--text-secondary) !important;
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: 0.2s;
+            padding: 6px 16px !important;
+            border-radius: 8px;
         }
 
         .nav-link:hover {
-            color: #38bdf8 !important;
+            color: var(--text-primary) !important;
+            background: rgba(26, 58, 92, 0.06);
+        }
+
+        [data-theme="dark"] .nav-link:hover {
+            background: rgba(255, 255, 255, 0.06);
         }
 
         .btn-login-nav {
-            background: #0284c7;
+            background: var(--btn-login-bg);
             border: none;
             color: white !important;
             padding: 8px 22px;
-            border-radius: 8px;
+            border-radius: 50px;
             font-weight: 600;
-            font-size: 0.9rem;
-            transition: 0.2s;
+            font-size: 0.85rem;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .btn-login-nav:hover {
-            background: #0369a1 !important;
+            background: var(--btn-login-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(26, 58, 92, 0.15);
+            color: white !important;
         }
 
         .dropdown-menu {
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
             padding: 6px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 30px var(--shadow-color);
+            background: var(--bg-dropdown);
+            transition: background var(--transition), border-color var(--transition);
         }
 
         .dropdown-item {
             padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 0.9rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+            transition: background 0.2s, color 0.2s;
         }
 
         .dropdown-item:hover {
-            background: #f1f5f9;
+            background: var(--bg-card);
+            color: var(--text-primary);
         }
 
         .dropdown-item i {
             width: 20px;
-            color: #64748b;
+            color: var(--text-secondary);
+        }
+
+        /* ===== THEME TOGGLE ===== */
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all var(--transition);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--text-secondary);
+        }
+
+        .theme-toggle i {
+            font-size: 0.9rem;
+        }
+
+        .theme-toggle .toggle-track {
+            width: 36px;
+            height: 20px;
+            background: var(--border-color);
+            border-radius: 50px;
+            position: relative;
+            transition: background var(--transition);
+        }
+
+        .theme-toggle .toggle-track .toggle-thumb {
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform var(--transition), background var(--transition);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] .theme-toggle .toggle-track {
+            background: #38bdf8;
+        }
+
+        [data-theme="dark"] .theme-toggle .toggle-track .toggle-thumb {
+            transform: translateX(16px);
+            background: #0f172a;
         }
 
         /* ================= HERO ================= */
         .hero {
             min-height: 100vh;
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(30, 41, 59, 0.75) 100%),
-                        url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1920&q=80');
+            background:
+                linear-gradient(135deg, var(--hero-overlay) 0%, var(--hero-overlay2) 100%),
+                url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1920&q=80');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
             display: flex;
             align-items: center;
-            padding: 80px 0 50px;
+            padding: 100px 0 60px;
             position: relative;
+            transition: background var(--transition);
         }
 
         .hero .container {
@@ -117,9 +249,10 @@
         .hero h1 {
             color: white;
             font-size: 3.5rem;
-            font-weight: 700;
+            font-weight: 800;
             line-height: 1.1;
             margin-bottom: 16px;
+            letter-spacing: -0.5px;
         }
 
         .hero h1 span {
@@ -127,34 +260,37 @@
         }
 
         .hero p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 1.1rem;
             max-width: 500px;
-            line-height: 1.7;
-            margin-bottom: 25px;
+            line-height: 1.8;
+            margin-bottom: 28px;
         }
 
         .btn-hero {
             background: white;
-            color: #0f172a !important;
+            color: #1a3a5c !important;
             font-weight: 600;
-            padding: 13px 34px;
-            border-radius: 10px;
+            padding: 14px 34px;
+            border-radius: 50px;
             border: none;
             font-size: 1rem;
             transition: 0.3s;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
         }
 
         .btn-hero:hover {
-            background: #f1f5f9;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            color: #1a3a5c !important;
         }
 
         .btn-hero i {
-            margin-right: 8px;
+            color: #1a3a5c;
         }
 
         .hero-image {
@@ -164,6 +300,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             text-align: center;
             backdrop-filter: blur(4px);
+            transition: background var(--transition), border-color var(--transition);
         }
 
         .hero-image i {
@@ -182,7 +319,7 @@
         @media (max-width: 768px) {
             .hero {
                 min-height: 100vh;
-                padding: 90px 0 40px;
+                padding: 110px 0 50px;
                 background-attachment: scroll;
             }
 
@@ -191,7 +328,7 @@
             }
 
             .hero p {
-                font-size: 1rem;
+                font-size: 0.95rem;
                 max-width: 100%;
             }
 
@@ -203,122 +340,150 @@
 
         /* ================= INFO BAR ================= */
         .info-bar {
-            background: #0f172a;
-            padding: 14px 0;
+            background: var(--info-bar-bg);
+            padding: 12px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background var(--transition);
         }
 
         .info-bar .info-item {
             color: #94a3b8;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 400;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .info-bar .info-item i {
             color: #38bdf8;
-            margin-right: 8px;
             width: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .info-bar .info-item {
+                font-size: 0.75rem;
+                justify-content: center;
+                padding: 2px 0;
+            }
         }
 
         /* ================= SECTION ================= */
         .section-title {
             font-weight: 700;
-            color: #0f172a;
+            color: var(--text-primary);
             font-size: 2rem;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
+            transition: color var(--transition);
         }
 
         .section-subtitle {
-            color: #64748b;
+            color: var(--text-secondary);
             font-size: 1.05rem;
+            transition: color var(--transition);
         }
 
         /* ================= TENTANG ================= */
         #tentang {
-            background: white;
-            padding: 70px 0 50px;
+            background: var(--bg-white);
+            padding: 70px 0 60px;
+            transition: background var(--transition);
         }
 
         .about-text {
-            color: #475569;
+            color: var(--text-secondary);
             line-height: 1.8;
             font-size: 1rem;
+            transition: color var(--transition);
         }
 
         .about-card {
-            background: #f8fafc;
+            background: var(--bg-card);
             border-radius: 14px;
             padding: 30px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid var(--border-color);
+            transition: background var(--transition), border-color var(--transition);
         }
 
         .about-card .item {
             text-align: center;
-            padding: 15px 10px;
+            padding: 12px 8px;
         }
 
         .about-card .item i {
             font-size: 2rem;
-            color: #0284c7;
+            color: var(--icon-color);
             margin-bottom: 8px;
             display: block;
+            transition: color var(--transition);
         }
 
         .about-card .item h6 {
             font-weight: 600;
-            color: #0f172a;
+            color: var(--text-primary);
             margin-bottom: 2px;
+            transition: color var(--transition);
         }
 
         .about-card .item small {
-            color: #64748b;
+            color: var(--text-muted);
+            transition: color var(--transition);
         }
 
         .check-item {
             display: flex;
-            gap: 12px;
+            gap: 14px;
             align-items: flex-start;
             margin-bottom: 16px;
         }
 
         .check-item i {
-            color: #0284c7;
+            color: var(--icon-color);
             font-size: 1.2rem;
             margin-top: 2px;
+            transition: color var(--transition);
         }
 
         .check-item h6 {
             font-weight: 600;
-            color: #0f172a;
+            color: var(--text-primary);
             margin-bottom: 2px;
+            transition: color var(--transition);
         }
 
         .check-item p {
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 0.9rem;
             margin-bottom: 0;
+            transition: color var(--transition);
         }
 
-        /* ================= LAYANAN AKADEMIK (BARU) ================= */
+        /* ================= LAYANAN AKADEMIK ================= */
         #layanan {
-            background: #f8fafc;
+            background: var(--bg-body);
             padding: 60px 0 70px;
+            transition: background var(--transition);
         }
 
         .layanan-card {
-            background: white;
-            border: 1px solid #e2e8f0;
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
             border-radius: 14px;
             padding: 28px 24px;
             height: 100%;
-            transition: 0.3s;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+            transition: all var(--transition);
+            box-shadow: 0 1px 4px var(--shadow-color);
         }
 
         .layanan-card:hover {
             transform: translateY(-4px);
             border-color: #b3d4fc;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 8px 30px var(--shadow-hover);
+        }
+
+        [data-theme="dark"] .layanan-card:hover {
+            border-color: #2a5a7a;
         }
 
         .layanan-icon {
@@ -330,8 +495,9 @@
             justify-content: center;
             font-size: 1.3rem;
             margin-bottom: 16px;
-            background: #eff6ff;
-            color: #0284c7;
+            background: var(--icon-bg);
+            color: var(--icon-color);
+            transition: background var(--transition), color var(--transition);
         }
 
         .layanan-card:nth-child(2) .layanan-icon {
@@ -339,23 +505,35 @@
             color: #16a34a;
         }
 
+        [data-theme="dark"] .layanan-card:nth-child(2) .layanan-icon {
+            background: #1a2a3a;
+            color: #22c55e;
+        }
+
         .layanan-card:nth-child(3) .layanan-icon {
             background: #faf5ff;
             color: #9333ea;
         }
 
+        [data-theme="dark"] .layanan-card:nth-child(3) .layanan-icon {
+            background: #1a2a3a;
+            color: #a855f7;
+        }
+
         .layanan-card h5 {
             font-weight: 600;
-            color: #0f172a;
+            color: var(--text-primary);
             font-size: 1.05rem;
             margin-bottom: 8px;
+            transition: color var(--transition);
         }
 
         .layanan-card p {
-            color: #64748b;
-            font-size: 0.92rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
             line-height: 1.6;
             margin-bottom: 0;
+            transition: color var(--transition);
         }
 
         /* ================= BACK TO TOP ================= */
@@ -370,26 +548,36 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #0f172a;
+            background: var(--btn-login-bg);
             border: none;
             color: white;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-            transition: 0.3s;
+            box-shadow: 0 2px 12px var(--shadow-color);
+            transition: all var(--transition);
+            text-decoration: none;
         }
 
         .back-to-top:hover {
-            background: #0284c7;
+            background: var(--btn-login-hover);
             transform: translateY(-3px);
+            color: white;
         }
 
         /* ================= FOOTER ================= */
         footer {
-            background: #0f172a;
+            background: var(--footer-bg);
             color: #94a3b8;
             padding: 18px 0;
             text-align: center;
             font-size: 0.85rem;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background var(--transition);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .theme-toggle {
+                margin: 8px 0;
+            }
         }
     </style>
 </head>
@@ -397,7 +585,7 @@
 <body>
 
     <!-- ================= NAVBAR ================= -->
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <i class="fa-solid fa-graduation-cap"></i>
@@ -432,6 +620,14 @@
                                 </a>
                             </li>
                         </ul>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <div class="theme-toggle" id="themeToggle" title="Toggle tema">
+                            <i class="fa-regular fa-sun" id="themeIcon"></i>
+                            <div class="toggle-track">
+                                <div class="toggle-thumb"></div>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -482,7 +678,7 @@
                     <h2 class="section-title">Tentang SIAKAD</h2>
                     <p class="section-subtitle mb-3">Platform terpadu untuk administrasi akademik</p>
                     <p class="about-text">
-                        Sistem Informasi Akademik (SIAKAD) dirancang untuk memudahkan pengelolaan data mahasiswa, 
+                        Sistem Informasi Akademik (SIAKAD) dirancang untuk memudahkan pengelolaan data mahasiswa,
                         mata kuliah, nilai, dan transkrip dalam satu platform yang terintegrasi.
                     </p>
 
@@ -596,10 +792,45 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Back to top smooth
+        // ===== THEME TOGGLE =====
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateIcon(savedTheme);
+
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'fa-regular fa-moon';
+            } else {
+                themeIcon.className = 'fa-regular fa-sun';
+            }
+        }
+
+        // ===== BACK TO TOP =====
         document.querySelector('.back-to-top').addEventListener('click', function(e) {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ===== NAVBAR SCROLL EFFECT =====
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 20) {
+                navbar.style.boxShadow = '0 4px 20px var(--shadow-color)';
+            } else {
+                navbar.style.boxShadow = '0 1px 3px var(--shadow-color)';
+            }
         });
     </script>
 

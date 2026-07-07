@@ -5,122 +5,211 @@
 @section('content')
 
 <style>
-    .profile-header{
-        background: linear-gradient(135deg,#1c2b3a,#0f172a);
-        color:white;
-        border-radius:15px;
-        padding:30px;
-        margin-bottom:25px;
+    .profile-header {
+        background: linear-gradient(135deg, #1c2b3a, #0f172a);
+        color: white;
+        border-radius: 12px;
+        padding: 25px 30px;
+        margin-bottom: 25px;
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        flex-wrap: wrap;
     }
 
-    .profile-avatar{
-        width:100px;
-        height:100px;
-        border-radius:50%;
-        background:#0ea5e9;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        font-size:42px;
-        font-weight:bold;
-        color:white;
-        margin:auto;
+    .profile-avatar {
+        width: 85px;
+        height: 85px;
+        border-radius: 50%;
+        background: #0ea5e9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+        font-weight: bold;
+        color: white;
+        flex-shrink: 0;
     }
 
-    .profile-card{
-        border:none;
-        border-radius:15px;
-        box-shadow:0 4px 18px rgba(0,0,0,.08);
+    .profile-info h3 {
+        margin: 0 0 5px 0;
+        font-size: 22px;
+        font-weight: 600;
     }
 
-    .profile-card .card-header{
-        background:white;
-        border-bottom:1px solid #eee;
-        font-weight:600;
-        font-size:18px;
+    .profile-info p {
+        margin: 0 0 8px 0;
+        opacity: 0.8;
+        font-size: 14px;
     }
 
-    .table-profile th{
-        width:220px;
-        color:#6c757d;
-        font-weight:600;
+    .badge-status {
+        background: #22c55e;
+        color: white;
+        padding: 4px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        display: inline-block;
     }
 
-    .table-profile td{
-        font-weight:500;
-        color:#1c2b3a;
+    .card-profile {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        background: white;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .badge-status{
-        background:#22c55e;
-        color:white;
-        padding:6px 15px;
-        border-radius:20px;
-        font-size:13px;
+    .card-profile:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     }
 
-    .info-box{
-        border-radius:12px;
-        padding:20px;
-        text-align:center;
-        color:white;
+    .card-profile .card-header {
+        background: white;
+        border-bottom: 1px solid #f1f5f9;
+        font-weight: 600;
+        padding: 16px 20px;
+        border-radius: 12px 12px 0 0;
+        font-size: 16px;
     }
 
-    .bg1{background:#0ea5e9;}
-    .bg2{background:#22c55e;}
-    .bg3{background:#f59e0b;}
-
-    .info-box h3{
-        margin:10px 0 0;
-        font-size:26px;
-        font-weight:700;
+    .card-profile .card-header i {
+        color: #0ea5e9;
+        margin-right: 8px;
     }
 
-    .info-box p{
-        margin:0;
-        opacity:.9;
+    .card-profile .card-body {
+        padding: 20px;
+    }
+
+    .table-profile {
+        margin: 0;
+        width: 100%;
+    }
+
+    .table-profile tr {
+        border-bottom: 1px solid #f1f5f9;
+    }
+
+    .table-profile tr:last-child {
+        border-bottom: none;
+    }
+
+    .table-profile th {
+        padding: 12px 8px 12px 0;
+        font-weight: 600;
+        color: #64748b;
+        font-size: 14px;
+        width: 150px;
+    }
+
+    .table-profile td {
+        padding: 12px 8px;
+        color: #1e293b;
+        font-size: 14px;
+    }
+
+    .badge-aktif {
+        background: #22c55e;
+        color: white;
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .profile-header {
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .profile-avatar {
+            width: 70px;
+            height: 70px;
+            font-size: 28px;
+        }
+
+        .profile-info h3 {
+            font-size: 20px;
+        }
+
+        .table-profile th {
+            width: 120px;
+            font-size: 13px;
+        }
+
+        .table-profile td {
+            font-size: 13px;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .profile-header {
+            padding: 16px;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            font-size: 22px;
+        }
+
+        .profile-info h3 {
+            font-size: 18px;
+        }
+
+        .table-profile th {
+            width: 100px;
+            font-size: 12px;
+            padding: 8px 6px 8px 0;
+        }
+
+        .table-profile td {
+            font-size: 12px;
+            padding: 8px 6px;
+        }
+
+        .card-profile .card-header {
+            font-size: 14px;
+            padding: 12px 16px;
+        }
+
+        .card-profile .card-body {
+            padding: 14px 16px;
+        }
     }
 </style>
 
+<!-- Header Profil -->
 <div class="profile-header">
-    <div class="row align-items-center">
-
-        <div class="col-md-2 text-center">
-            <div class="profile-avatar">
-                {{ strtoupper(substr(session('nama'),0,1)) }}
-            </div>
-        </div>
-
-        <div class="col-md-10">
-            <h3 class="mb-1">{{ session('nama') }}</h3>
-
-            <p class="mb-2">
-                NIM : {{ session('nim') }}
-            </p>
-
-            <span class="badge-status">
-                <i class="fa-solid fa-circle-check"></i>
-                Mahasiswa Aktif
-            </span>
-        </div>
-
+    <div class="profile-avatar">
+        {{ strtoupper(substr(session('nama'), 0, 1)) }}
+    </div>
+    <div class="profile-info">
+        <h3>{{ session('nama') }}</h3>
+        <p><i class="fa-regular fa-id-card me-1"></i> NIM : {{ session('nim') }}</p>
+        <span class="badge-status">
+            <i class="fa-solid fa-circle-check me-1"></i> Mahasiswa Aktif
+        </span>
     </div>
 </div>
 
+<!-- Card Profil -->
 <div class="row">
+    <div class="col-lg-8 mx-auto">
 
-    <div class="col-lg-8">
-
-        <div class="card profile-card">
+        <div class="card-profile">
 
             <div class="card-header">
-                <i class="fa-solid fa-user me-2"></i>
-                Informasi Mahasiswa
+                <i class="fa-regular fa-user"></i> Informasi Mahasiswa
             </div>
 
             <div class="card-body">
 
-                <table class="table table-borderless table-profile">
+                <table class="table-profile">
 
                     <tr>
                         <th>Nama Lengkap</th>
@@ -140,8 +229,8 @@
                     <tr>
                         <th>Status</th>
                         <td>
-                            <span class="badge bg-success">
-                                Aktif
+                            <span class="badge-aktif">
+                                <i class="fa-solid fa-circle-check me-1"></i> Aktif
                             </span>
                         </td>
                     </tr>
@@ -158,7 +247,6 @@
         </div>
 
     </div>
-
 </div>
 
 @endsection

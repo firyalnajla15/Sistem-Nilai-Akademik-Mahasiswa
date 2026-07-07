@@ -391,6 +391,11 @@
 
     <!-- ============ SIDEBAR ============ -->
     <aside id="sidebarMenu" class="sidebar">
+         <!-- Brand -->
+            <a href="/dashboard" class="brand">
+                <i class="fa-solid fa-layer-group"></i>
+                KELOLA AKADEMIK
+            </a>
 
         @auth
             <!-- User Card -->
@@ -407,12 +412,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Brand -->
-            <a href="/dashboard" class="brand">
-                <i class="fa-solid fa-layer-group"></i>
-                KELOLA AKADEMIK
-            </a>
 
             <!-- Menu Utama -->
             <div class="sidebar-section">
@@ -453,11 +452,6 @@
                 <a href="{{ route('transkrip.index') }}">
                     <i class="fa-solid fa-file-pdf"></i>
                     Transkrip Nilai
-                </a>
-
-                <a href="#">
-                    <i class="fa-solid fa-bell"></i>
-                    Kelola Notifikasi
                 </a>
             </div>
 
