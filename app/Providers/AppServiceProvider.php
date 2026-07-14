@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Illuminate\Pagination\Paginator;
 use App\Models\Notifikasi;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,29 +21,32 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-{
-    View::composer('mahasiswa.layouts.index', function ($view) {
+    {
+        // Gunakan Bootstrap 5 untuk pagination Laravel
+        Paginator::useBootstrapFive();
 
-        $jumlahNotifikasi = 0;
-        $notifikasiTerbaru = collect();
+        View::composer('mahasiswa.layouts.index', function ($view) {
 
-        if (session()->has('nim')) {
+            $jumlahNotifikasi = 0;
+            $notifikasiTerbaru = collect();
 
-            $jumlahNotifikasi = Notifikasi::where('nim', session('nim'))
-                ->where('dibaca', false)
-                ->count();
+            if (session()->has('nim')) {
 
-            $notifikasiTerbaru = Notifikasi::where('nim', session('nim'))
-                ->where('dibaca', false)
-                ->latest()
-                ->take(5)
-                ->get();
-        }
+                $jumlahNotifikasi = Notifikasi::where('nim', session('nim'))
+                    ->where('dibaca', false)
+                    ->count();
 
-        $view->with(compact(
-            'jumlahNotifikasi',
-            'notifikasiTerbaru'
-        ));
-    });
-}
+                $notifikasiTerbaru = Notifikasi::where('nim', session('nim'))
+                    ->where('dibaca', false)
+                    ->latest()
+                    ->take(5)
+                    ->get();
+            }
+
+            $view->with(compact(
+                'jumlahNotifikasi',
+                'notifikasiTerbaru'
+            ));
+        });
+    }
 }

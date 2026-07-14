@@ -357,9 +357,12 @@
         }
 
         @keyframes pulse-badge {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: scale(1);
             }
+
             50% {
                 transform: scale(1.1);
             }
@@ -391,6 +394,7 @@
                 opacity: 0;
                 transform: translateY(-10px) scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
@@ -739,6 +743,59 @@
                 transform: translateX(0) !important;
             }
         }
+
+        /* ================= PAGINATION ================= */
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .pagination .page-item {
+            list-style: none;
+        }
+
+        .pagination .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 38px;
+            height: 38px;
+            padding: 0 14px;
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            background: #fff;
+            color: #0d6efd;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .pagination .page-link:hover {
+            background: #f8f9fa;
+        }
+
+        .pagination .active .page-link {
+            background: #0d6efd;
+            border-color: #0d6efd;
+            color: #fff;
+        }
+
+        .pagination svg {
+            width: 16px !important;
+            height: 16px !important;
+        }
+
+        .pagination p {
+            margin: 0;
+        }
+
+        .pagination .page-item.disabled .page-link {
+            color: #999;
+            background: #f8f9fa;
+        }
     </style>
 </head>
 
@@ -861,22 +918,16 @@
                             <i class="fas fa-bell me-1"></i>
                             Notifikasi
                         </h6>
-                        @if($notifikasiTerbaru->count() > 0)
-                            <span class="mark-all-read" onclick="markAllNotificationsRead(event)">
-                                <i class="fas fa-check-double me-1"></i>
-                                Tandai semua dibaca
-                            </span>
-                        @endif
                     </div>
 
                     <div class="notification-list">
                         @forelse($notifikasiTerbaru as $item)
-                            <div class="notification-item {{ !$item->dibaca ? 'unread' : '' }}" 
-                                 onclick="markNotificationRead({{ $item->id }}, event)">
+                            <div class="notification-item {{ !$item->dibaca ? 'unread' : '' }}"
+                                onclick="markNotificationRead({{ $item->id }}, event)">
                                 <div>
                                     <div class="notification-item-title">
                                         {{ $item->judul }}
-                                        @if(!$item->dibaca)
+                                        @if (!$item->dibaca)
                                             <span class="badge bg-danger badge-jenis ms-1">Baru</span>
                                         @endif
                                     </div>
@@ -888,7 +939,8 @@
                                             <i class="far fa-clock me-1"></i>
                                             {{ $item->created_at->diffForHumans() }}
                                         </span>
-                                        <span class="badge badge-jenis 
+                                        <span
+                                            class="badge badge-jenis 
                                             @switch($item->jenis)
                                                 @case('nilai')
                                                     bg-success
@@ -903,10 +955,12 @@
                                             @switch($item->jenis)
                                                 @case('nilai')
                                                     <i class="fas fa-star me-1"></i>Nilai
-                                                    @break
+                                                @break
+
                                                 @case('krs')
                                                     <i class="fas fa-book me-1"></i>KRS
-                                                    @break
+                                                @break
+
                                                 @default
                                                     <i class="fas fa-info-circle me-1"></i>Info
                                             @endswitch
@@ -914,209 +968,210 @@
                                     </div>
                                 </div>
                             </div>
-                        @empty
-                            <div class="notification-empty">
-                                <i class="fas fa-bell-slash"></i>
-                                <p>Tidak ada notifikasi baru</p>
-                            </div>
-                        @endforelse
-                    </div>
-
-                    @if($notifikasiTerbaru->count() > 0)
-                        <div class="notification-dropdown-footer">
-                            <a href="{{ route('mahasiswa.notifikasi') }}">
-                                Lihat semua notifikasi
-                                <i class="fas fa-arrow-right"></i>
-                            </a>
+                            @empty
+                                <div class="notification-empty">
+                                    <i class="fas fa-bell-slash"></i>
+                                    <p>Tidak ada notifikasi baru</p>
+                                </div>
+                            @endforelse
                         </div>
-                    @endif
+
+                        @if ($notifikasiTerbaru->count() > 0)
+                            <div class="notification-dropdown-footer">
+                                <a href="{{ route('mahasiswa.notifikasi') }}">
+                                    Lihat semua notifikasi
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- ========== CONTENT ========== -->
-    <div class="content" id="mainContent">
-        @yield('content')
-    </div>
+        <!-- ========== CONTENT ========== -->
+        <div class="content" id="mainContent">
+            @yield('content')
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        const sidebar = document.getElementById('sidebarMenu');
-        const overlay = document.getElementById('sidebarOverlay');
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const mainContent = document.getElementById('mainContent');
+        <script>
+            const sidebar = document.getElementById('sidebarMenu');
+            const overlay = document.getElementById('sidebarOverlay');
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mainContent = document.getElementById('mainContent');
 
-        function toggleSidebar() {
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('show');
-        }
-
-        function closeSidebar() {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('show');
-        }
-
-        // ====== KLIK DI LUAR SIDEBAR UNTUK MENUTUP ======
-        overlay.addEventListener('click', closeSidebar);
-
-        mainContent.addEventListener('click', function() {
-            if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
-                closeSidebar();
+            function toggleSidebar() {
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('show');
             }
-        });
 
-        hamburgerBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            toggleSidebar();
-        });
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('show');
+            }
 
-        document.querySelectorAll('.sidebar .nav-link, .sidebar .btn-logout').forEach(function(link) {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
+            // ====== KLIK DI LUAR SIDEBAR UNTUK MENUTUP ======
+            overlay.addEventListener('click', closeSidebar);
+
+            mainContent.addEventListener('click', function() {
+                if (window.innerWidth <= 768 && sidebar.classList.contains('open')) {
                     closeSidebar();
                 }
             });
-        });
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && sidebar.classList.contains('open')) {
-                closeSidebar();
-            }
-        });
+            hamburgerBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleSidebar();
+            });
 
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                closeSidebar();
-            }
-        });
-
-        // ====== NOTIFICATION FUNCTIONS ======
-        const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-
-        function toggleNotificationDropdown(event) {
-            event.stopPropagation();
-            const dropdown = document.getElementById('notificationDropdown');
-            dropdown.classList.toggle('show');
-        }
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const bell = document.getElementById('notificationBell');
-            const dropdown = document.getElementById('notificationDropdown');
-            if (!bell.contains(event.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
-
-        function markNotificationRead(id, event) {
-            if (event) {
-                event.stopPropagation();
-            }
-
-            fetch(`/mahasiswa/notifikasi/${id}/read`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': CSRF_TOKEN
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update UI
-                    const item = document.querySelector(`[onclick*="markNotificationRead(${id}"]`)?.closest('.notification-item');
-                    if (item) {
-                        item.classList.remove('unread');
-                        const badge = item.querySelector('.badge-danger');
-                        if (badge) badge.remove();
+            document.querySelectorAll('.sidebar .nav-link, .sidebar .btn-logout').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        closeSidebar();
                     }
-                    
-                    // Update badge count
-                    updateNotificationCount();
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
+                });
+            });
 
-        function markAllNotificationsRead(event) {
-            if (event) {
-                event.stopPropagation();
-            }
-
-            if (!confirm('Tandai semua notifikasi sebagai dibaca?')) {
-                return;
-            }
-
-            fetch('/mahasiswa/notifikasi/mark-all-read', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': CSRF_TOKEN
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update UI - remove unread class from all items
-                    document.querySelectorAll('.notification-item.unread').forEach(item => {
-                        item.classList.remove('unread');
-                        const badge = item.querySelector('.badge-danger');
-                        if (badge) badge.remove();
-                    });
-                    
-                    // Update badge count
-                    updateNotificationCount();
-                    
-                    // Close dropdown
-                    document.getElementById('notificationDropdown').classList.remove('show');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        function updateNotificationCount() {
-            fetch('/mahasiswa/notifikasi/unread-count')
-                .then(response => response.json())
-                .then(data => {
-                    const badge = document.getElementById('notificationBadge');
-                    const navBadge = document.querySelector('.nav-badge');
-                    const count = data.count || 0;
-                    
-                    if (count > 0) {
-                        badge.textContent = count;
-                        badge.classList.remove('empty');
-                        if (navBadge) {
-                            navBadge.textContent = count;
-                            navBadge.classList.remove('empty');
-                        }
-                    } else {
-                        badge.textContent = '';
-                        badge.classList.add('empty');
-                        if (navBadge) {
-                            navBadge.textContent = '';
-                            navBadge.classList.add('empty');
-                        }
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        // Auto refresh notification count every 30 seconds
-        setInterval(updateNotificationCount, 30000);
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            // Close dropdown on ESC
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    document.getElementById('notificationDropdown').classList.remove('show');
+                if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                    closeSidebar();
                 }
             });
-        });
-    </script>
 
-</body>
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    closeSidebar();
+                }
+            });
 
-</html>
+            // ====== NOTIFICATION FUNCTIONS ======
+            const CSRF_TOKEN = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+
+            function toggleNotificationDropdown(event) {
+                event.stopPropagation();
+                const dropdown = document.getElementById('notificationDropdown');
+                dropdown.classList.toggle('show');
+            }
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                const bell = document.getElementById('notificationBell');
+                const dropdown = document.getElementById('notificationDropdown');
+                if (!bell.contains(event.target)) {
+                    dropdown.classList.remove('show');
+                }
+            });
+
+            function markNotificationRead(id, event) {
+                if (event) {
+                    event.stopPropagation();
+                }
+
+                fetch(`/mahasiswa/notifikasi/${id}/read`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': CSRF_TOKEN
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update UI
+                            const item = document.querySelector(`[onclick*="markNotificationRead(${id}"]`)?.closest(
+                                '.notification-item');
+                            if (item) {
+                                item.classList.remove('unread');
+                                const badge = item.querySelector('.badge-danger');
+                                if (badge) badge.remove();
+                            }
+
+                            // Update badge count
+                            updateNotificationCount();
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            function markAllNotificationsRead(event) {
+                if (event) {
+                    event.stopPropagation();
+                }
+
+                if (!confirm('Tandai semua notifikasi sebagai dibaca?')) {
+                    return;
+                }
+
+                fetch('/mahasiswa/notifikasi/mark-all-read', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': CSRF_TOKEN
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Update UI - remove unread class from all items
+                            document.querySelectorAll('.notification-item.unread').forEach(item => {
+                                item.classList.remove('unread');
+                                const badge = item.querySelector('.badge-danger');
+                                if (badge) badge.remove();
+                            });
+
+                            // Update badge count
+                            updateNotificationCount();
+
+                            // Close dropdown
+                            document.getElementById('notificationDropdown').classList.remove('show');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            function updateNotificationCount() {
+                fetch('/mahasiswa/notifikasi/unread-count')
+                    .then(response => response.json())
+                    .then(data => {
+                        const badge = document.getElementById('notificationBadge');
+                        const navBadge = document.querySelector('.nav-badge');
+                        const count = data.count || 0;
+
+                        if (count > 0) {
+                            badge.textContent = count;
+                            badge.classList.remove('empty');
+                            if (navBadge) {
+                                navBadge.textContent = count;
+                                navBadge.classList.remove('empty');
+                            }
+                        } else {
+                            badge.textContent = '';
+                            badge.classList.add('empty');
+                            if (navBadge) {
+                                navBadge.textContent = '';
+                                navBadge.classList.add('empty');
+                            }
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            // Auto refresh notification count every 30 seconds
+            setInterval(updateNotificationCount, 30000);
+
+            // Initialize on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                // Close dropdown on ESC
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        document.getElementById('notificationDropdown').classList.remove('show');
+                    }
+                });
+            });
+        </script>
+
+    </body>
+
+    </html>

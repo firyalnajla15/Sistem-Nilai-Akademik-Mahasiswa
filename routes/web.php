@@ -87,6 +87,7 @@ Route::prefix('krs')->name('krs.')->group(function () {
         return view('admin.profil.index');
     })->name('profil');
 
+    Route::get('/api/check-nilai', [NilaiMahasiswaController::class, 'checkNilai']);
     /*
     |--------------------------------------------------------------------------
     | MAHASISWA

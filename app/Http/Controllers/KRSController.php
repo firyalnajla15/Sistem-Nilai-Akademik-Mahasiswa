@@ -10,16 +10,21 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class KRSController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         // Ambil mahasiswa yang sedang login
         $mahasiswa = Mahasiswa::where('nim', session('nim'))->firstOrFail();
 
-        // Semester aktif (sementara dihitung otomatis)
+        // Semester aktif mahasiswa
         $semesterAktif = $mahasiswa->semester_aktif;
 
-        // Mata kuliah paket semester tersebut
-        $mataKuliah = MataKuliah::where('semester', $semesterAktif)->get();
+        // Ambil semester dari dropdown, jika tidak ada gunakan semester aktif
+        $semester = $request->get('semester', $semesterAktif);
+
+        // Ambil mata kuliah berdasarkan semester yang dipilih
+        $mataKuliah = MataKuliah::where('semester', $semester)
+            ->orderBy('kode')
+            ->get();
 
         // Cek apakah mahasiswa sudah mengambil KRS
         $sudahAmbil = KRS::where('mahasiswa_id', $mahasiswa->id)
@@ -28,34 +33,42 @@ class KRSController extends Controller
         return view('mahasiswa.krs.index', compact(
             'mahasiswa',
             'semesterAktif',
+            'semester',
             'mataKuliah',
             'sudahAmbil'
         ));
     }
-    public function pdf()
-{
-    // Mahasiswa yang login
-    $mahasiswa = Mahasiswa::where('nim', session('nim'))->firstOrFail();
 
-    // Semester aktif
-    $semesterAktif = $mahasiswa->semester_aktif;
+    public function pdf(Request $request)
+    {
+        // Mahasiswa yang login
+        $mahasiswa = Mahasiswa::where('nim', session('nim'))->firstOrFail();
 
-    // Paket mata kuliah semester aktif
-    $mataKuliah = MataKuliah::where('semester', $semesterAktif)->get();
+        // Semester aktif
+        $semesterAktif = $mahasiswa->semester_aktif;
 
-    // Total SKS
-    $totalSks = $mataKuliah->sum('sks');
+        // Semester yang dipilih
+        $semester = $request->get('semester', $semesterAktif);
 
-    $pdf = Pdf::loadView(
-        'mahasiswa.krs.pdf',
-        compact(
-            'mahasiswa',
-            'semesterAktif',
-            'mataKuliah',
-            'totalSks'
-        )
-    );
+        // Mata kuliah sesuai semester
+        $mataKuliah = MataKuliah::where('semester', $semester)
+            ->orderBy('kode')
+            ->get();
 
-    return $pdf->stream('KRS-' . $mahasiswa->nim . '.pdf');
-}
+        // Total SKS
+        $totalSks = $mataKuliah->sum('sks');
+
+        $pdf = Pdf::loadView(
+            'mahasiswa.krs.pdf',
+            compact(
+                'mahasiswa',
+                'semesterAktif',
+                'semester',
+                'mataKuliah',
+                'totalSks'
+            )
+        );
+
+        return $pdf->stream('KRS-Semester-' . $semester . '-' . $mahasiswa->nim . '.pdf');
+    }
 }

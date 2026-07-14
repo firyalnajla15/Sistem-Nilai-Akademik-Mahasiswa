@@ -224,12 +224,15 @@
             .header .institution {
                 font-size: 16px;
             }
+
             .header .title {
                 font-size: 13px;
             }
+
             .header .contact {
                 font-size: 9px;
             }
+
             .header .contact span {
                 margin: 0 4px;
             }
@@ -238,6 +241,7 @@
                 font-size: 10px;
                 padding: 3px 4px;
             }
+
             .info-table .label {
                 width: 80px;
             }
@@ -245,10 +249,12 @@
             table {
                 font-size: 9px;
             }
+
             table thead th {
                 padding: 5px 6px;
                 font-size: 9px;
             }
+
             table tbody td {
                 padding: 5px 6px;
             }
@@ -256,13 +262,16 @@
             .signature table td {
                 padding: 0 8px;
             }
+
             .signature .sign-line {
                 width: 100px;
             }
+
             .signature .sign-label {
                 font-size: 10px;
                 margin-bottom: 25px;
             }
+
             .signature .sign-name {
                 font-size: 10px;
             }
@@ -277,7 +286,9 @@
     <div class="header">
         <div class="institution">POLITEKNIK NEGERI PADANG</div>
         <div class="title">KARTU RENCANA STUDI (KRS)</div>
-        <div class="subtitle">Semester {{ $semesterAktif }} — Tahun Akademik {{ date('Y') }}/{{ date('Y') + 1 }}</div>
+        <div class="subtitle">
+            Semester {{ $semester }} — Tahun Akademik {{ date('Y') }}/{{ date('Y') + 1 }}
+        </div>
         <div class="contact">
             Jl. Kampus PNP, Limau Manis, Kec. Pauh, Kota Padang, Sumatera Barat 25176
             <span>|</span> Telp. (0751) 72590
@@ -291,12 +302,15 @@
         <tr>
             <td class="label">NIM</td>
             <td class="value">: {{ $mahasiswa->nim }}</td>
+
             <td class="label" style="width:100px;">Semester</td>
-            <td class="value">: {{ $semesterAktif }}</td>
+            <td class="value">: {{ $semester }}</td>
         </tr>
+
         <tr>
             <td class="label">Nama</td>
             <td class="value">: {{ $mahasiswa->nama }}</td>
+
             <td class="label">Program Studi</td>
             <td class="value">: {{ $mahasiswa->prodi }}</td>
         </tr>
@@ -324,6 +338,7 @@
                 </tr>
             @endforeach
         </tbody>
+
         <tfoot>
             <tr class="total-row">
                 <td colspan="2"></td>
@@ -345,6 +360,7 @@
                     <div class="sign-name">{{ $mahasiswa->nama }}</div>
                     <div class="sign-role">NIM. {{ $mahasiswa->nim }}</div>
                 </td>
+
                 <td>
                     <div class="sign-label">Dosen Pembimbing Akademik</div>
                     <div style="height:40px;"></div>
@@ -352,6 +368,7 @@
                     <div class="sign-name">_________________________</div>
                     <div class="sign-role">NIP. ____________________</div>
                 </td>
+
                 <td>
                     <div class="sign-label">Ketua Program Studi</div>
                     <div style="height:40px;"></div>
@@ -365,7 +382,11 @@
 
     <!-- ===== FOOTER ===== -->
     <div class="page-footer">
-        Dicetak: {{ date('d-m-Y H:i:s') }} &nbsp;|&nbsp; Dokumen sah &nbsp;|&nbsp; KRS {{ $semesterAktif }}
+        Dicetak: {{ date('d-m-Y H:i:s') }}
+        &nbsp;|&nbsp;
+        Dokumen sah
+        &nbsp;|&nbsp;
+        KRS Semester {{ $semester }}
     </div>
 
 </body>

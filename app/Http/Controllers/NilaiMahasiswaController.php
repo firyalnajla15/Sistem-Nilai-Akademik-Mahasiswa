@@ -22,73 +22,71 @@ class NilaiMahasiswaController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'nim' => 'required',
-            'nama_mahasiswa' => 'required',
-            'semester' => 'required|integer|min:1|max:8',
-            'nilai' => 'required|array',
+{
+    $request->validate([
+        'nim' => 'required',
+        'nama_mahasiswa' => 'required',
+        'semester' => 'required|integer|min:1|max:8',
+        'nilai' => 'required|array',
+    ]);
+
+    // Cek apakah semester ini sudah pernah diinput
+    $cekSemester = NilaiMahasiswa::where('nim', $request->nim)
+        ->whereHas('matkul', function ($q) use ($request) {
+            $q->where('semester', $request->semester);
+        })
+        ->exists();
+
+    if ($cekSemester) {
+        return redirect()
+            ->back()
+            ->withInput()
+            ->with('error', 'Nilai mahasiswa untuk semester ' . $request->semester . ' sudah pernah diinput.');
+    }
+
+    foreach ($request->nilai as $matkul_id => $nilai) {
+
+        $kehadiran = $nilai['kehadiran'] ?? 0;
+        $tugas      = $nilai['tugas'] ?? 0;
+        $uts        = $nilai['uts'] ?? 0;
+        $uas        = $nilai['uas'] ?? 0;
+
+        $nilaiAkhir = ($kehadiran * 0.10)
+                    + ($tugas * 0.20)
+                    + ($uts * 0.30)
+                    + ($uas * 0.40);
+
+        $grade = $this->getGrade($nilaiAkhir);
+
+        NilaiMahasiswa::create([
+            'nim'             => $request->nim,
+            'nama_mahasiswa'  => $request->nama_mahasiswa,
+            'matkul_id'       => $matkul_id,
+            'kehadiran'       => $kehadiran,
+            'tugas'           => $tugas,
+            'uts'             => $uts,
+            'uas'             => $uas,
+            'nilai_akhir'     => $nilaiAkhir,
+            'grade'           => $grade,
         ]);
 
-        foreach ($request->nilai as $matkul_id => $nilai) {
+        $matkul = MataKuliah::find($matkul_id);
 
-            $existing = NilaiMahasiswa::where('nim', $request->nim)
-                ->where('matkul_id', $matkul_id)
-                ->first();
-
-            $kehadiran = $nilai['kehadiran'] ?? 0;
-            $tugas = $nilai['tugas'] ?? 0;
-            $uts = $nilai['uts'] ?? 0;
-            $uas = $nilai['uas'] ?? 0;
-
-            $nilaiAkhir = ($kehadiran * 0.10)
-                + ($tugas * 0.20)
-                + ($uts * 0.30)
-                + ($uas * 0.40);
-
-            $grade = $this->getGrade($nilaiAkhir);
-
-            $data = [
-                'nim' => $request->nim,
-                'nama_mahasiswa' => $request->nama_mahasiswa,
-                'matkul_id' => $matkul_id,
-                'kehadiran' => $kehadiran,
-                'tugas' => $tugas,
-                'uts' => $uts,
-                'uas' => $uas,
-                'nilai_akhir' => $nilaiAkhir,
-                'grade' => $grade,
-            ];
-
-            $matkul = MataKuliah::find($matkul_id);
-
-            if ($existing) {
-
-                $existing->update($data);
-            } else {
-
-                NilaiMahasiswa::create($data);
-            }
-
+        if ($matkul) {
             Notifikasi::create([
-
-                'nim' => $request->nim,
-
-                'judul' => 'Nilai Mata Kuliah',
-
-                'pesan' => 'Nilai mata kuliah ' . $matkul->nama . ' telah keluar.',
-
-                'jenis' => 'nilai',
-
-                'dibaca' => false
-
+                'nim'     => $request->nim,
+                'judul'   => 'Nilai Mata Kuliah',
+                'pesan'   => 'Nilai mata kuliah ' . $matkul->nama . ' telah keluar.',
+                'jenis'   => 'nilai',
+                'dibaca'  => false,
             ]);
         }
-
-        return redirect()
-            ->route('nilai.create')
-            ->with('success', 'Nilai berhasil disimpan untuk semester ' . $request->semester);
     }
+
+    return redirect()
+        ->route('nilai.create')
+        ->with('success', 'Nilai berhasil disimpan untuk semester ' . $request->semester);
+}
 
     public function index(Request $request)
     {
@@ -184,13 +182,17 @@ class NilaiMahasiswaController extends Controller
     }
 
     public function checkNilai(Request $request)
-    {
-        $exists = NilaiMahasiswa::where('nim', $request->nim)
-            ->where('matkul_id', $request->matkul_id)
-            ->exists();
+{
+    $exists = NilaiMahasiswa::where('nim', $request->nim)
+        ->whereHas('matkul', function ($q) use ($request) {
+            $q->where('semester', $request->semester);
+        })
+        ->exists();
 
-        return response()->json($exists);
-    }
+    return response()->json([
+        'exists' => $exists
+    ]);
+}
 
     private function getGrade($na)
     {
